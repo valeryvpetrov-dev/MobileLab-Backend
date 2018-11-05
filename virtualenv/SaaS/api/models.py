@@ -15,6 +15,20 @@ class Man(models.Model):
         abstract = True
 
 
+class Comment(models.Model):
+    author_name = models.CharField(max_length=35)
+    content = models.CharField(max_length=200)
+    date_creation = models.DateTimeField()
+
+    class Meta:
+        abstract = True
+
+    def save(self, *args, **kwargs):
+        if self.date_creation > datetime.datetime.today():
+            raise ValidationError('Date creation is in future.')
+        super(Comment, self).save(*args, **kwargs)
+
+
 # particular classes
 class Skill(models.Model):
     id = models.AutoField(primary_key=True)
@@ -212,3 +226,4 @@ class SuggestionTheme(models.Model):
         if self.date_creation > datetime.datetime.today():
             raise ValidationError('Date creation is in future.')
         super(SuggestionTheme, self).save(*args, **kwargs)
+
