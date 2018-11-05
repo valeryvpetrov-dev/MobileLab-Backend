@@ -48,6 +48,21 @@ class SuggestionThemeStatus(models.Model):
         db_table = "Suggestion_theme_status"
 
 
+class SuggestionThemeProgress(models.Model):
+    id = models.AutoField(primary_key=True)
+    title = models.CharField(max_length=75)
+    description = models.CharField(max_length=150)
+    date_update = models.DateTimeField()
+
+    class Meta:
+        db_table = "Suggestion_theme_progress"
+        
+    def save(self, *args, **kwargs):
+        if self.date_update > datetime.datetime.today():
+            raise ValidationError('Date update is in future.')
+        super(SuggestionThemeProgress, self).save(*args, **kwargs)
+
+
 class Student(Man):
     id = models.AutoField(primary_key=True)
     skills = models.ManyToManyField(Skill, through='StudentSkill')
@@ -179,4 +194,6 @@ class WorkStepMaterial(models.Model):
 
     class Meta:
         db_table = "Work_step_material"
+
+
 
