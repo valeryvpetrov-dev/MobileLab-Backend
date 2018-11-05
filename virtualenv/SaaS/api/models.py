@@ -1,4 +1,7 @@
 from django.db import models
+from django.forms import ValidationError
+
+import datetime
 
 
 # base classes
@@ -27,6 +30,7 @@ class Subject(models.Model):
 
     class Meta:
         db_table = "Subject"
+
 
 class Student(Man):
     id = models.AutoField(primary_key=True)
@@ -60,3 +64,26 @@ class CuratorSkill(models.Model):
 
     class Meta:
         db_table = "Curator_skill"
+
+
+class Theme(models.Model):
+    id = models.AutoField(primary_key=True)
+    curator = models.ForeignKey(Curator, on_delete=models.SET_NULL, db_column="curator_id")
+    student = models.ForeignKey(Student, on_delete=models.SET_NULL, db_column="student_id")
+    subject = models.ForeignKey(Subject, on_delete=models.SET_NULL, db_column="subject_id")
+    title = models.CharField(max_length=100)
+    description = models.CharField(max_length=250)
+    date_creation = models.DateTimeField()
+    date_acceptance = models.DateTimeField()
+
+    class Meta:
+        db_table = "Theme"
+
+    def save(self, *args, **kwargs):
+        if self.date_creation > self.date_acceptance:
+            raise ValidationError(_('Date creation is greater than date acceptance.'))
+        if self.date_creation > datetime.datetime.today():
+            raise ValidationError(_('Date creation is in future.'))
+        if self.date_acceptance > datetime.datetime.today():
+            raise ValidationError(_('Date acceptance is in future.'))
+        super(Theme, self).save(*args, **kwargs)
