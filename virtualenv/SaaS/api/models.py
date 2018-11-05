@@ -56,7 +56,7 @@ class SuggestionThemeProgress(models.Model):
 
     class Meta:
         db_table = "Suggestion_theme_progress"
-        
+
     def save(self, *args, **kwargs):
         if self.date_update > datetime.datetime.today():
             raise ValidationError('Date update is in future.')
@@ -196,4 +196,19 @@ class WorkStepMaterial(models.Model):
         db_table = "Work_step_material"
 
 
+class SuggestionTheme(models.Model):
+    id = models.AutoField(primary_key=True)
+    theme = models.ForeignKey(Theme, on_delete=models.CASCADE, db_column='theme_id')
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, db_column='student_id')
+    curator = models.ForeignKey(Curator, on_delete=models.CASCADE, db_column='curator_id')
+    status = models.ForeignKey(SuggestionThemeStatus, on_delete=models.SET_NULL, db_column='status_id')
+    progress = models.ForeignKey(SuggestionThemeProgress, on_delete=models.SET_NULL, db_column='suggestion_theme_progress_id')
+    date_creation = models.DateTimeField()
 
+    class Meta:
+        db_table = "Suggestion_theme"
+
+    def save(self, *args, **kwargs):
+        if self.date_creation > datetime.datetime.today():
+            raise ValidationError('Date creation is in future.')
+        super(SuggestionTheme, self).save(*args, **kwargs)
