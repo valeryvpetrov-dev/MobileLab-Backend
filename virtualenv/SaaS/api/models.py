@@ -71,6 +71,7 @@ class Theme(models.Model):
     curator = models.ForeignKey(Curator, on_delete=models.SET_NULL, db_column="curator_id")
     student = models.ForeignKey(Student, on_delete=models.SET_NULL, db_column="student_id")
     subject = models.ForeignKey(Subject, on_delete=models.SET_NULL, db_column="subject_id")
+    required_skills = models.ManyToManyField(Skill, through='ThemeSkill')
     title = models.CharField(max_length=100)
     description = models.CharField(max_length=250)
     date_creation = models.DateTimeField()
@@ -87,3 +88,12 @@ class Theme(models.Model):
         if self.date_acceptance > datetime.datetime.today():
             raise ValidationError(_('Date acceptance is in future.'))
         super(Theme, self).save(*args, **kwargs)
+
+
+class ThemeSkill(models.Model):
+    id = models.AutoField(primary_key=True)
+    theme = models.ForeignKey(Theme, on_delete=models.CASCADE, db_column='theme_id')
+    skill = models.ForeignKey(Skill, on_delete=models.CASCADE, db_column='skill_id')
+
+    class Meta:
+        db_table = "Theme_skill"
