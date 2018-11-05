@@ -90,11 +90,11 @@ class Theme(models.Model):
 
     def save(self, *args, **kwargs):
         if self.date_creation > self.date_acceptance:
-            raise ValidationError(_('Date creation is greater than date acceptance.'))
+            raise ValidationError('Date creation is greater than date acceptance.')
         if self.date_creation > datetime.datetime.today():
-            raise ValidationError(_('Date creation is in future.'))
+            raise ValidationError('Date creation is in future.')
         if self.date_acceptance > datetime.datetime.today():
-            raise ValidationError(_('Date acceptance is in future.'))
+            raise ValidationError('Date acceptance is in future.')
         super(Theme, self).save(*args, **kwargs)
 
 
@@ -118,11 +118,11 @@ class Work(models.Model):
 
     def save(self, *args, **kwargs):
         if self.date_start > self.date_finish:
-            raise ValidationError(_('Date start is greater than date finish.'))
+            raise ValidationError('Date start is greater than date finish.')
         if self.date_start > datetime.datetime.today():
-            raise ValidationError(_('Date start is in future.'))
+            raise ValidationError('Date start is in future.')
         if self.date_finish > datetime.datetime.today():
-            raise ValidationError(_('Date finish is in future.'))
+            raise ValidationError('Date finish is in future.')
         super(Work, self).save(*args, **kwargs)
 
 
@@ -140,9 +140,9 @@ class WorkStep(models.Model):
 
     def save(self, *args, **kwargs):
         if self.date_start > self.date_finish:
-            raise ValidationError(_('Date start is greater than date finish.'))
+            raise ValidationError('Date start is greater than date finish.')
         if self.date_start > datetime.datetime.today():
-            raise ValidationError(_('Date start is in future.'))
+            raise ValidationError('Date start is in future.')
         if self.date_finish > datetime.datetime.today():
-            raise ValidationError(_('Date finish is in future.'))
+            raise ValidationError('Date finish is in future.')
         super(WorkStep, self).save(*args, **kwargs)
