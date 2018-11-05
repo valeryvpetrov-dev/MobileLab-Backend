@@ -15,3 +15,9 @@ class Student(Man):
 
     class Meta:
         db_table = "Student"
+
+class Curator(Man):
+    id = models.AutoField(primary_key=True)
+
+    class Meta:
+        db_table = "Curator"
