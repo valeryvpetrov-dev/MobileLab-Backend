@@ -126,4 +126,23 @@ class Work(models.Model):
         super(Work, self).save(*args, **kwargs)
 
 
+class WorkStep(models.Model):
+    id = models.AutoField(primary_key=True)
+    work = models.ForeignKey(Work, on_delete=models.CASCADE, db_column='work_id')
+    status = models.ForeignKey(WorkStepStatus, on_delete=models.SET_NULL, db_column='status_id')
+    title = models.CharField(max_length=100)
+    description = models.CharField(max_length=250)
+    date_start = models.DateTimeField()
+    date_finish = models.DateTimeField()
 
+    class Meta:
+        db_table = "Work_step"
+
+    def save(self, *args, **kwargs):
+        if self.date_start > self.date_finish:
+            raise ValidationError(_('Date start is greater than date finish.'))
+        if self.date_start > datetime.datetime.today():
+            raise ValidationError(_('Date start is in future.'))
+        if self.date_finish > datetime.datetime.today():
+            raise ValidationError(_('Date finish is in future.'))
+        super(WorkStep, self).save(*args, **kwargs)
