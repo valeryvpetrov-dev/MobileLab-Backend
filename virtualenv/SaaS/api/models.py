@@ -1,5 +1,6 @@
 from django.db import models
 
+
 # base classes
 class Man(models.Model):
     name = models.CharField(max_length=35)
@@ -38,8 +39,8 @@ class Curator(Man):
 
 class StudentSkill(models.Model):
     id = models.AutoField(primary_key=True)
-    student = models.ForeignKey(Student, on_delete=models.CASCADE)
-    skill = models.ForeignKey(Skill, on_delete=models.CASCADE)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, db_column='student_id')
+    skill = models.ForeignKey(Skill, on_delete=models.CASCADE, db_column='skill_id')
 
     class Meta:
         db_table = "Student_skill"
@@ -47,8 +48,8 @@ class StudentSkill(models.Model):
 
 class CuratorSkill(models.Model):
     id = models.AutoField(primary_key=True)
-    curator = models.ForeignKey(Curator, on_delete=models.CASCADE)
-    skill = models.ForeignKey(Skill, on_delete=models.CASCADE)
+    curator = models.ForeignKey(Curator, on_delete=models.CASCADE, db_column='curator_id')
+    skill = models.ForeignKey(Skill, on_delete=models.CASCADE, db_column='skill_id')
 
     class Meta:
         db_table = "Curator_skill"
