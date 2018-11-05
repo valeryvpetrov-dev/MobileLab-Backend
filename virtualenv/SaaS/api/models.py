@@ -10,12 +10,23 @@ class Man(models.Model):
     class Meta:
         abstract = True
 
+
 # particular classes
+class Skill(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=100)
+
+    class Meta:
+        db_table = "Skill"
+
+
 class Student(Man):
     id = models.AutoField(primary_key=True)
+    skills = models.ManyToManyField(Skill, through='StudentSkill')
 
     class Meta:
         db_table = "Student"
+
 
 class Curator(Man):
     id = models.AutoField(primary_key=True)
@@ -23,9 +34,11 @@ class Curator(Man):
     class Meta:
         db_table = "Curator"
 
-class Skill(models.Model):
+
+class StudentSkill(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=100)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    skill = models.ForeignKey(Skill, on_delete=models.CASCADE)
 
     class Meta:
-        db_table = "Skill"
+        db_table = "Student_skill"
