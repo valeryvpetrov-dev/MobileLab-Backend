@@ -40,6 +40,14 @@ class WorkStepStatus(models.Model):
         db_table = "Work_step_status"
 
 
+class SuggestionThemeStatus(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=50)
+
+    class Meta:
+        db_table = "Suggestion_theme_status"
+
+
 class Student(Man):
     id = models.AutoField(primary_key=True)
     skills = models.ManyToManyField(Skill, through='StudentSkill')
@@ -171,3 +179,4 @@ class WorkStepMaterial(models.Model):
 
     class Meta:
         db_table = "Work_step_material"
+
