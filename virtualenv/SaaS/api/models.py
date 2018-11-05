@@ -10,6 +10,7 @@ class Man(models.Model):
     class Meta:
         abstract = True
 
+# particular classes
 class Student(Man):
     id = models.AutoField(primary_key=True)
 
@@ -21,3 +22,10 @@ class Curator(Man):
 
     class Meta:
         db_table = "Curator"
+
+class Skill(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=100)
+
+    class Meta:
+        db_table = "Skill"
