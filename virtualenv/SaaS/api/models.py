@@ -146,3 +146,19 @@ class WorkStep(models.Model):
         if self.date_finish > datetime.datetime.today():
             raise ValidationError('Date finish is in future.')
         super(WorkStep, self).save(*args, **kwargs)
+
+
+class WorkStepComment(models.Model):
+    id = models.AutoField(primary_key=True)
+    work_step = models.ForeignKey(WorkStep, on_delete=models.CASCADE, db_column='work_step_id')
+    author_name = models.CharField(max_length=35)
+    content = models.CharField(max_length=200)
+    date_creation = models.DateTimeField()
+
+    class Meta:
+        db_table = "Work_step_comment"
+
+    def save(self, *args, **kwargs):
+        if self.date_creation > datetime.datetime.today():
+            raise ValidationError('Date creation is in future.')
+        super(WorkStepComment, self).save(*args, **kwargs)
