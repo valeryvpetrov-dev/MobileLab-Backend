@@ -21,6 +21,13 @@ class Skill(models.Model):
         db_table = "Skill"
 
 
+class Subject(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=100)
+
+    class Meta:
+        db_table = "Subject"
+
 class Student(Man):
     id = models.AutoField(primary_key=True)
     skills = models.ManyToManyField(Skill, through='StudentSkill')
