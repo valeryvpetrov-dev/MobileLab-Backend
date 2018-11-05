@@ -32,6 +32,14 @@ class Subject(models.Model):
         db_table = "Subject"
 
 
+class WorkStepStatus(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=50)
+
+    class Meta:
+        db_table = "Work_step_status"
+
+
 class Student(Man):
     id = models.AutoField(primary_key=True)
     skills = models.ManyToManyField(Skill, through='StudentSkill')
@@ -116,4 +124,6 @@ class Work(models.Model):
         if self.date_finish > datetime.datetime.today():
             raise ValidationError(_('Date finish is in future.'))
         super(Work, self).save(*args, **kwargs)
+
+
 
