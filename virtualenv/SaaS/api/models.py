@@ -30,6 +30,7 @@ class Student(Man):
 
 class Curator(Man):
     id = models.AutoField(primary_key=True)
+    skills = models.ManyToManyField(Skill, through='CuratorSkill')
 
     class Meta:
         db_table = "Curator"
@@ -42,3 +43,12 @@ class StudentSkill(models.Model):
 
     class Meta:
         db_table = "Student_skill"
+
+
+class CuratorSkill(models.Model):
+    id = models.AutoField(primary_key=True)
+    curator = models.ForeignKey(Curator, on_delete=models.CASCADE)
+    skill = models.ForeignKey(Skill, on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = "Curator_skill"
