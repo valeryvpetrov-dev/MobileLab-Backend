@@ -9,3 +9,9 @@ class Man(models.Model):
 
     class Meta:
         abstract = True
+
+class Student(Man):
+    id = models.AutoField(primary_key=True)
+
+    class Meta:
+        db_table = "Student"
