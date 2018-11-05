@@ -219,3 +219,10 @@ class SuggestionTheme(models.Model):
             raise ValidationError('Date creation is in future.')
         super(SuggestionTheme, self).save(*args, **kwargs)
 
+
+class SuggestionThemeComment(models.Model):
+    id = models.AutoField(primary_key=True)
+    suggestion_theme = models.ForeignKey(SuggestionTheme, on_delete=models.CASCADE, db_column='suggestion_theme_id')
+
+    class Meta:
+        db_table = "Suggestion_theme_comment"
