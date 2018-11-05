@@ -97,3 +97,23 @@ class ThemeSkill(models.Model):
 
     class Meta:
         db_table = "Theme_skill"
+
+
+class Work(models.Model):
+    id = models.AutoField(primary_key=True)
+    theme = models.ForeignKey(Theme, on_delete=models.CASCADE, db_column='theme_id')
+    date_start = models.DateTimeField()
+    date_finish = models.DateTimeField()
+
+    class Meta:
+        db_table = "Work"
+
+    def save(self, *args, **kwargs):
+        if self.date_start > self.date_finish:
+            raise ValidationError(_('Date start is greater than date finish.'))
+        if self.date_start > datetime.datetime.today():
+            raise ValidationError(_('Date start is in future.'))
+        if self.date_finish > datetime.datetime.today():
+            raise ValidationError(_('Date finish is in future.'))
+        super(Work, self).save(*args, **kwargs)
+
