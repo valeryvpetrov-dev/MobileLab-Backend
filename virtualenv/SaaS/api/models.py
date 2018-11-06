@@ -113,9 +113,9 @@ class CuratorSkill(models.Model):
 
 class Theme(models.Model):
     id = models.AutoField(primary_key=True)
-    curator = models.ForeignKey(Curator, on_delete=models.SET_NULL, db_column="curator_id")
-    student = models.ForeignKey(Student, on_delete=models.SET_NULL, db_column="student_id")
-    subject = models.ForeignKey(Subject, on_delete=models.SET_NULL, db_column="subject_id")
+    curator = models.ForeignKey(Curator, on_delete=models.SET_NULL, db_column="curator_id", null=True)
+    student = models.ForeignKey(Student, on_delete=models.SET_NULL, db_column="student_id", null=True)
+    subject = models.ForeignKey(Subject, on_delete=models.SET_NULL, db_column="subject_id", null=True)
     required_skills = models.ManyToManyField(Skill, through='ThemeSkill')
     title = models.CharField(max_length=100)
     description = models.CharField(max_length=250)
@@ -166,7 +166,7 @@ class Work(models.Model):
 class WorkStep(models.Model):
     id = models.AutoField(primary_key=True)
     work = models.ForeignKey(Work, on_delete=models.CASCADE, db_column='work_id')
-    status = models.ForeignKey(WorkStepStatus, on_delete=models.SET_NULL, db_column='status_id')
+    status = models.ForeignKey(WorkStepStatus, on_delete=models.SET_NULL, db_column='status_id', null=True)
     title = models.CharField(max_length=100)
     description = models.CharField(max_length=250)
     date_start = models.DateTimeField()
@@ -207,8 +207,8 @@ class SuggestionTheme(models.Model):
     theme = models.ForeignKey(Theme, on_delete=models.CASCADE, db_column='theme_id')
     student = models.ForeignKey(Student, on_delete=models.CASCADE, db_column='student_id')
     curator = models.ForeignKey(Curator, on_delete=models.CASCADE, db_column='curator_id')
-    status = models.ForeignKey(SuggestionThemeStatus, on_delete=models.SET_NULL, db_column='status_id')
-    progress = models.ForeignKey(SuggestionThemeProgress, on_delete=models.SET_NULL, db_column='suggestion_theme_progress_id')
+    status = models.ForeignKey(SuggestionThemeStatus, on_delete=models.SET_NULL, db_column='status_id', null=True)
+    progress = models.ForeignKey(SuggestionThemeProgress, on_delete=models.SET_NULL, db_column='suggestion_theme_progress_id', null=True)
     date_creation = models.DateTimeField()
 
     class Meta:
