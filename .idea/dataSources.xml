@@ -11,5 +11,11 @@
         <property name="enable_load_extension" value="true" />
       </driver-properties>
     </data-source>
+    <data-source source="LOCAL" name="MobileLab-Backend-test-db@localhost" uuid="2253467e-4b60-47b4-b853-607a4d0a76d3">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://localhost:5432/MobileLab-Backend-test-db</jdbc-url>
+    </data-source>
   </component>
 </project>

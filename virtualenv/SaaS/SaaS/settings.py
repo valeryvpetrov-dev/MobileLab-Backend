@@ -15,7 +15,6 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
@@ -27,16 +26,15 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
-   'django.contrib.admin',
-   'django.contrib.auth',
-   'django.contrib.contenttypes',
-   # 'django.contrib.sessions',
-   # 'django.contrib.messages',
-   # 'django.contrib.staticfiles',
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    # 'django.contrib.sessions',
+    # 'django.contrib.messages',
+    # 'django.contrib.staticfiles',
     'api',
 ]
 
@@ -70,17 +68,29 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'SaaS.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
+db_auth_properties = {}
+with open('./properties/db-auth.properties', 'r') as properties_file:
+    for line in properties_file:
+        if not line.startswith("#"):
+            (key, value) = line.split('=')
+            db_auth_properties[key] = value.strip()
 
 DATABASES = {
-    'default': {
+    'sqlite-test-db': {     # sqlite-test-db
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'test-db.sqlite3'),
-    }
+    },
+    'default': {   # postgres-test-db
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'MobileLab-Backend-test-db',
+        'USER': db_auth_properties['postgres-test-db-user'],
+        'PASSWORD': db_auth_properties['postgres-test-db-password'],
+        'HOST': 'localhost',
+        'PORT': '',
+    },
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
@@ -100,7 +110,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
@@ -113,7 +122,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
