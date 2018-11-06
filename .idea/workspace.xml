@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="7571c2cc-b173-4451-b828-ecf853135c3e" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/virtualenv/SaaS/api/tests.py" beforeDir="false" />
-    </list>
+    <list default="true" id="7571c2cc-b173-4451-b828-ecf853135c3e" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -15,6 +12,7 @@
     <SUITE FILE_PATH="coverage/MobileLab_Backend$Test__api_test_student_TestStudent.coverage" NAME="Test: api.test.student.TestStudent Coverage Results" MODIFIED="1541496758660" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/MobileLab_Backend$Test__api_test_student_TestStudent_test_create_student.coverage" NAME="Test: api.test.student.TestStudent.test_create_student Coverage Results" MODIFIED="1541494954329" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/MobileLab_Backend$Test__api_test_student_TestStudent_test_read_student.coverage" NAME="Test: api.test.student.TestStudent.test_read_student Coverage Results" MODIFIED="1541495109262" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/MobileLab_Backend$Test__api_test_skill_TestSkill.coverage" NAME="Test: api.test.skill.TestSkill Coverage Results" MODIFIED="1541497469804" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
   </component>
   <component name="DatabaseView">
     <option name="SHOW_INTERMEDIATE" value="true" />
@@ -56,7 +54,7 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="py" value="7" />
+          <entry key="py" value="8" />
           <entry key="sql" value="1" />
           <entry key="txt" value="1" />
         </counts>
@@ -64,20 +62,20 @@
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="PLAIN_TEXT" value="1" />
-          <entry key="Python" value="7" />
+          <entry key="Python" value="8" />
           <entry key="Scratch" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="dummy" value="9" />
-          <entry key="py" value="4025" />
+          <entry key="py" value="4294" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="PLAIN_TEXT" value="9" />
-          <entry key="Python" value="4025" />
+          <entry key="Python" value="4294" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.js.language.service.starts" />
@@ -107,14 +105,26 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/virtualenv/SaaS/api/test/student.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
-              <caret line="11" column="51" lean-forward="true" selection-start-line="11" selection-start-column="51" selection-end-line="11" selection-end-column="51" />
+            <state relative-caret-position="306">
+              <caret line="24" column="27" selection-start-line="24" selection-start-column="27" selection-end-line="24" selection-end-column="27" />
               <folding>
                 <element signature="e#0#32#0" expanded="true" />
                 <marker date="1541496505527" expanded="true" signature="368:595" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/virtualenv/SaaS/api/test/skill.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="410">
+              <caret line="33" lean-forward="true" selection-start-line="33" selection-end-line="33" />
+              <folding>
+                <element signature="e#0#32#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -137,7 +147,11 @@
       <find>suggestion</find>
       <find>Student</find>
       <find>class Student</find>
+      <find>student</find>
     </findStrings>
+    <replaceStrings>
+      <replace>skill</replace>
+    </replaceStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -148,6 +162,7 @@
         <option value="$PROJECT_DIR$/virtualenv/SaaS/api/models.py" />
         <option value="$PROJECT_DIR$/virtualenv/SaaS/SaaS/settings.py" />
         <option value="$PROJECT_DIR$/virtualenv/SaaS/api/test/student.py" />
+        <option value="$PROJECT_DIR$/virtualenv/SaaS/api/test/skill.py" />
       </list>
     </option>
   </component>
@@ -162,7 +177,9 @@
     <option name="width" value="1169" />
     <option name="height" value="728" />
   </component>
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
@@ -232,6 +249,7 @@
       <recent name="E:\Python\Django\MobileLab-Backend\virtualenv\SaaS\api\test" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\Python\Django\MobileLab-Backend\virtualenv\SaaS\api\test" />
       <recent name="E:\Python\Django\MobileLab-Backend" />
       <recent name="E:\Python\Django\MobileLab-Backend\virtualenv\SaaS\SaaS" />
     </key>
@@ -248,7 +266,27 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Django tests.Test: api.test.student.TestStudent">
+  <component name="RunManager" selected="Django tests.Test: api.test.skill.TestSkill">
+    <configuration name="Test: api.test.skill.TestSkill" type="DjangoTestsConfigurationType" factoryName="Django tests" temporary="true">
+      <module name="MobileLab-Backend" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="TARGET" value="api.test.skill.TestSkill" />
+      <option name="SETTINGS_FILE" value="" />
+      <option name="CUSTOM_SETTINGS" value="false" />
+      <option name="USE_OPTIONS" value="false" />
+      <option name="OPTIONS" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="Test: api.test.student.TestStudent" type="DjangoTestsConfigurationType" factoryName="Django tests" temporary="true">
       <module name="MobileLab-Backend" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -295,9 +333,11 @@
     <list>
       <item itemvalue="Django server.test conf" />
       <item itemvalue="Django tests.Test: api.test.student.TestStudent" />
+      <item itemvalue="Django tests.Test: api.test.skill.TestSkill" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Django tests.Test: api.test.skill.TestSkill" />
         <item itemvalue="Django tests.Test: api.test.student.TestStudent" />
       </list>
     </recent_temporary>
@@ -316,18 +356,6 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="Test__api_test_student_TestStudent_test_create_student - 2018.11.06 at 12h 02m 39s.xml">
-      <configuration name="Test: api.test.student.TestStudent.test_create_student" configurationId="DjangoTestsConfigurationType" />
-    </history-entry>
-    <history-entry file="Test__api_test_student_TestStudent_test_read_student - 2018.11.06 at 12h 03m 30s.xml">
-      <configuration name="Test: api.test.student.TestStudent.test_read_student" configurationId="DjangoTestsConfigurationType" />
-    </history-entry>
-    <history-entry file="Test__api_test_student_TestStudent_test_read_student - 2018.11.06 at 12h 03m 51s.xml">
-      <configuration name="Test: api.test.student.TestStudent.test_read_student" configurationId="DjangoTestsConfigurationType" />
-    </history-entry>
-    <history-entry file="Test__api_test_student_TestStudent_test_read_student - 2018.11.06 at 12h 05m 13s.xml">
-      <configuration name="Test: api.test.student.TestStudent.test_read_student" configurationId="DjangoTestsConfigurationType" />
-    </history-entry>
     <history-entry file="Test__api_test_student_TestStudent - 2018.11.06 at 12h 05m 23s.xml">
       <configuration name="Test: api.test.student.TestStudent" configurationId="DjangoTestsConfigurationType" />
     </history-entry>
@@ -345,6 +373,18 @@
     </history-entry>
     <history-entry file="Test__api_test_student_TestStudent - 2018.11.06 at 12h 32m 43s.xml">
       <configuration name="Test: api.test.student.TestStudent" configurationId="DjangoTestsConfigurationType" />
+    </history-entry>
+    <history-entry file="Test__api_test_skill_TestSkill - 2018.11.06 at 12h 42m 17s.xml">
+      <configuration name="Test: api.test.skill.TestSkill" configurationId="DjangoTestsConfigurationType" />
+    </history-entry>
+    <history-entry file="Test__api_test_skill_TestSkill - 2018.11.06 at 12h 43m 13s.xml">
+      <configuration name="Test: api.test.skill.TestSkill" configurationId="DjangoTestsConfigurationType" />
+    </history-entry>
+    <history-entry file="Test__api_test_skill_TestSkill - 2018.11.06 at 12h 44m 14s.xml">
+      <configuration name="Test: api.test.skill.TestSkill" configurationId="DjangoTestsConfigurationType" />
+    </history-entry>
+    <history-entry file="Test__api_test_skill_TestSkill - 2018.11.06 at 12h 44m 34s.xml">
+      <configuration name="Test: api.test.skill.TestSkill" configurationId="DjangoTestsConfigurationType" />
     </history-entry>
   </component>
   <component name="ToolWindowManager">
@@ -427,11 +467,21 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/virtualenv/SaaS/api/test/student.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="11" column="51" lean-forward="true" selection-start-line="11" selection-start-column="51" selection-end-line="11" selection-end-column="51" />
+        <state relative-caret-position="306">
+          <caret line="24" column="27" selection-start-line="24" selection-start-column="27" selection-end-line="24" selection-end-column="27" />
           <folding>
             <element signature="e#0#32#0" expanded="true" />
             <marker date="1541496505527" expanded="true" signature="368:595" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/virtualenv/SaaS/api/test/skill.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="410">
+          <caret line="33" lean-forward="true" selection-start-line="33" selection-end-line="33" />
+          <folding>
+            <element signature="e#0#32#0" expanded="true" />
           </folding>
         </state>
       </provider>
