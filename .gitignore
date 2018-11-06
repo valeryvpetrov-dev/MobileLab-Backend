@@ -104,4 +104,6 @@ venv.bak/
 .mypy_cache/
 
 # secrets
-/virtualenv/SaaS/properties/db-auth.properties
+/virtualenv/SaaS/properties/postgres-test-db-auth.properties
+
+/virtualenv/SaaS/properties/postgres-prod-db-auth.properties

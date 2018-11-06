@@ -71,7 +71,7 @@ WSGI_APPLICATION = 'SaaS.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 db_auth_properties = {}
-with open('./properties/db-auth.properties', 'r') as properties_file:
+with open('./properties/postgres-test-db-auth.properties', 'r') as properties_file:
     for line in properties_file:
         if not line.startswith("#"):
             (key, value) = line.split('=')
@@ -85,8 +85,16 @@ DATABASES = {
     'default': {   # postgres-test-db
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'MobileLab-Backend-test-db',
-        'USER': db_auth_properties['postgres-test-db-user'],
-        'PASSWORD': db_auth_properties['postgres-test-db-password'],
+        'USER': db_auth_properties['user'],
+        'PASSWORD': db_auth_properties['password'],
+        'HOST': 'localhost',
+        'PORT': '',
+    },
+    'postgres-prod-db': {   # postgres-prod-db
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'MobileLab-Backend-prod-db',
+        'USER': db_auth_properties['user'],
+        'PASSWORD': db_auth_properties['password'],
         'HOST': 'localhost',
         'PORT': '',
     },
