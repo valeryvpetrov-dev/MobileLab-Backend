@@ -6,7 +6,7 @@ from ..models import Skill, Student, StudentSkill
 # Create your tests here.
 class TestStudentSkill(TestCase):
     """
-    CRUD operations of Student-Skill relationship model
+    CRUD operations of Student-Skill relationship model (Many-to-many)
 
     Mention: Tests that require a database (namely, model tests)
     will not use your “real” (production) database.

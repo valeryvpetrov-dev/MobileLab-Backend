@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="7571c2cc-b173-4451-b828-ecf853135c3e" name="Default Changelist" comment="" />
+    <list default="true" id="7571c2cc-b173-4451-b828-ecf853135c3e" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/virtualenv/SaaS/api/test/student_skill.py" beforeDir="false" afterPath="$PROJECT_DIR$/virtualenv/SaaS/api/test/student_skill.py" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -11,14 +13,23 @@
   <component name="CoverageDataManager">
     <SUITE FILE_PATH="coverage/MobileLab_Backend$Test__api_test_student_TestStudent.coverage" NAME="Test: api.test.student.TestStudent Coverage Results" MODIFIED="1541496758660" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/MobileLab_Backend$Test__api_test_student_skill_TestStudentSkill_test_read_related_skill.coverage" NAME="Test: api.test.student_skill.TestStudentSkill.test_read_related_skill Coverage Results" MODIFIED="1541501457264" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/MobileLab_Backend$Test__api_test_theme_subject_TestThemeSubject_test_read_related_subject.coverage" NAME="Test: api.test.theme_subject.TestThemeSubject.test_read_related_subject Coverage Results" MODIFIED="1541505764267" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/MobileLab_Backend$Test__api_test_student_skill_TestStudentSkill_test_create_student_skill_relationship.coverage" NAME="Test: api.test.student_skill.TestStudentSkill.test_create_student_skill_relationship Coverage Results" MODIFIED="1541500917716" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
-    <SUITE FILE_PATH="coverage/MobileLab_Backend$Test__api_test_student_skill_TestStudentSkill_test_update_skill.coverage" NAME="Test: api.test.student_skill.TestStudentSkill.test_update_skill Coverage Results" MODIFIED="1541501715376" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
-    <SUITE FILE_PATH="coverage/MobileLab_Backend$Test__api_test_student_skill_TestStudentSkill_test_delete_skill.coverage" NAME="Test: api.test.student_skill.TestStudentSkill.test_delete_skill Coverage Results" MODIFIED="1541501931545" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/MobileLab_Backend$Test__api_test_theme_subject_TestThemeSubject_test_delete_student.coverage" NAME="Test: api.test.theme_subject.TestThemeSubject.test_delete_student Coverage Results" MODIFIED="1541506269248" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/MobileLab_Backend$Test__api_test_student_TestStudent_test_create_student.coverage" NAME="Test: api.test.student.TestStudent.test_create_student Coverage Results" MODIFIED="1541494954329" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/MobileLab_Backend$Test__api_test_student_TestStudent_test_read_student.coverage" NAME="Test: api.test.student.TestStudent.test_read_student Coverage Results" MODIFIED="1541495109262" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/MobileLab_Backend$Test__api_test_student_skill_TestStudentSkill_test_create_skill_student_relationship.coverage" NAME="Test: api.test.student_skill.TestStudentSkill.test_create_skill_student_relationship Coverage Results" MODIFIED="1541501078077" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
-    <SUITE FILE_PATH="coverage/MobileLab_Backend$Test__api_test_student_skill_TestStudentSkill.coverage" NAME="Test: api.test.student_skill.TestStudentSkill Coverage Results" MODIFIED="1541501970564" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/MobileLab_Backend$Test__api_test_theme_subject_TestThemeSubject.coverage" NAME="Test: api.test.theme_subject.TestThemeSubject Coverage Results" MODIFIED="1541506291312" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/MobileLab_Backend$Test__api_test_skill_TestSkill.coverage" NAME="Test: api.test.skill.TestSkill Coverage Results" MODIFIED="1541497469804" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/MobileLab_Backend$Test__api_test_theme_subject_TestThemeSubject_test_create_theme_subject_relationship.coverage" NAME="Test: api.test.theme_subject.TestThemeSubject.test_create_theme_subject_relationship Coverage Results" MODIFIED="1541503693228" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/MobileLab_Backend$Test__api_test_theme_subject_TestThemeSubject_test_create_subject_theme_relationship.coverage" NAME="Test: api.test.theme_subject.TestThemeSubject.test_create_subject_theme_relationship Coverage Results" MODIFIED="1541504737800" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/MobileLab_Backend$Test__api_test_student_skill_TestStudentSkill_test_update_skill.coverage" NAME="Test: api.test.student_skill.TestStudentSkill.test_update_skill Coverage Results" MODIFIED="1541501715376" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/MobileLab_Backend$Test__api_test_student_skill_TestStudentSkill_test_delete_skill.coverage" NAME="Test: api.test.student_skill.TestStudentSkill.test_delete_skill Coverage Results" MODIFIED="1541501931545" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/MobileLab_Backend$Test__api_test_theme_subject_TestThemeSubject_test_update_theme.coverage" NAME="Test: api.test.theme_subject.TestThemeSubject.test_update_theme Coverage Results" MODIFIED="1541505945173" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/MobileLab_Backend$Test__api_test_theme_subject_TestThemeSubject_test_delete_theme.coverage" NAME="Test: api.test.theme_subject.TestThemeSubject.test_delete_theme Coverage Results" MODIFIED="1541506104850" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/MobileLab_Backend$Test__api_test_theme_subject_TestThemeSubject_test_read_related_theme.coverage" NAME="Test: api.test.theme_subject.TestThemeSubject.test_read_related_theme Coverage Results" MODIFIED="1541505710984" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/MobileLab_Backend$Test__api_test_theme_subject_TestThemeSubject_test_update_subject.coverage" NAME="Test: api.test.theme_subject.TestThemeSubject.test_update_subject Coverage Results" MODIFIED="1541505996262" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/MobileLab_Backend$Test__api_test_student_skill_TestStudentSkill.coverage" NAME="Test: api.test.student_skill.TestStudentSkill Coverage Results" MODIFIED="1541501970564" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
   </component>
   <component name="DatabaseView">
     <option name="SHOW_INTERMEDIATE" value="true" />
@@ -60,7 +71,7 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="py" value="12" />
+          <entry key="py" value="17" />
           <entry key="sql" value="1" />
           <entry key="txt" value="1" />
         </counts>
@@ -68,20 +79,20 @@
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="PLAIN_TEXT" value="1" />
-          <entry key="Python" value="12" />
+          <entry key="Python" value="17" />
           <entry key="Scratch" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="dummy" value="9" />
-          <entry key="py" value="5679" />
+          <entry key="py" value="7099" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="PLAIN_TEXT" value="9" />
-          <entry key="Python" value="5679" />
+          <entry key="Python" value="7099" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.js.language.service.starts" />
@@ -91,22 +102,22 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/virtualenv/SaaS/api/models.py">
+        <entry file="file://$PROJECT_DIR$/virtualenv/SaaS/SaaS/settings.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="559">
-              <caret line="82" lean-forward="true" selection-start-line="82" selection-end-line="82" />
-              <folding>
-                <element signature="e#0#28#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="189">
+              <caret line="106" column="23" lean-forward="true" selection-start-line="106" selection-start-column="23" selection-end-line="106" selection-end-column="23" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/virtualenv/SaaS/SaaS/settings.py">
+        <entry file="file://$PROJECT_DIR$/virtualenv/SaaS/api/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="291">
-              <caret line="79" column="58" lean-forward="true" selection-start-line="79" selection-start-column="58" selection-end-line="79" selection-end-column="58" />
+            <state relative-caret-position="188">
+              <caret line="114" column="43" lean-forward="true" selection-start-line="114" selection-start-column="43" selection-end-line="114" selection-end-column="43" />
+              <folding>
+                <element signature="e#0#28#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -136,15 +147,43 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/virtualenv/SaaS/api/test/student_skill.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="170">
-              <caret line="10" column="64" lean-forward="true" selection-start-line="10" selection-start-column="64" selection-end-line="10" selection-end-column="64" />
+            <state relative-caret-position="935">
+              <caret line="55" lean-forward="true" selection-start-line="55" selection-end-line="55" />
               <folding>
                 <element signature="e#0#32#0" expanded="true" />
-                <marker date="1541501970518" expanded="true" signature="2021:2027" ph="..." />
+                <marker date="1541502215523" expanded="true" signature="2036:2042" ph="..." />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/virtualenv/SaaS/api/test/theme_subject.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1037">
+              <caret line="61" column="51" lean-forward="true" selection-start-line="61" selection-start-column="51" selection-end-line="61" selection-end-column="51" />
+              <folding>
+                <element signature="e#0#32#0" expanded="true" />
+                <marker date="1541506269217" expanded="true" signature="1640:1646" ph="..." />
+                <marker date="1541506269217" expanded="true" signature="1681:1769" ph="..." />
+                <marker date="1541506269217" expanded="true" signature="1806:1860" ph="..." />
+                <marker date="1541506269217" expanded="true" signature="2069:2074" ph="..." />
+                <marker date="1541506269217" expanded="true" signature="2104:2113" ph="..." />
+                <marker date="1541506269217" expanded="true" signature="2104:2266" ph="..." />
+                <marker date="1541506269217" expanded="true" signature="2327:2465" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/virtualenv/SaaS/api/views.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="51">
+              <caret line="3" lean-forward="true" selection-start-line="3" selection-end-line="3" />
             </state>
           </provider>
         </entry>
@@ -167,9 +206,14 @@
       <find>Student</find>
       <find>student</find>
       <find>class Student</find>
+      <find>TIME</find>
+      <find>datetime.datetime</find>
+      <find>class Sub</find>
+      <find>class Theme</find>
     </findStrings>
     <replaceStrings>
       <replace>skill</replace>
+      <replace>timezone</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -178,11 +222,12 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/virtualenv/SaaS/api/models.py" />
         <option value="$PROJECT_DIR$/virtualenv/SaaS/SaaS/settings.py" />
         <option value="$PROJECT_DIR$/virtualenv/SaaS/api/test/student.py" />
         <option value="$PROJECT_DIR$/virtualenv/SaaS/api/test/skill.py" />
         <option value="$PROJECT_DIR$/virtualenv/SaaS/api/test/student_skill.py" />
+        <option value="$PROJECT_DIR$/virtualenv/SaaS/api/models.py" />
+        <option value="$PROJECT_DIR$/virtualenv/SaaS/api/test/theme_subject.py" />
       </list>
     </option>
   </component>
@@ -286,8 +331,8 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Django tests.Test: api.test.student_skill.TestStudentSkill">
-    <configuration name="Test: api.test.student_skill.TestStudentSkill" type="DjangoTestsConfigurationType" factoryName="Django tests" temporary="true">
+  <component name="RunManager" selected="Django tests.Test: api.test.theme_subject.TestThemeSubject">
+    <configuration name="Test: api.test.theme_subject.TestThemeSubject" type="DjangoTestsConfigurationType" factoryName="Django tests" temporary="true">
       <module name="MobileLab-Backend" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -300,14 +345,14 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="TARGET" value="api.test.student_skill.TestStudentSkill" />
+      <option name="TARGET" value="api.test.theme_subject.TestThemeSubject" />
       <option name="SETTINGS_FILE" value="" />
       <option name="CUSTOM_SETTINGS" value="false" />
       <option name="USE_OPTIONS" value="false" />
       <option name="OPTIONS" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="Test: api.test.student_skill.TestStudentSkill.test_create_skill_student_relationship" type="DjangoTestsConfigurationType" factoryName="Django tests" temporary="true">
+    <configuration name="Test: api.test.theme_subject.TestThemeSubject.test_delete_student" type="DjangoTestsConfigurationType" factoryName="Django tests" temporary="true">
       <module name="MobileLab-Backend" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -320,14 +365,14 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="TARGET" value="api.test.student_skill.TestStudentSkill.test_create_skill_student_relationship" />
+      <option name="TARGET" value="api.test.theme_subject.TestThemeSubject.test_delete_student" />
       <option name="SETTINGS_FILE" value="" />
       <option name="CUSTOM_SETTINGS" value="false" />
       <option name="USE_OPTIONS" value="false" />
       <option name="OPTIONS" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="Test: api.test.student_skill.TestStudentSkill.test_delete_skill" type="DjangoTestsConfigurationType" factoryName="Django tests" temporary="true">
+    <configuration name="Test: api.test.theme_subject.TestThemeSubject.test_delete_theme" type="DjangoTestsConfigurationType" factoryName="Django tests" temporary="true">
       <module name="MobileLab-Backend" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -340,14 +385,14 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="TARGET" value="api.test.student_skill.TestStudentSkill.test_delete_skill" />
+      <option name="TARGET" value="api.test.theme_subject.TestThemeSubject.test_delete_theme" />
       <option name="SETTINGS_FILE" value="" />
       <option name="CUSTOM_SETTINGS" value="false" />
       <option name="USE_OPTIONS" value="false" />
       <option name="OPTIONS" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="Test: api.test.student_skill.TestStudentSkill.test_read_related_skill" type="DjangoTestsConfigurationType" factoryName="Django tests" temporary="true">
+    <configuration name="Test: api.test.theme_subject.TestThemeSubject.test_update_subject" type="DjangoTestsConfigurationType" factoryName="Django tests" temporary="true">
       <module name="MobileLab-Backend" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -360,14 +405,14 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="TARGET" value="api.test.student_skill.TestStudentSkill.test_read_related_skill" />
+      <option name="TARGET" value="api.test.theme_subject.TestThemeSubject.test_update_subject" />
       <option name="SETTINGS_FILE" value="" />
       <option name="CUSTOM_SETTINGS" value="false" />
       <option name="USE_OPTIONS" value="false" />
       <option name="OPTIONS" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="Test: api.test.student_skill.TestStudentSkill.test_update_skill" type="DjangoTestsConfigurationType" factoryName="Django tests" temporary="true">
+    <configuration name="Test: api.test.theme_subject.TestThemeSubject.test_update_theme" type="DjangoTestsConfigurationType" factoryName="Django tests" temporary="true">
       <module name="MobileLab-Backend" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -380,7 +425,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="TARGET" value="api.test.student_skill.TestStudentSkill.test_update_skill" />
+      <option name="TARGET" value="api.test.theme_subject.TestThemeSubject.test_update_theme" />
       <option name="SETTINGS_FILE" value="" />
       <option name="CUSTOM_SETTINGS" value="false" />
       <option name="USE_OPTIONS" value="false" />
@@ -412,19 +457,19 @@
     </configuration>
     <list>
       <item itemvalue="Django server.test conf" />
-      <item itemvalue="Django tests.Test: api.test.student_skill.TestStudentSkill.test_create_skill_student_relationship" />
-      <item itemvalue="Django tests.Test: api.test.student_skill.TestStudentSkill.test_read_related_skill" />
-      <item itemvalue="Django tests.Test: api.test.student_skill.TestStudentSkill.test_update_skill" />
-      <item itemvalue="Django tests.Test: api.test.student_skill.TestStudentSkill.test_delete_skill" />
-      <item itemvalue="Django tests.Test: api.test.student_skill.TestStudentSkill" />
+      <item itemvalue="Django tests.Test: api.test.theme_subject.TestThemeSubject.test_update_theme" />
+      <item itemvalue="Django tests.Test: api.test.theme_subject.TestThemeSubject.test_update_subject" />
+      <item itemvalue="Django tests.Test: api.test.theme_subject.TestThemeSubject.test_delete_theme" />
+      <item itemvalue="Django tests.Test: api.test.theme_subject.TestThemeSubject.test_delete_student" />
+      <item itemvalue="Django tests.Test: api.test.theme_subject.TestThemeSubject" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Django tests.Test: api.test.student_skill.TestStudentSkill" />
-        <item itemvalue="Django tests.Test: api.test.student_skill.TestStudentSkill.test_delete_skill" />
-        <item itemvalue="Django tests.Test: api.test.student_skill.TestStudentSkill.test_update_skill" />
-        <item itemvalue="Django tests.Test: api.test.student_skill.TestStudentSkill.test_read_related_skill" />
-        <item itemvalue="Django tests.Test: api.test.student_skill.TestStudentSkill.test_create_skill_student_relationship" />
+        <item itemvalue="Django tests.Test: api.test.theme_subject.TestThemeSubject" />
+        <item itemvalue="Django tests.Test: api.test.theme_subject.TestThemeSubject.test_delete_student" />
+        <item itemvalue="Django tests.Test: api.test.theme_subject.TestThemeSubject.test_delete_theme" />
+        <item itemvalue="Django tests.Test: api.test.theme_subject.TestThemeSubject.test_update_subject" />
+        <item itemvalue="Django tests.Test: api.test.theme_subject.TestThemeSubject.test_update_theme" />
       </list>
     </recent_temporary>
   </component>
@@ -442,42 +487,42 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="Test__api_test_student_skill_TestStudentSkill_test_update_skill - 2018.11.06 at 13h 52m 42s.xml">
-      <configuration name="Test: api.test.student_skill.TestStudentSkill.test_update_skill" configurationId="DjangoTestsConfigurationType" />
+    <history-entry file="Test__api_test_theme_subject_TestThemeSubject_test_read_related_theme - 2018.11.06 at 15h 01m 56s.xml">
+      <configuration name="Test: api.test.theme_subject.TestThemeSubject.test_read_related_theme" configurationId="DjangoTestsConfigurationType" />
     </history-entry>
-    <history-entry file="Test__api_test_student_skill_TestStudentSkill_test_update_skill - 2018.11.06 at 13h 53m 30s.xml">
-      <configuration name="Test: api.test.student_skill.TestStudentSkill.test_update_skill" configurationId="DjangoTestsConfigurationType" />
+    <history-entry file="Test__api_test_theme_subject_TestThemeSubject_test_read_related_subject - 2018.11.06 at 15h 02m 49s.xml">
+      <configuration name="Test: api.test.theme_subject.TestThemeSubject.test_read_related_subject" configurationId="DjangoTestsConfigurationType" />
     </history-entry>
-    <history-entry file="Test__api_test_student_skill_TestStudentSkill_test_update_skill - 2018.11.06 at 13h 53m 59s.xml">
-      <configuration name="Test: api.test.student_skill.TestStudentSkill.test_update_skill" configurationId="DjangoTestsConfigurationType" />
+    <history-entry file="Test__api_test_theme_subject_TestThemeSubject_test_update_theme - 2018.11.06 at 15h 05m 50s.xml">
+      <configuration name="Test: api.test.theme_subject.TestThemeSubject.test_update_theme" configurationId="DjangoTestsConfigurationType" />
     </history-entry>
-    <history-entry file="Test__api_test_student_skill_TestStudentSkill_test_update_skill - 2018.11.06 at 13h 54m 59s.xml">
-      <configuration name="Test: api.test.student_skill.TestStudentSkill.test_update_skill" configurationId="DjangoTestsConfigurationType" />
+    <history-entry file="Test__api_test_theme_subject_TestThemeSubject_test_update_subject - 2018.11.06 at 15h 06m 41s.xml">
+      <configuration name="Test: api.test.theme_subject.TestThemeSubject.test_update_subject" configurationId="DjangoTestsConfigurationType" />
     </history-entry>
-    <history-entry file="Test__api_test_student_skill_TestStudentSkill_test_update_skill - 2018.11.06 at 13h 55m 20s.xml">
-      <configuration name="Test: api.test.student_skill.TestStudentSkill.test_update_skill" configurationId="DjangoTestsConfigurationType" />
+    <history-entry file="Test__api_test_theme_subject_TestThemeSubject_test_delete_theme - 2018.11.06 at 15h 08m 30s.xml">
+      <configuration name="Test: api.test.theme_subject.TestThemeSubject.test_delete_theme" configurationId="DjangoTestsConfigurationType" />
     </history-entry>
-    <history-entry file="Test__api_test_student_skill_TestStudentSkill_test_delete_skill - 2018.11.06 at 13h 57m 22s.xml">
-      <configuration name="Test: api.test.student_skill.TestStudentSkill.test_delete_skill" configurationId="DjangoTestsConfigurationType" />
+    <history-entry file="Test__api_test_theme_subject_TestThemeSubject_test_delete_student - 2018.11.06 at 15h 09m 41s.xml">
+      <configuration name="Test: api.test.theme_subject.TestThemeSubject.test_delete_student" configurationId="DjangoTestsConfigurationType" />
     </history-entry>
-    <history-entry file="Test__api_test_student_skill_TestStudentSkill_test_delete_skill - 2018.11.06 at 13h 57m 48s.xml">
-      <configuration name="Test: api.test.student_skill.TestStudentSkill.test_delete_skill" configurationId="DjangoTestsConfigurationType" />
+    <history-entry file="Test__api_test_theme_subject_TestThemeSubject_test_delete_student - 2018.11.06 at 15h 10m 29s.xml">
+      <configuration name="Test: api.test.theme_subject.TestThemeSubject.test_delete_student" configurationId="DjangoTestsConfigurationType" />
     </history-entry>
-    <history-entry file="Test__api_test_student_skill_TestStudentSkill_test_delete_skill - 2018.11.06 at 13h 58m 03s.xml">
-      <configuration name="Test: api.test.student_skill.TestStudentSkill.test_delete_skill" configurationId="DjangoTestsConfigurationType" />
+    <history-entry file="Test__api_test_theme_subject_TestThemeSubject_test_delete_student - 2018.11.06 at 15h 10m 53s.xml">
+      <configuration name="Test: api.test.theme_subject.TestThemeSubject.test_delete_student" configurationId="DjangoTestsConfigurationType" />
     </history-entry>
-    <history-entry file="Test__api_test_student_skill_TestStudentSkill_test_delete_skill - 2018.11.06 at 13h 58m 56s.xml">
-      <configuration name="Test: api.test.student_skill.TestStudentSkill.test_delete_skill" configurationId="DjangoTestsConfigurationType" />
+    <history-entry file="Test__api_test_theme_subject_TestThemeSubject_test_delete_student - 2018.11.06 at 15h 11m 14s.xml">
+      <configuration name="Test: api.test.theme_subject.TestThemeSubject.test_delete_student" configurationId="DjangoTestsConfigurationType" />
     </history-entry>
-    <history-entry file="Test__api_test_student_skill_TestStudentSkill - 2018.11.06 at 13h 59m 35s.xml">
-      <configuration name="Test: api.test.student_skill.TestStudentSkill" configurationId="DjangoTestsConfigurationType" />
+    <history-entry file="Test__api_test_theme_subject_TestThemeSubject - 2018.11.06 at 15h 11m 36s.xml">
+      <configuration name="Test: api.test.theme_subject.TestThemeSubject" configurationId="DjangoTestsConfigurationType" />
     </history-entry>
   </component>
   <component name="ToolWindowManager">
     <frame x="197" y="0" width="1169" height="728" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.495283" visible="true" weight="0.27682596" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.495283" visible="true" weight="0.27682596" />
       <window_info id="Structure" order="1" sideWeight="0.504717" side_tool="true" weight="0.27702704" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -534,13 +579,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/virtualenv/SaaS/SaaS/settings.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="291">
-          <caret line="79" column="58" lean-forward="true" selection-start-line="79" selection-start-column="58" selection-end-line="79" selection-end-column="58" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/virtualenv/SaaS/api/test/student.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
@@ -556,16 +594,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="189">
           <caret line="164" selection-start-line="164" selection-end-line="164" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/virtualenv/SaaS/api/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="559">
-          <caret line="82" lean-forward="true" selection-start-line="82" selection-end-line="82" />
-          <folding>
-            <element signature="e#0#28#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -586,13 +614,54 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/virtualenv/SaaS/api/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="3" lean-forward="true" selection-start-line="3" selection-end-line="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/virtualenv/SaaS/SaaS/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="189">
+          <caret line="106" column="23" lean-forward="true" selection-start-line="106" selection-start-column="23" selection-end-line="106" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/virtualenv/SaaS/api/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="188">
+          <caret line="114" column="43" lean-forward="true" selection-start-line="114" selection-start-column="43" selection-end-line="114" selection-end-column="43" />
+          <folding>
+            <element signature="e#0#28#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/virtualenv/SaaS/api/test/student_skill.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="10" column="64" lean-forward="true" selection-start-line="10" selection-start-column="64" selection-end-line="10" selection-end-column="64" />
+        <state relative-caret-position="935">
+          <caret line="55" lean-forward="true" selection-start-line="55" selection-end-line="55" />
           <folding>
             <element signature="e#0#32#0" expanded="true" />
-            <marker date="1541501970518" expanded="true" signature="2021:2027" ph="..." />
+            <marker date="1541502215523" expanded="true" signature="2036:2042" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/virtualenv/SaaS/api/test/theme_subject.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1037">
+          <caret line="61" column="51" lean-forward="true" selection-start-line="61" selection-start-column="51" selection-end-line="61" selection-end-column="51" />
+          <folding>
+            <element signature="e#0#32#0" expanded="true" />
+            <marker date="1541506269217" expanded="true" signature="1640:1646" ph="..." />
+            <marker date="1541506269217" expanded="true" signature="1681:1769" ph="..." />
+            <marker date="1541506269217" expanded="true" signature="1806:1860" ph="..." />
+            <marker date="1541506269217" expanded="true" signature="2069:2074" ph="..." />
+            <marker date="1541506269217" expanded="true" signature="2104:2113" ph="..." />
+            <marker date="1541506269217" expanded="true" signature="2104:2266" ph="..." />
+            <marker date="1541506269217" expanded="true" signature="2327:2465" ph="..." />
           </folding>
         </state>
       </provider>
