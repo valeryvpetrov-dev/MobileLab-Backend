@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="7571c2cc-b173-4451-b828-ecf853135c3e" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/virtualenv/SaaS/SaaS/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/virtualenv/SaaS/SaaS/settings.py" afterDir="false" />
-    </list>
+    <list default="true" id="7571c2cc-b173-4451-b828-ecf853135c3e" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -64,39 +62,24 @@
     </session>
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/virtualenv/SaaS/api/models.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="294">
-              <caret line="220" lean-forward="true" selection-start-line="220" selection-end-line="220" />
-              <folding>
-                <element signature="e#0#28#0" expanded="true" />
-                <marker date="1541442604104" expanded="true" signature="128:129" ph="..." />
-                <marker date="1541442604104" expanded="true" signature="391:788" ph="..." />
-                <marker date="1541442604104" expanded="true" signature="1170:2025" ph="..." />
-                <marker date="1541442604104" expanded="true" signature="2044:2049" ph="..." />
-                <marker date="1541442604104" expanded="true" signature="2416:2421" ph="..." />
-                <marker date="1541442604104" expanded="true" signature="4450:4455" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/virtualenv/Lib/site-packages/django/core/exceptions.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="182">
-              <caret line="95" column="8" selection-start-line="95" selection-start-column="8" selection-end-line="95" selection-end-column="8" />
-            </state>
-          </provider>
-        </entry>
-      </file>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/virtualenv/SaaS/SaaS/settings.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="307">
-              <caret line="78" column="58" lean-forward="true" selection-start-line="78" selection-start-column="58" selection-end-line="78" selection-end-column="58" />
+            <state relative-caret-position="1292">
+              <caret line="76" column="16" selection-start-line="76" selection-start-column="16" selection-end-line="76" selection-end-column="16" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/virtualenv/SaaS/api/models.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="406">
+              <caret line="127" column="36" selection-start-line="127" selection-start-column="36" selection-end-line="127" selection-end-column="36" />
+              <folding>
+                <element signature="e#0#28#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -129,10 +112,11 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="499" />
-    <option name="width" value="867" />
+    <option name="x" value="418" />
+    <option name="width" value="948" />
     <option name="height" value="728" />
   </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
@@ -227,7 +211,7 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="7571c2cc-b173-4451-b828-ecf853135c3e" name="Default Changelist" comment="" />
+      <changelist id="73a083a1-1150-436d-b6e5-56cfea81ccc2" name="Default Changelist" comment="" />
       <created>1541428906192</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
@@ -236,18 +220,12 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="499" y="0" width="867" height="728" extended-state="0" />
+    <frame x="453" y="0" width="913" height="728" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Favorites" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2503098" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2883939" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Database Changes" />
-      <window_info anchor="bottom" id="Version Control" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Python Console" />
-      <window_info anchor="bottom" id="Terminal" weight="0.33670035" />
-      <window_info anchor="bottom" id="Event Log" side_tool="true" weight="0.32996634" />
+      <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" />
@@ -255,11 +233,17 @@
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="right" id="SciView" />
-      <window_info anchor="right" id="Database" weight="0.32980332" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="8" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Database Changes" order="9" />
+      <window_info anchor="bottom" id="Terminal" order="10" weight="0.33670035" />
+      <window_info anchor="bottom" id="Python Console" order="11" />
+      <window_info anchor="bottom" id="Event Log" order="12" side_tool="true" weight="0.32996634" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="SciView" order="3" />
+      <window_info anchor="right" id="Database" order="4" weight="0.32980332" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -274,8 +258,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/virtualenv/SaaS/SaaS/settings.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="307">
-          <caret line="78" column="58" lean-forward="true" selection-start-line="78" selection-start-column="58" selection-end-line="78" selection-end-column="58" />
+        <state relative-caret-position="1292">
+          <caret line="76" column="16" selection-start-line="76" selection-start-column="16" selection-end-line="76" selection-end-column="16" />
         </state>
       </provider>
     </entry>
@@ -288,16 +272,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/virtualenv/SaaS/api/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="294">
-          <caret line="220" lean-forward="true" selection-start-line="220" selection-end-line="220" />
+        <state relative-caret-position="406">
+          <caret line="127" column="36" selection-start-line="127" selection-start-column="36" selection-end-line="127" selection-end-column="36" />
           <folding>
             <element signature="e#0#28#0" expanded="true" />
-            <marker date="1541442604104" expanded="true" signature="128:129" ph="..." />
-            <marker date="1541442604104" expanded="true" signature="391:788" ph="..." />
-            <marker date="1541442604104" expanded="true" signature="1170:2025" ph="..." />
-            <marker date="1541442604104" expanded="true" signature="2044:2049" ph="..." />
-            <marker date="1541442604104" expanded="true" signature="2416:2421" ph="..." />
-            <marker date="1541442604104" expanded="true" signature="4450:4455" ph="..." />
           </folding>
         </state>
       </provider>

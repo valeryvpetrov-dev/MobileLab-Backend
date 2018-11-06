@@ -1,0 +1,32 @@
+(virtualenv) E:\Python\Django\MobileLab-Backend\virtualenv\SaaS>python manage.py makemigrations
+Migrations for 'api':
+  api\migrations\0001_initial.py
+    - Create model Curator
+    - Create model CuratorSkill
+    - Create model Skill
+    - Create model Student
+    - Create model StudentSkill
+    - Create model Subject
+    - Create model SuggestionTheme
+    - Create model SuggestionThemeComment
+    - Create model SuggestionThemeProgress
+    - Create model SuggestionThemeStatus
+    - Create model Theme
+    - Create model ThemeSkill
+    - Create model Work
+    - Create model WorkStep
+    - Create model WorkStepComment
+    - Create model WorkStepMaterial
+    - Create model WorkStepStatus
+    - Add field status to workstep
+    - Add field work to workstep
+    - Add field required_skills to theme
+    - Add field student to theme
+    - Add field subject to theme
+    - Add field progress to suggestiontheme
+    - Add field status to suggestiontheme
+    - Add field student to suggestiontheme
+    - Add field theme to suggestiontheme
+    - Add field skills to student
+    - Add field skill to curatorskill
+    - Add field skills to curator
