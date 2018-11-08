@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from ..models import Skill, Student, StudentSkill
+from ..models import Skill, Student
 
 
 # Create your tests here.
@@ -19,49 +19,47 @@ class TestStudentSkill(TestCase):
                                               last_name='Petrov',
                                               patronymic='Vladimirovich',
                                               description='Django backend dev')
-        self.student_skill = StudentSkill.objects.create(student=self.student, skill=self.skill)
+        self.student.skills.add(self.skill)
 
     def test_create_student_skill_relationship(self):
         skill = Skill.objects.create(name='Management')
-        student_skill = StudentSkill.objects.create(student=self.student, skill=skill)
-        self.assertEqual(StudentSkill.objects.all().get(id=student_skill.id).skill.name, skill.name)
+        self.student.skills.add(skill)
+        self.assertIsNotNone(Skill.objects.get(pk=skill.id).student_set.get(pk=self.student.id))
 
     def test_create_skill_student_relationship(self):
         student = Student.objects.create(name='Valery1',
                                          last_name='Petrov1',
                                          patronymic='Vladimirovich1',
                                          description='Django backend dev1')
-        skill_student = StudentSkill.objects.create(student=student, skill=self.skill)
-        self.assertEqual(StudentSkill.objects.all().get(id=skill_student.id).student.name, student.name)
+        self.skill.student_set.add(student)
+        self.assertIsNotNone(Student.objects.get(pk=student.id).skills.get(pk=self.skill.id))
 
     def test_read_related_skill(self):
-        related_skill = StudentSkill.objects.get(student_id=self.student.id).skill
-        self.assertEqual(related_skill, self.skill)
+        self.assertIsNotNone(self.student.skills.get(pk=self.skill.id))
 
     def test_read_related_student(self):
-        related_student = StudentSkill.objects.get(skill_id=self.skill.id).student
-        self.assertEqual(related_student, self.student)
+        self.assertIsNotNone(self.skill.student_set.get(pk=self.student.id))
 
     def test_update_skill(self):
         new_name = 'Python programming'
-        self.student_skill.skill.name = new_name
-        self.student_skill.skill.save()
-        self.assertEqual(Skill.objects.get(pk=self.skill.id).name, new_name)
+        self.skill.name = new_name
+        self.skill.save()
+        self.assertEqual(self.student.skills.get(pk=self.skill.id).name, new_name)
 
     def test_update_student(self):
         new_name = 'Valery1'
-        self.student_skill.student.name = new_name
-        self.student_skill.student.save()
-        self.assertEqual(Student.objects.get(pk=self.student.id).name, new_name)
+        self.student.name = new_name
+        self.student.save()
+        self.assertEqual(self.skill.student_set.get(pk=self.student.id).name, new_name)
 
     def test_delete_skill(self):
-        skill_id = self.student_skill.skill.id
-        self.student_skill.skill.delete()
+        skill_id = self.skill.id
+        self.student.skills.get(pk=skill_id).delete()
         with self.assertRaises(Skill.DoesNotExist):
             Skill.objects.get(pk=skill_id)
 
     def test_delete_student(self):
-        student_id = self.student_skill.student.id
-        self.student_skill.student.delete()
+        student_id = self.student.id
+        self.skill.student_set.get(pk=student_id).delete()
         with self.assertRaises(Student.DoesNotExist):
             Student.objects.get(pk=student_id)
