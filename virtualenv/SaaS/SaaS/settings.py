@@ -78,11 +78,11 @@ with open('./properties/postgres-test-db-auth.properties', 'r') as properties_fi
             db_auth_properties[key] = value.strip()
 
 DATABASES = {
-    'sqlite-test-db': {     # sqlite-test-db
+    'default': {     # sqlite-test-db
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'test-db.sqlite3'),
     },
-    'default': {   # postgres-test-db
+    'postgres-test-db': {   # postgres-test-db
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'MobileLab-Backend-test-db',
         'USER': db_auth_properties['user'],

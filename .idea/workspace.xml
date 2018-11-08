@@ -2,10 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7571c2cc-b173-4451-b828-ecf853135c3e" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/virtualenv/SaaS/properties/postgres-test-db-auth.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mylog/makemirations_0001_initial.txt" beforeDir="false" afterPath="$PROJECT_DIR$/mylog/makemigrations_0001_initial.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/virtualenv/SaaS/SaaS/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/virtualenv/SaaS/SaaS/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/virtualenv/SaaS/api/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/virtualenv/SaaS/api/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/virtualenv/SaaS/test-db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/virtualenv/SaaS/test-db.sqlite3" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -48,47 +49,18 @@
     <expand>
       <path>
         <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="MobileLab-Backend-test-db@localhost" type="feb32156:DbDataSourceImpl" />
+        <item name="test-db.sqlite3" type="feb32156:DbDataSourceImpl" />
       </path>
       <path>
         <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="MobileLab-Backend-test-db@localhost" type="feb32156:DbDataSourceImpl" />
-        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
-      </path>
-      <path>
-        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="MobileLab-Backend-test-db@localhost" type="feb32156:DbDataSourceImpl" />
-        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="MobileLab-Backend-test-db: database" type="6d9b600a:PostgresImplModel$Database" />
-      </path>
-      <path>
-        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="MobileLab-Backend-test-db@localhost" type="feb32156:DbDataSourceImpl" />
-        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="MobileLab-Backend-test-db: database" type="6d9b600a:PostgresImplModel$Database" />
+        <item name="test-db.sqlite3" type="feb32156:DbDataSourceImpl" />
         <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
       </path>
       <path>
         <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="MobileLab-Backend-test-db@localhost" type="feb32156:DbDataSourceImpl" />
-        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="MobileLab-Backend-test-db: database" type="6d9b600a:PostgresImplModel$Database" />
+        <item name="test-db.sqlite3" type="feb32156:DbDataSourceImpl" />
         <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="public: schema" type="a16502c0:PostgresImplModel$Schema" />
-      </path>
-      <path>
-        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="MobileLab-Backend-test-db@localhost" type="feb32156:DbDataSourceImpl" />
-        <item name="databases" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="MobileLab-Backend-test-db: database" type="6d9b600a:PostgresImplModel$Database" />
-        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="public: schema" type="a16502c0:PostgresImplModel$Schema" />
-        <item name="tables" type="d4e8921:DatabaseStructure$FamilyGroup" />
-      </path>
-      <path>
-        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="MobileLab-Backend-test-db@localhost" type="feb32156:DbDataSourceImpl" />
-        <item name="roles" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="main: schema" type="90513b60:SqliteImplModel$Schema" />
       </path>
     </expand>
     <select />
@@ -97,36 +69,39 @@
     <session id="-1787956724">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="1" />
+          <entry key="project.closed" value="2" />
           <entry key="project.open.time.4" value="1" />
           <entry key="project.open.time.51" value="1" />
           <entry key="project.open.time.54" value="1" />
-          <entry key="project.opened" value="3" />
+          <entry key="project.open.time.81" value="1" />
+          <entry key="project.opened" value="4" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="properties" value="5" />
-          <entry key="py" value="18" />
-          <entry key="sql" value="7" />
-          <entry key="txt" value="12" />
+          <entry key="py" value="22" />
+          <entry key="sql" value="8" />
+          <entry key="student_skill" value="1" />
+          <entry key="txt" value="26" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="PLAIN_TEXT" value="12" />
+          <entry key="Database Element" value="1" />
+          <entry key="PLAIN_TEXT" value="26" />
           <entry key="Properties" value="5" />
-          <entry key="Python" value="18" />
+          <entry key="Python" value="22" />
           <entry key="SQL" value="3" />
-          <entry key="Scratch" value="4" />
+          <entry key="Scratch" value="5" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="dummy" value="9" />
           <entry key="properties" value="98" />
-          <entry key="py" value="7705" />
-          <entry key="sql" value="62" />
+          <entry key="py" value="7723" />
+          <entry key="sql" value="74" />
           <entry key="txt" value="274" />
         </counts>
       </usages-collector>
@@ -134,9 +109,9 @@
         <counts>
           <entry key="PLAIN_TEXT" value="283" />
           <entry key="Properties" value="98" />
-          <entry key="Python" value="7705" />
+          <entry key="Python" value="7723" />
           <entry key="SQL" value="8" />
-          <entry key="Scratch" value="54" />
+          <entry key="Scratch" value="66" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.js.language.service.starts" />
@@ -146,12 +121,20 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/virtualenv/SaaS/SaaS/settings.py">
+        <entry file="file://$PROJECT_DIR$/virtualenv/SaaS/api/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="13">
-              <caret line="70" column="10" lean-forward="true" selection-start-line="70" selection-start-column="10" selection-end-line="70" selection-end-column="10" />
+            <state relative-caret-position="184">
+              <caret line="93" lean-forward="true" selection-start-line="93" selection-end-line="93" />
+              <folding>
+                <element signature="e#0#28#0" expanded="true" />
+              </folding>
             </state>
           </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/virtualenv/SaaS/api/apps.py">
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
@@ -159,30 +142,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="189">
               <caret line="23" column="33" selection-start-line="23" selection-start-column="33" selection-end-line="23" selection-end-column="33" />
-              <folding>
-                <element signature="e#0#32#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/virtualenv/SaaS/api/test/student_skill.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="935">
-              <caret line="55" selection-start-line="55" selection-end-line="55" />
-              <folding>
-                <element signature="e#0#32#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/virtualenv/SaaS/api/test/theme_subject.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="969">
-              <caret line="61" column="51" selection-start-line="61" selection-start-column="51" selection-end-line="61" selection-end-column="51" />
               <folding>
                 <element signature="e#0#32#0" expanded="true" />
               </folding>
@@ -221,6 +180,8 @@
       <find>datetime.datetime</find>
       <find>class Sub</find>
       <find>class Theme</find>
+      <find>StudentSkill</find>
+      <find>t</find>
     </findStrings>
     <replaceStrings>
       <replace>skill</replace>
@@ -236,7 +197,6 @@
         <option value="$PROJECT_DIR$/virtualenv/SaaS/api/test/student.py" />
         <option value="$PROJECT_DIR$/virtualenv/SaaS/api/test/skill.py" />
         <option value="$PROJECT_DIR$/virtualenv/SaaS/api/test/student_skill.py" />
-        <option value="$PROJECT_DIR$/virtualenv/SaaS/api/models.py" />
         <option value="$PROJECT_DIR$/virtualenv/SaaS/api/test/theme_subject.py" />
         <option value="$PROJECT_DIR$/mylog/MobileLab-Backend-test-db-postgresql.txt" />
         <option value="$APPLICATION_CONFIG_DIR$/consoles/db/2253467e-4b60-47b4-b853-607a4d0a76d3/console.sql" />
@@ -244,9 +204,18 @@
         <option value="$PROJECT_DIR$/mylog/db/MobileLab-Backend-prod-db.txt" />
         <option value="$PROJECT_DIR$/mylog/db/MobileLab-Backend-test-db.txt" />
         <option value="$PROJECT_DIR$/virtualenv/SaaS/properties/porstgres-test-db-auth.properties" />
-        <option value="$PROJECT_DIR$/virtualenv/SaaS/SaaS/settings.py" />
         <option value="$PROJECT_DIR$/mylog/db/MobileLab-Backend-test-db.sql" />
         <option value="$PROJECT_DIR$/mylog/db/MobileLab-Backend-prod-db.sql" />
+        <option value="$PROJECT_DIR$/virtualenv/SaaS/SaaS/settings.py" />
+        <option value="$PROJECT_DIR$/virtualenv/SaaS/api/migrations/0002_auto_20181108_2110.py" />
+        <option value="$PROJECT_DIR$/mylog/makemigrations_0002_auto_20181108_2110.txt" />
+        <option value="$PROJECT_DIR$/mylog/makemigrations_0002_auto_20181108_2122.txt" />
+        <option value="$APPLICATION_CONFIG_DIR$/consoles/db/711d1489-debe-459a-b613-8ddc51cdad9b/console.sql" />
+        <option value="$PROJECT_DIR$/mylog/makemigrations_0003_auto_20181108_2140.txt" />
+        <option value="$PROJECT_DIR$/mylog/sqlmigrate_0003_auto_20181108_2140_sqlite.txt" />
+        <option value="$PROJECT_DIR$/mylog/db/migrate_0003_auto_20181108_2140_sqlite.txt" />
+        <option value="$PROJECT_DIR$/virtualenv/SaaS/x.txt" />
+        <option value="$PROJECT_DIR$/virtualenv/SaaS/api/models.py" />
       </list>
     </option>
   </component>
@@ -269,6 +238,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -284,14 +254,33 @@
             <path>
               <item name="MobileLab-Backend" type="b2602c69:ProjectViewProjectNode" />
               <item name="MobileLab-Backend" type="462c0819:PsiDirectoryNode" />
-              <item name="mylog" type="462c0819:PsiDirectoryNode" />
-              <item name="db" type="462c0819:PsiDirectoryNode" />
+              <item name="virtualenv" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MobileLab-Backend" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MobileLab-Backend" type="462c0819:PsiDirectoryNode" />
+              <item name="virtualenv" type="462c0819:PsiDirectoryNode" />
+              <item name="SaaS" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MobileLab-Backend" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MobileLab-Backend" type="462c0819:PsiDirectoryNode" />
+              <item name="virtualenv" type="462c0819:PsiDirectoryNode" />
+              <item name="SaaS" type="462c0819:PsiDirectoryNode" />
+              <item name="api" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MobileLab-Backend" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MobileLab-Backend" type="462c0819:PsiDirectoryNode" />
+              <item name="virtualenv" type="462c0819:PsiDirectoryNode" />
+              <item name="SaaS" type="462c0819:PsiDirectoryNode" />
+              <item name="api" type="462c0819:PsiDirectoryNode" />
+              <item name="migrations" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -304,17 +293,17 @@
     <property name="settings.editor.selected.configurable" value="com.jetbrains.django.DjangoModulesConfigurable" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="E:\Python\Django\MobileLab-Backend\virtualenv\SaaS\properties" />
-      <recent name="E:\Python\Django\MobileLab-Backend\mylog" />
-      <recent name="E:\Python\Django\MobileLab-Backend\virtualenv\SaaS\api\test" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="E:\Python\Django\MobileLab-Backend\virtualenv\SaaS\properties" />
       <recent name="E:\Python\Django\MobileLab-Backend\mylog\db" />
+      <recent name="E:\Python\Django\MobileLab-Backend\mylog" />
+      <recent name="E:\Python\Django\MobileLab-Backend\virtualenv\SaaS\properties" />
       <recent name="E:\Python\Django\MobileLab-Backend\virtualenv\SaaS\api\test" />
       <recent name="E:\Python\Django\MobileLab-Backend" />
-      <recent name="E:\Python\Django\MobileLab-Backend\virtualenv\SaaS\SaaS" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\Python\Django\MobileLab-Backend\mylog" />
+      <recent name="E:\Python\Django\MobileLab-Backend\virtualenv\SaaS\properties" />
+      <recent name="E:\Python\Django\MobileLab-Backend\virtualenv\SaaS\api\test" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -520,7 +509,7 @@
     <frame x="192" y="0" width="1174" height="728" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.495283" visible="true" weight="0.32585278" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.495283" visible="true" weight="0.2621185" />
       <window_info id="Structure" order="1" sideWeight="0.504717" side_tool="true" weight="0.27702704" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -533,7 +522,7 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
-      <window_info anchor="bottom" id="Terminal" order="10" weight="0.41414142" />
+      <window_info anchor="bottom" id="Terminal" order="10" weight="0.503367" />
       <window_info anchor="bottom" id="Python Console" order="11" />
       <window_info anchor="bottom" id="Event Log" order="12" side_tool="true" weight="0.32996634" />
       <window_info anchor="bottom" id="Database Console" order="13" weight="0.32996634" />
@@ -551,9 +540,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/711d1489-debe-459a-b613-8ddc51cdad9b/console.sql">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/virtualenv/Lib/site-packages/django/core/exceptions.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="182">
@@ -618,40 +604,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/virtualenv/SaaS/api/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1887">
-          <caret line="114" column="43" selection-start-line="114" selection-start-column="43" selection-end-line="114" selection-end-column="43" />
-          <folding>
-            <element signature="e#0#28#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/virtualenv/SaaS/api/test/student.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="221">
           <caret line="15" column="8" selection-start-line="15" selection-start-column="8" selection-end-line="18" selection-end-column="64" />
-          <folding>
-            <element signature="e#0#32#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/virtualenv/SaaS/api/test/theme_subject.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="969">
-          <caret line="61" column="51" selection-start-line="61" selection-start-column="51" selection-end-line="61" selection-end-column="51" />
-          <folding>
-            <element signature="e#0#32#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/virtualenv/SaaS/api/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" selection-start-line="3" selection-end-line="3" />
         </state>
       </provider>
     </entry>
@@ -676,26 +632,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/virtualenv/SaaS/api/test/skill.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="23" column="33" selection-start-line="23" selection-start-column="33" selection-end-line="23" selection-end-column="33" />
-          <folding>
-            <element signature="e#0#32#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/virtualenv/SaaS/api/test/student_skill.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="935">
-          <caret line="55" selection-start-line="55" selection-end-line="55" />
-          <folding>
-            <element signature="e#0#32#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/mylog/db/MobileLab-Backend-prod-db.sql">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="51">
@@ -712,8 +648,138 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/virtualenv/SaaS/SaaS/settings.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="13">
-          <caret line="70" column="10" lean-forward="true" selection-start-line="70" selection-start-column="10" selection-end-line="70" selection-end-column="10" />
+        <state relative-caret-position="255">
+          <caret line="84" column="21" selection-start-line="84" selection-start-column="21" selection-end-line="84" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/virtualenv/SaaS/api/test/student_skill.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="901">
+          <caret line="55" selection-start-line="55" selection-end-line="55" />
+          <folding>
+            <element signature="e#0#32#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/virtualenv/SaaS/api/test/theme_subject.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="969">
+          <caret line="61" column="51" selection-start-line="61" selection-start-column="51" selection-end-line="61" selection-end-column="51" />
+          <folding>
+            <element signature="e#0#32#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/virtualenv/SaaS/api/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="3" selection-start-line="3" selection-end-line="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/virtualenv/SaaS/api/test/skill.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="189">
+          <caret line="23" column="33" selection-start-line="23" selection-start-column="33" selection-end-line="23" selection-end-column="33" />
+          <folding>
+            <element signature="e#0#32#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/virtualenv/SaaS/api/apps.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/virtualenv/SaaS/api/migrations/0002_auto_20181108_2110.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="342">
+          <caret line="49" column="30" lean-forward="true" selection-start-line="49" selection-start-column="30" selection-end-line="49" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mylog/makemigrations_0002_auto_20181108_2124.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="17" selection-start-line="17" selection-end-line="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mylog/sqlmigrate_0002_auto_20181108_2124_sqlite.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="22" column="32" lean-forward="true" selection-start-line="22" selection-start-column="32" selection-end-line="22" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mylog/migrate_0002_auto_20181108_2124_sqlite.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/711d1489-debe-459a-b613-8ddc51cdad9b/console.sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="10" selection-start-column="10" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/virtualenv/SaaS/api/migrations/0002_auto_20181108_2124.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-459">
+          <caret line="9" column="5" lean-forward="true" selection-start-line="9" selection-start-column="5" selection-end-line="9" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mylog/makemigrations_0003_auto_20181108_2140.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" selection-start-line="5" selection-end-line="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/virtualenv/SaaS/t.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="23" selection-end-column="152" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mylog/sqlmigrate_0003_auto_20181108_2140_sqlite.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="493">
+          <caret line="29" selection-start-line="29" selection-end-line="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/mylog/db/migrate_0003_auto_20181108_2140_sqlite.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" selection-start-line="4" selection-end-line="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/virtualenv/SaaS/x.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="das://711d1489-debe-459a-b613-8ddc51cdad9b/schema/main/table/student_skill">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/virtualenv/SaaS/api/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="184">
+          <caret line="93" lean-forward="true" selection-start-line="93" selection-end-line="93" />
+          <folding>
+            <element signature="e#0#28#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

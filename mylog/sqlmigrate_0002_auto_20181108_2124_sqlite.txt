@@ -1,0 +1,89 @@
+BEGIN;
+--
+-- Remove field curator from curatorskill
+--
+ALTER TABLE "Curator_skill" RENAME TO "Curator_skill__old";
+CREATE TABLE "Curator_skill" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "skill_id" integer NOT NULL REFERENCES "Skill" ("id") DEFERRABLE INITIALLY DEFERRED);
+INSERT INTO "Curator_skill" ("id", "skill_id") SELECT "id", "skill_id" FROM "Curator_skill__old";
+DROP TABLE "Curator_skill__old";
+CREATE INDEX "Curator_skill_skill_id_c5eb49ac" ON "Curator_skill" ("skill_id");
+--
+-- Remove field skill from curatorskill
+--
+ALTER TABLE "Curator_skill" RENAME TO "Curator_skill__old";
+CREATE TABLE "Curator_skill" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT);
+INSERT INTO "Curator_skill" ("id") SELECT "id" FROM "Curator_skill__old";
+DROP TABLE "Curator_skill__old";
+--
+-- Remove field skill from studentskill
+--
+ALTER TABLE "Student_skill" RENAME TO "Student_skill__old";
+CREATE TABLE "Student_skill" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "student_id" integer NOT NULL REFERENCES "Student" ("id") DEFERRABLE INITIALLY DEFERRED);
+INSERT INTO "Student_skill" ("id", "student_id") SELECT "id", "student_id" FROM "Student_skill__old";
+DROP TABLE "Student_skill__old";
+CREATE INDEX "Student_skill_student_id_c18e1b3b" ON "Student_skill" ("student_id");
+--
+-- Remove field student from studentskill
+--
+ALTER TABLE "Student_skill" RENAME TO "Student_skill__old";
+CREATE TABLE "Student_skill" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT);
+INSERT INTO "Student_skill" ("id") SELECT "id" FROM "Student_skill__old";
+DROP TABLE "Student_skill__old";
+--
+-- Remove field skill from themeskill
+--
+ALTER TABLE "Theme_skill" RENAME TO "Theme_skill__old";
+CREATE TABLE "Theme_skill" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "theme_id" integer NOT NULL REFERENCES "Theme" ("id") DEFERRABLE INITIALLY DEFERRED);
+INSERT INTO "Theme_skill" ("id", "theme_id") SELECT "id", "theme_id" FROM "Theme_skill__old";
+DROP TABLE "Theme_skill__old";
+CREATE INDEX "Theme_skill_theme_id_d2e74236" ON "Theme_skill" ("theme_id");
+--
+-- Remove field theme from themeskill
+--
+ALTER TABLE "Theme_skill" RENAME TO "Theme_skill__old";
+CREATE TABLE "Theme_skill" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT);
+INSERT INTO "Theme_skill" ("id") SELECT "id" FROM "Theme_skill__old";
+DROP TABLE "Theme_skill__old";
+--
+-- Remove field skills from curator
+--
+--
+-- Remove field skills from student
+--
+--
+-- Remove field required_skills from theme
+--
+--
+-- Add field skills1 to curator
+--
+CREATE TABLE "Curator_skills1" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "curator_id" integer NOT NULL REFERENCES "Curator" ("id") DEFERRABLE INITIALLY DEFERRED, "skill_id" integer NOT NULL REFERENCES "Skill" ("id") DEFERRABLE INITIALLY DEFERRED);
+--
+-- Add field skills1 to student
+--
+CREATE TABLE "Student_skills1" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "student_id" integer NOT NULL REFERENCES "Student" ("id") DEFERRABLE INITIALLY DEFERRED, "skill_id" integer NOT NULL REFERENCES "Skill" ("id") DEFERRABLE INITIALLY DEFERRED);
+--
+-- Add field required_skills1 to theme
+--
+CREATE TABLE "Theme_required_skills1" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "theme_id" integer NOT NULL REFERENCES "Theme" ("id") DEFERRABLE INITIALLY DEFERRED, "skill_id" integer NOT NULL REFERENCES "Skill" ("id") DEFERRABLE INITIALLY DEFERRED);
+--
+-- Delete model CuratorSkill
+--
+DROP TABLE "Curator_skill";
+--
+-- Delete model StudentSkill
+--
+DROP TABLE "Student_skill";
+--
+-- Delete model ThemeSkill
+--
+DROP TABLE "Theme_skill";
+CREATE UNIQUE INDEX "Curator_skills1_curator_id_skill_id_1950863f_uniq" ON "Curator_skills1" ("curator_id", "skill_id");
+CREATE INDEX "Curator_skills1_curator_id_058e880d" ON "Curator_skills1" ("curator_id");
+CREATE INDEX "Curator_skills1_skill_id_a246f8a3" ON "Curator_skills1" ("skill_id");
+CREATE UNIQUE INDEX "Student_skills1_student_id_skill_id_75448894_uniq" ON "Student_skills1" ("student_id", "skill_id");
+CREATE INDEX "Student_skills1_student_id_d1feffc1" ON "Student_skills1" ("student_id");
+CREATE INDEX "Student_skills1_skill_id_0a190970" ON "Student_skills1" ("skill_id");
+CREATE UNIQUE INDEX "Theme_required_skills1_theme_id_skill_id_1c31eb5a_uniq" ON "Theme_required_skills1" ("theme_id", "skill_id");
+CREATE INDEX "Theme_required_skills1_theme_id_4e595059" ON "Theme_required_skills1" ("theme_id");
+CREATE INDEX "Theme_required_skills1_skill_id_0eb9e850" ON "Theme_required_skills1" ("skill_id");
+COMMIT;
