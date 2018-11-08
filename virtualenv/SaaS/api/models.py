@@ -79,7 +79,7 @@ class SuggestionThemeProgress(models.Model):
 
 class Student(Man):
     id = models.AutoField(primary_key=True)
-    skills = models.ManyToManyField(Skill, through='StudentSkill')
+    skills = models.ManyToManyField(Skill)
 
     class Meta:
         db_table = "Student"
@@ -87,28 +87,10 @@ class Student(Man):
 
 class Curator(Man):
     id = models.AutoField(primary_key=True)
-    skills = models.ManyToManyField(Skill, through='CuratorSkill')
+    skills = models.ManyToManyField(Skill)
 
     class Meta:
         db_table = "Curator"
-
-
-class StudentSkill(models.Model):
-    id = models.AutoField(primary_key=True)
-    student = models.ForeignKey(Student, on_delete=models.CASCADE, db_column='student_id')
-    skill = models.ForeignKey(Skill, on_delete=models.CASCADE, db_column='skill_id')
-
-    class Meta:
-        db_table = "Student_skill"
-
-
-class CuratorSkill(models.Model):
-    id = models.AutoField(primary_key=True)
-    curator = models.ForeignKey(Curator, on_delete=models.CASCADE, db_column='curator_id')
-    skill = models.ForeignKey(Skill, on_delete=models.CASCADE, db_column='skill_id')
-
-    class Meta:
-        db_table = "Curator_skill"
 
 
 class Theme(models.Model):
@@ -116,7 +98,7 @@ class Theme(models.Model):
     curator = models.ForeignKey(Curator, on_delete=models.SET_NULL, db_column="curator_id", null=True)
     student = models.ForeignKey(Student, on_delete=models.SET_NULL, db_column="student_id", null=True)
     subject = models.ForeignKey(Subject, on_delete=models.SET_NULL, db_column="subject_id", null=True)
-    required_skills = models.ManyToManyField(Skill, through='ThemeSkill')
+    required_skills = models.ManyToManyField(Skill)
     title = models.CharField(max_length=100)
     description = models.CharField(max_length=250)
     date_creation = models.DateTimeField()
@@ -133,15 +115,6 @@ class Theme(models.Model):
         if self.date_acceptance > datetime.datetime.today():
             raise ValidationError('Date acceptance is in future.')
         super(Theme, self).save(*args, **kwargs)
-
-
-class ThemeSkill(models.Model):
-    id = models.AutoField(primary_key=True)
-    theme = models.ForeignKey(Theme, on_delete=models.CASCADE, db_column='theme_id')
-    skill = models.ForeignKey(Skill, on_delete=models.CASCADE, db_column='skill_id')
-
-    class Meta:
-        db_table = "Theme_skill"
 
 
 class Work(models.Model):

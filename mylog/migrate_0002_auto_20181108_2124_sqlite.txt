@@ -1,0 +1,4 @@
+Operations to perform:
+  Target specific migration: 0002_auto_20181108_2124, from api
+Running migrations:
+  Applying api.0002_auto_20181108_2124... OK
