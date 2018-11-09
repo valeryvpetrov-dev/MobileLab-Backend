@@ -38,3 +38,18 @@ class CuratorSerializerSkillsID(serializers.ModelSerializer):
     class Meta:
         model = Curator
         fields = ('id', 'name', 'last_name', 'patronymic', 'description', 'skills')
+
+
+class CuratorSerializerSkillsIntermediate(serializers.ModelSerializer):
+    skills = SkillSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Curator
+        fields = ('id', 'name', 'last_name', 'patronymic', 'description', 'skills')
+
+    def create(self, validated_data):
+        skills_data = validated_data.pop('skills')
+        curator = Curator.objects.create(**validated_data)
+        for skill_data in skills_data:
+            Skill.objects.create(curator=curator, **skill_data)
+        return curator
