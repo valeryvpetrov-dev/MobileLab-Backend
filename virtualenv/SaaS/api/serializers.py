@@ -138,3 +138,11 @@ class WorkStepCommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = WorkStepComment
         fields = ('id', 'author_name', 'content', 'date_creation', 'step')
+
+
+class WorkStepMaterialSerializer(serializers.ModelSerializer):
+    step = serializers.PrimaryKeyRelatedField(read_only=True)
+
+    class Meta:
+        model = WorkStepMaterial
+        fields = ('id', 'content', 'step')
