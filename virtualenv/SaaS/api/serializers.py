@@ -56,6 +56,12 @@ class StudentSerializerSkillsIntermediate(serializers.ModelSerializer):
         return student
 
 
+class StudentSerializerNoSkills(serializers.ModelSerializer):
+    class Meta:
+        model = Student
+        fields = ('id', 'name', 'last_name', 'patronymic', 'description')
+        
+
 class CuratorSerializerSkillsID(serializers.ModelSerializer):
     skills = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
 
