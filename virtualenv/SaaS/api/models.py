@@ -98,7 +98,7 @@ class Theme(models.Model):
     curator = models.ForeignKey(Curator, on_delete=models.SET_NULL, db_column="curator_id", null=True)
     student = models.ForeignKey(Student, on_delete=models.SET_NULL, db_column="student_id", null=True)
     subject = models.ForeignKey(Subject, on_delete=models.SET_NULL, db_column="subject_id", null=True)
-    required_skills = models.ManyToManyField(Skill)
+    skills = models.ManyToManyField(Skill)
     title = models.CharField(max_length=100)
     description = models.CharField(max_length=250)
     date_creation = models.DateTimeField()
@@ -160,7 +160,7 @@ class WorkStep(models.Model):
 
 class WorkStepComment(Comment):
     id = models.AutoField(primary_key=True)
-    work_step = models.ForeignKey(WorkStep, on_delete=models.CASCADE, db_column='work_step_id')
+    step = models.ForeignKey(WorkStep, on_delete=models.CASCADE, db_column='work_step_id')
 
     class Meta:
         db_table = "Work_step_comment"
@@ -168,7 +168,7 @@ class WorkStepComment(Comment):
 
 class WorkStepMaterial(models.Model):
     id = models.AutoField(primary_key=True)
-    work_step = models.ForeignKey(WorkStep, on_delete=models.CASCADE, db_column='work_step_id')
+    step = models.ForeignKey(WorkStep, on_delete=models.CASCADE, db_column='work_step_id')
     content = models.CharField(max_length=200)
 
     class Meta:
@@ -193,9 +193,9 @@ class SuggestionTheme(models.Model):
         super(SuggestionTheme, self).save(*args, **kwargs)
 
 
-class SuggestionThemeComment(models.Model):
+class SuggestionThemeComment(Comment):
     id = models.AutoField(primary_key=True)
-    suggestion_theme = models.ForeignKey(SuggestionTheme, on_delete=models.CASCADE, db_column='suggestion_theme_id')
+    suggestion = models.ForeignKey(SuggestionTheme, on_delete=models.CASCADE, db_column='suggestion_theme_id')
 
     class Meta:
         db_table = "Suggestion_theme_comment"
