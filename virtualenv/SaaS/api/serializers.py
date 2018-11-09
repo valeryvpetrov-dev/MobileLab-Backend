@@ -101,3 +101,14 @@ class ThemeSerializer(serializers.ModelSerializer):
         model = Theme
         fields = ('id', 'title', 'description', 'date_creation', 'date_acceptance',
                   'curator', 'student', 'subject', 'skills')
+
+
+class ThemeSerializerNoSkills(serializers.ModelSerializer):
+    curator = CuratorSerializerNoSkills(read_only=True)
+    student = StudentSerializerNoSkills(read_only=True)
+    subject = SubjectSerializer(read_only=True)
+
+    class Meta:
+        model = Theme
+        fields = ('id', 'title', 'description', 'date_creation', 'date_acceptance',
+                  'curator', 'student', 'subject')
