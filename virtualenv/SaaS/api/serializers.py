@@ -146,3 +146,16 @@ class WorkStepMaterialSerializer(serializers.ModelSerializer):
     class Meta:
         model = WorkStepMaterial
         fields = ('id', 'content', 'step')
+
+
+class SuggestionThemeSerializer(serializers.ModelSerializer):
+    theme = ThemeSerializerNoSkills(read_only=True)
+    student = StudentSerializerNoSkills(read_only=True)
+    curator = CuratorSerializerNoSkills(read_only=True)
+    status = SuggestionThemeStatusSerializer(read_only=True)
+    progress = serializers.PrimaryKeyRelatedField(read_only=True)
+
+    class Meta:
+        model = SuggestionTheme
+        fields = ('id', 'date_creation',
+                  'theme', 'student', 'curator', 'status', 'progress')
