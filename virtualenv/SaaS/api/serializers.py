@@ -120,3 +120,13 @@ class WorkSerializer(serializers.ModelSerializer):
     class Meta:
         model = Work
         fields = ('id', 'date_start', 'date_finish', 'theme')
+
+
+class WorkStepSerializer(serializers.ModelSerializer):
+    work = WorkSerializer(read_only=True)
+    status = WorkStepStatusSerializer(read_only=True)
+
+    class Meta:
+        model = WorkStep
+        fields = ('id', 'title', 'description', 'date_start', 'date_finish',
+                  'work', 'status')
