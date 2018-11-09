@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Skill, Student
+from .models import Skill, Student, Curator
 
 
 class SkillSerializer(serializers.ModelSerializer):
@@ -30,3 +30,11 @@ class StudentSerializerSkillsIntermediate(serializers.ModelSerializer):
         for skill_data in skills_data:
             Skill.objects.create(student=student, **skill_data)
         return student
+
+
+class CuratorSerializerSkillsID(serializers.ModelSerializer):
+    skills = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+
+    class Meta:
+        model = Curator
+        fields = ('id', 'name', 'last_name', 'patronymic', 'description', 'skills')
