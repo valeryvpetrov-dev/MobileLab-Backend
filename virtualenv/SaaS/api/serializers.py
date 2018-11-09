@@ -60,7 +60,7 @@ class StudentSerializerNoSkills(serializers.ModelSerializer):
     class Meta:
         model = Student
         fields = ('id', 'name', 'last_name', 'patronymic', 'description')
-        
+
 
 class CuratorSerializerSkillsID(serializers.ModelSerializer):
     skills = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
@@ -90,3 +90,14 @@ class CuratorSerializerNoSkills(serializers.ModelSerializer):
         model = Curator
         fields = ('id', 'name', 'last_name', 'patronymic', 'description')
 
+
+class ThemeSerializer(serializers.ModelSerializer):
+    curator = CuratorSerializerNoSkills(read_only=True)
+    student = StudentSerializerNoSkills(read_only=True)
+    subject = SubjectSerializer(read_only=True)
+    skills = SkillSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Theme
+        fields = ('id', 'title', 'description', 'date_creation', 'date_acceptance',
+                  'curator', 'student', 'subject', 'skills')
