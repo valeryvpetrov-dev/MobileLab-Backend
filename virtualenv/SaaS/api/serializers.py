@@ -1,11 +1,17 @@
 from rest_framework import serializers
 
-from .models import Skill, Student, Curator
+from .models import Skill, Subject, Student, Curator
 
 
 class SkillSerializer(serializers.ModelSerializer):
     class Meta:
         model = Skill
+        fields = ('id', 'name')
+
+
+class SubjectSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Subject
         fields = ('id', 'name')
 
 
@@ -53,3 +59,4 @@ class CuratorSerializerSkillsIntermediate(serializers.ModelSerializer):
         for skill_data in skills_data:
             Skill.objects.create(curator=curator, **skill_data)
         return curator
+
