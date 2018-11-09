@@ -159,3 +159,11 @@ class SuggestionThemeSerializer(serializers.ModelSerializer):
         model = SuggestionTheme
         fields = ('id', 'date_creation',
                   'theme', 'student', 'curator', 'status', 'progress')
+
+
+class SuggestionThemeCommentSerializer(serializers.ModelSerializer):
+    suggestion = serializers.PrimaryKeyRelatedField(read_only=True)
+
+    class Meta:
+        model = SuggestionThemeComment
+        fields = ('id', 'author_name', 'content', 'date_creation', 'suggestion')
