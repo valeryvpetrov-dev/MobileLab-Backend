@@ -78,3 +78,9 @@ class CuratorSerializerSkillsIntermediate(serializers.ModelSerializer):
             Skill.objects.create(curator=curator, **skill_data)
         return curator
 
+
+class CuratorSerializerNoSkills(serializers.ModelSerializer):
+    class Meta:
+        model = Curator
+        fields = ('id', 'name', 'last_name', 'patronymic', 'description')
+
