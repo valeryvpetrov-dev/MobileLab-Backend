@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Skill, Subject, WorkStepStatus, Student, Curator
+from .models import *
 
 
 class SkillSerializer(serializers.ModelSerializer):
@@ -18,6 +18,12 @@ class SubjectSerializer(serializers.ModelSerializer):
 class WorkStepStatusSerializer(serializers.ModelSerializer):
     class Meta:
         model = WorkStepStatus
+        fields = ('id', 'name')
+
+
+class SuggestionThemeStatusSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SuggestionThemeStatus
         fields = ('id', 'name')
 
 
