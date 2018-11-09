@@ -27,6 +27,12 @@ class SuggestionThemeStatusSerializer(serializers.ModelSerializer):
         fields = ('id', 'name')
 
 
+class SuggestionThemeProgressSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SuggestionThemeProgress
+        fields = ('id', 'title', 'description', 'date_update')
+
+
 class StudentSerializerSkillsID(serializers.ModelSerializer):
     skills = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
 
