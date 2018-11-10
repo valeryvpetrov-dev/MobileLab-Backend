@@ -139,7 +139,7 @@ class Work(models.Model):
 class WorkStep(models.Model):
     id = models.AutoField(primary_key=True)
     work = models.ForeignKey(Work, on_delete=models.CASCADE, db_column='work_id')
-    status = models.ForeignKey(WorkStepStatus, on_delete=models.SET_NULL, db_column='status_id', null=True)
+    status = models.ForeignKey(WorkStepStatus, on_delete=models.DO_NOTHING, db_column='status_id')
     title = models.CharField(max_length=100)
     description = models.CharField(max_length=250)
     date_start = models.DateTimeField()
@@ -168,7 +168,7 @@ class WorkStepComment(Comment):
 
 class WorkStepMaterial(models.Model):
     id = models.AutoField(primary_key=True)
-    step = models.ForeignKey(WorkStep, on_delete=models.CASCADE, db_column='work_step_id')
+    step = models.ForeignKey(WorkStep, on_delete=models.CASCADE, db_column='step_id')
     content = models.CharField(max_length=200)
 
     class Meta:
@@ -178,10 +178,10 @@ class WorkStepMaterial(models.Model):
 class SuggestionTheme(models.Model):
     id = models.AutoField(primary_key=True)
     theme = models.ForeignKey(Theme, on_delete=models.CASCADE, db_column='theme_id')
-    student = models.ForeignKey(Student, on_delete=models.CASCADE, db_column='student_id')
-    curator = models.ForeignKey(Curator, on_delete=models.CASCADE, db_column='curator_id')
-    status = models.ForeignKey(SuggestionThemeStatus, on_delete=models.SET_NULL, db_column='status_id', null=True)
-    progress = models.ForeignKey(SuggestionThemeProgress, on_delete=models.SET_NULL, db_column='suggestion_theme_progress_id', null=True)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, db_column='student_id', null=True)
+    curator = models.ForeignKey(Curator, on_delete=models.CASCADE, db_column='curator_id', null=True)
+    status = models.ForeignKey(SuggestionThemeStatus, on_delete=models.DO_NOTHING, db_column='status_id')
+    progress = models.ForeignKey(SuggestionThemeProgress, on_delete=models.SET_NULL, db_column='progress_id', null=True)
     date_creation = models.DateTimeField()
 
     class Meta:
@@ -195,7 +195,7 @@ class SuggestionTheme(models.Model):
 
 class SuggestionThemeComment(Comment):
     id = models.AutoField(primary_key=True)
-    suggestion = models.ForeignKey(SuggestionTheme, on_delete=models.CASCADE, db_column='suggestion_theme_id')
+    suggestion = models.ForeignKey(SuggestionTheme, on_delete=models.CASCADE, db_column='suggestion_id')
 
     class Meta:
         db_table = "Suggestion_theme_comment"
