@@ -4,10 +4,6 @@ BEGIN;
 --
 CREATE TABLE "Curator" ("name" varchar(35) NOT NULL, "last_name" varchar(35) NOT NULL, "patronymic" varchar(35) NOT NULL, "description" varchar(200) NOT NULL, "id" integer NOT NULL PRIMARY KEY AUTOINCREMENT);
 --
--- Create model CuratorSkill
---
-CREATE TABLE "Curator_skill" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "curator_id" integer NOT NULL REFERENCES "Curator" ("id") DEFERRABLE INITIALLY DEFERRED);
---
 -- Create model Skill
 --
 CREATE TABLE "Skill" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "name" varchar(100) NOT NULL);
@@ -15,10 +11,7 @@ CREATE TABLE "Skill" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "name" va
 -- Create model Student
 --
 CREATE TABLE "Student" ("name" varchar(35) NOT NULL, "last_name" varchar(35) NOT NULL, "patronymic" varchar(35) NOT NULL, "description" varchar(200) NOT NULL, "id" integer NOT NULL PRIMARY KEY AUTOINCREMENT);
---
--- Create model StudentSkill
---
-CREATE TABLE "Student_skill" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "skill_id" integer NOT NULL REFERENCES "Skill" ("id") DEFERRABLE INITIALLY DEFERRED, "student_id" integer NOT NULL REFERENCES "Student" ("id") DEFERRABLE INITIALLY DEFERRED);
+CREATE TABLE "Student_skills" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "student_id" integer NOT NULL REFERENCES "Student" ("id") DEFERRABLE INITIALLY DEFERRED, "skill_id" integer NOT NULL REFERENCES "Skill" ("id") DEFERRABLE INITIALLY DEFERRED);
 --
 -- Create model Subject
 --
@@ -26,11 +19,11 @@ CREATE TABLE "Subject" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "name" 
 --
 -- Create model SuggestionTheme
 --
-CREATE TABLE "Suggestion_theme" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "date_creation" datetime NOT NULL, "curator_id" integer NOT NULL REFERENCES "Curator" ("id") DEFERRABLE INITIALLY DEFERRED);
+CREATE TABLE "Suggestion_theme" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "date_creation" datetime NOT NULL, "curator_id" integer NULL REFERENCES "Curator" ("id") DEFERRABLE INITIALLY DEFERRED);
 --
 -- Create model SuggestionThemeComment
 --
-CREATE TABLE "Suggestion_theme_comment" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "suggestion_theme_id" integer NOT NULL REFERENCES "Suggestion_theme" ("id") DEFERRABLE INITIALLY DEFERRED);
+CREATE TABLE "Suggestion_theme_comment" ("author_name" varchar(35) NOT NULL, "content" varchar(200) NOT NULL, "date_creation" datetime NOT NULL, "id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "suggestion_id" integer NOT NULL REFERENCES "Suggestion_theme" ("id") DEFERRABLE INITIALLY DEFERRED);
 --
 -- Create model SuggestionThemeProgress
 --
@@ -42,11 +35,8 @@ CREATE TABLE "Suggestion_theme_status" ("id" integer NOT NULL PRIMARY KEY AUTOIN
 --
 -- Create model Theme
 --
-CREATE TABLE "Theme" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "title" varchar(100) NOT NULL, "description" varchar(250) NOT NULL, "date_creation" datetime NOT NULL, "date_acceptance" datetime NOT NULL, "curator_id" integer NULL REFERENCES "Curator" ("id") DEFERRABLE INITIALLY DEFERRED);
---
--- Create model ThemeSkill
---
-CREATE TABLE "Theme_skill" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "skill_id" integer NOT NULL REFERENCES "Skill" ("id") DEFERRABLE INITIALLY DEFERRED, "theme_id" integer NOT NULL REFERENCES "Theme" ("id") DEFERRABLE INITIALLY DEFERRED);
+CREATE TABLE "Theme" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "title" varchar(100) NOT NULL, "description" varchar(250) NOT NULL, "date_creation" datetime NOT NULL, "date_acceptance" datetime NOT NULL, "curator_id" integer NULL REFERENCES "Curator" ("id") DEFERRABLE INITIALLY DEFERRED, "student_id" integer NULL REFERENCES "Student" ("id") DEFERRABLE INITIALLY DEFERRED, "subject_id" integer NULL REFERENCES "Subject" ("id") DEFERRABLE INITIALLY DEFERRED);
+CREATE TABLE "Theme_skills" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "theme_id" integer NOT NULL REFERENCES "Theme" ("id") DEFERRABLE INITIALLY DEFERRED, "skill_id" integer NOT NULL REFERENCES "Skill" ("id") DEFERRABLE INITIALLY DEFERRED);
 --
 -- Create model Work
 --
@@ -62,7 +52,7 @@ CREATE TABLE "Work_step_comment" ("author_name" varchar(35) NOT NULL, "content" 
 --
 -- Create model WorkStepMaterial
 --
-CREATE TABLE "Work_step_material" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "content" varchar(200) NOT NULL, "work_step_id" integer NOT NULL REFERENCES "Work_step" ("id") DEFERRABLE INITIALLY DEFERRED);
+CREATE TABLE "Work_step_material" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "content" varchar(200) NOT NULL, "step_id" integer NOT NULL REFERENCES "Work_step" ("id") DEFERRABLE INITIALLY DEFERRED);
 --
 -- Create model WorkStepStatus
 --
@@ -71,120 +61,80 @@ CREATE TABLE "Work_step_status" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT
 -- Add field status to workstep
 --
 ALTER TABLE "Work_step" RENAME TO "Work_step__old";
-CREATE TABLE "Work_step" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "title" varchar(100) NOT NULL, "description" varchar(250) NOT NULL, "date_start" datetime NOT NULL, "date_finish" datetime NOT NULL, "status_id" integer NULL REFERENCES "Work_step_status" ("id") DEFERRABLE INITIALLY DEFERRED);
+CREATE TABLE "Work_step" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "title" varchar(100) NOT NULL, "description" varchar(250) NOT NULL, "date_start" datetime NOT NULL, "date_finish" datetime NOT NULL, "status_id" integer NOT NULL REFERENCES "Work_step_status" ("id") DEFERRABLE INITIALLY DEFERRED);
 INSERT INTO "Work_step" ("id", "title", "description", "date_start", "date_finish", "status_id") SELECT "id", "title", "description", "date_start", "date_finish", NULL FROM "Work_step__old";
 DROP TABLE "Work_step__old";
-CREATE INDEX "Curator_skill_curator_id_ec5f0bf3" ON "Curator_skill" ("curator_id");
-CREATE INDEX "Student_skill_skill_id_a0f40eeb" ON "Student_skill" ("skill_id");
-CREATE INDEX "Student_skill_student_id_c18e1b3b" ON "Student_skill" ("student_id");
+CREATE UNIQUE INDEX "Student_skills_student_id_skill_id_3a1e7fc9_uniq" ON "Student_skills" ("student_id", "skill_id");
+CREATE INDEX "Student_skills_student_id_4cf86b59" ON "Student_skills" ("student_id");
+CREATE INDEX "Student_skills_skill_id_5e48bf79" ON "Student_skills" ("skill_id");
 CREATE INDEX "Suggestion_theme_curator_id_0a36d856" ON "Suggestion_theme" ("curator_id");
-CREATE INDEX "Suggestion_theme_comment_suggestion_theme_id_5cb70fc7" ON "Suggestion_theme_comment" ("suggestion_theme_id");
+CREATE INDEX "Suggestion_theme_comment_suggestion_id_9dd9fc98" ON "Suggestion_theme_comment" ("suggestion_id");
 CREATE INDEX "Theme_curator_id_b807b49a" ON "Theme" ("curator_id");
-CREATE INDEX "Theme_skill_skill_id_3cd55e06" ON "Theme_skill" ("skill_id");
-CREATE INDEX "Theme_skill_theme_id_d2e74236" ON "Theme_skill" ("theme_id");
+CREATE INDEX "Theme_student_id_56dd59b2" ON "Theme" ("student_id");
+CREATE INDEX "Theme_subject_id_24550eb8" ON "Theme" ("subject_id");
+CREATE UNIQUE INDEX "Theme_skills_theme_id_skill_id_1b4ec720_uniq" ON "Theme_skills" ("theme_id", "skill_id");
+CREATE INDEX "Theme_skills_theme_id_46898d65" ON "Theme_skills" ("theme_id");
+CREATE INDEX "Theme_skills_skill_id_c455e883" ON "Theme_skills" ("skill_id");
 CREATE INDEX "Work_theme_id_eaade071" ON "Work" ("theme_id");
 CREATE INDEX "Work_step_comment_work_step_id_ecc2d35e" ON "Work_step_comment" ("work_step_id");
-CREATE INDEX "Work_step_material_work_step_id_e55bc701" ON "Work_step_material" ("work_step_id");
+CREATE INDEX "Work_step_material_step_id_c722cd5f" ON "Work_step_material" ("step_id");
 CREATE INDEX "Work_step_status_id_e8a0c444" ON "Work_step" ("status_id");
 --
 -- Add field work to workstep
 --
 ALTER TABLE "Work_step" RENAME TO "Work_step__old";
-CREATE TABLE "Work_step" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "title" varchar(100) NOT NULL, "description" varchar(250) NOT NULL, "date_start" datetime NOT NULL, "date_finish" datetime NOT NULL, "status_id" integer NULL REFERENCES "Work_step_status" ("id") DEFERRABLE INITIALLY DEFERRED, "work_id" integer NOT NULL REFERENCES "Work" ("id") DEFERRABLE INITIALLY DEFERRED);
+CREATE TABLE "Work_step" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "title" varchar(100) NOT NULL, "description" varchar(250) NOT NULL, "date_start" datetime NOT NULL, "date_finish" datetime NOT NULL, "status_id" integer NOT NULL REFERENCES "Work_step_status" ("id") DEFERRABLE INITIALLY DEFERRED, "work_id" integer NOT NULL REFERENCES "Work" ("id") DEFERRABLE INITIALLY DEFERRED);
 INSERT INTO "Work_step" ("id", "title", "description", "date_start", "date_finish", "status_id", "work_id") SELECT "id", "title", "description", "date_start", "date_finish", "status_id", NULL FROM "Work_step__old";
 DROP TABLE "Work_step__old";
 CREATE INDEX "Work_step_status_id_e8a0c444" ON "Work_step" ("status_id");
 CREATE INDEX "Work_step_work_id_fd227757" ON "Work_step" ("work_id");
 --
--- Add field required_skills to theme
---
-ALTER TABLE "Theme" RENAME TO "Theme__old";
-CREATE TABLE "Theme" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "title" varchar(100) NOT NULL, "description" varchar(250) NOT NULL, "date_creation" datetime NOT NULL, "date_acceptance" datetime NOT NULL, "curator_id" integer NULL REFERENCES "Curator" ("id") DEFERRABLE INITIALLY DEFERRED);
-INSERT INTO "Theme" ("id", "title", "description", "date_creation", "date_acceptance", "curator_id") SELECT "id", "title", "description", "date_creation", "date_acceptance", "curator_id" FROM "Theme__old";
-DROP TABLE "Theme__old";
-CREATE INDEX "Theme_curator_id_b807b49a" ON "Theme" ("curator_id");
---
--- Add field student to theme
---
-ALTER TABLE "Theme" RENAME TO "Theme__old";
-CREATE TABLE "Theme" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "title" varchar(100) NOT NULL, "description" varchar(250) NOT NULL, "date_creation" datetime NOT NULL, "date_acceptance" datetime NOT NULL, "curator_id" integer NULL REFERENCES "Curator" ("id") DEFERRABLE INITIALLY DEFERRED, "student_id" integer NULL REFERENCES "Student" ("id") DEFERRABLE INITIALLY DEFERRED);
-INSERT INTO "Theme" ("id", "title", "description", "date_creation", "date_acceptance", "curator_id", "student_id") SELECT "id", "title", "description", "date_creation", "date_acceptance", "curator_id", NULL FROM "Theme__old";
-DROP TABLE "Theme__old";
-CREATE INDEX "Theme_curator_id_b807b49a" ON "Theme" ("curator_id");
-CREATE INDEX "Theme_student_id_56dd59b2" ON "Theme" ("student_id");
---
--- Add field subject to theme
---
-ALTER TABLE "Theme" RENAME TO "Theme__old";
-CREATE TABLE "Theme" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "title" varchar(100) NOT NULL, "description" varchar(250) NOT NULL, "date_creation" datetime NOT NULL, "date_acceptance" datetime NOT NULL, "curator_id" integer NULL REFERENCES "Curator" ("id") DEFERRABLE INITIALLY DEFERRED, "student_id" integer NULL REFERENCES "Student" ("id") DEFERRABLE INITIALLY DEFERRED, "subject_id" integer NULL REFERENCES "Subject" ("id") DEFERRABLE INITIALLY DEFERRED);
-INSERT INTO "Theme" ("id", "title", "description", "date_creation", "date_acceptance", "curator_id", "student_id", "subject_id") SELECT "id", "title", "description", "date_creation", "date_acceptance", "curator_id", "student_id", NULL FROM "Theme__old";
-DROP TABLE "Theme__old";
-CREATE INDEX "Theme_curator_id_b807b49a" ON "Theme" ("curator_id");
-CREATE INDEX "Theme_student_id_56dd59b2" ON "Theme" ("student_id");
-CREATE INDEX "Theme_subject_id_24550eb8" ON "Theme" ("subject_id");
---
 -- Add field progress to suggestiontheme
 --
 ALTER TABLE "Suggestion_theme" RENAME TO "Suggestion_theme__old";
-CREATE TABLE "Suggestion_theme" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "date_creation" datetime NOT NULL, "curator_id" integer NOT NULL REFERENCES "Curator" ("id") DEFERRABLE INITIALLY DEFERRED, "suggestion_theme_progress_id" integer NULL REFERENCES "Suggestion_theme_progress" ("id") DEFERRABLE INITIALLY DEFERRED);
-INSERT INTO "Suggestion_theme" ("id", "date_creation", "curator_id", "suggestion_theme_progress_id") SELECT "id", "date_creation", "curator_id", NULL FROM "Suggestion_theme__old";
+CREATE TABLE "Suggestion_theme" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "date_creation" datetime NOT NULL, "curator_id" integer NULL REFERENCES "Curator" ("id") DEFERRABLE INITIALLY DEFERRED, "progress_id" integer NULL REFERENCES "Suggestion_theme_progress" ("id") DEFERRABLE INITIALLY DEFERRED);
+INSERT INTO "Suggestion_theme" ("id", "date_creation", "curator_id", "progress_id") SELECT "id", "date_creation", "curator_id", NULL FROM "Suggestion_theme__old";
 DROP TABLE "Suggestion_theme__old";
 CREATE INDEX "Suggestion_theme_curator_id_0a36d856" ON "Suggestion_theme" ("curator_id");
-CREATE INDEX "Suggestion_theme_suggestion_theme_progress_id_dfcdc56e" ON "Suggestion_theme" ("suggestion_theme_progress_id");
+CREATE INDEX "Suggestion_theme_progress_id_94e6bd86" ON "Suggestion_theme" ("progress_id");
 --
 -- Add field status to suggestiontheme
 --
 ALTER TABLE "Suggestion_theme" RENAME TO "Suggestion_theme__old";
-CREATE TABLE "Suggestion_theme" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "date_creation" datetime NOT NULL, "curator_id" integer NOT NULL REFERENCES "Curator" ("id") DEFERRABLE INITIALLY DEFERRED, "suggestion_theme_progress_id" integer NULL REFERENCES "Suggestion_theme_progress" ("id") DEFERRABLE INITIALLY DEFERRED, "status_id" integer NULL REFERENCES "Suggestion_theme_status" ("id") DEFERRABLE INITIALLY DEFERRED);
-INSERT INTO "Suggestion_theme" ("id", "date_creation", "curator_id", "suggestion_theme_progress_id", "status_id") SELECT "id", "date_creation", "curator_id", "suggestion_theme_progress_id", NULL FROM "Suggestion_theme__old";
+CREATE TABLE "Suggestion_theme" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "date_creation" datetime NOT NULL, "curator_id" integer NULL REFERENCES "Curator" ("id") DEFERRABLE INITIALLY DEFERRED, "progress_id" integer NULL REFERENCES "Suggestion_theme_progress" ("id") DEFERRABLE INITIALLY DEFERRED, "status_id" integer NOT NULL REFERENCES "Suggestion_theme_status" ("id") DEFERRABLE INITIALLY DEFERRED);
+INSERT INTO "Suggestion_theme" ("id", "date_creation", "curator_id", "progress_id", "status_id") SELECT "id", "date_creation", "curator_id", "progress_id", NULL FROM "Suggestion_theme__old";
 DROP TABLE "Suggestion_theme__old";
 CREATE INDEX "Suggestion_theme_curator_id_0a36d856" ON "Suggestion_theme" ("curator_id");
-CREATE INDEX "Suggestion_theme_suggestion_theme_progress_id_dfcdc56e" ON "Suggestion_theme" ("suggestion_theme_progress_id");
+CREATE INDEX "Suggestion_theme_progress_id_94e6bd86" ON "Suggestion_theme" ("progress_id");
 CREATE INDEX "Suggestion_theme_status_id_600846c8" ON "Suggestion_theme" ("status_id");
 --
 -- Add field student to suggestiontheme
 --
 ALTER TABLE "Suggestion_theme" RENAME TO "Suggestion_theme__old";
-CREATE TABLE "Suggestion_theme" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "date_creation" datetime NOT NULL, "curator_id" integer NOT NULL REFERENCES "Curator" ("id") DEFERRABLE INITIALLY DEFERRED, "suggestion_theme_progress_id" integer NULL REFERENCES "Suggestion_theme_progress" ("id") DEFERRABLE INITIALLY DEFERRED, "status_id" integer NULL REFERENCES "Suggestion_theme_status" ("id") DEFERRABLE INITIALLY DEFERRED, "student_id" integer NOT NULL REFERENCES "Student" ("id") DEFERRABLE INITIALLY DEFERRED);
-INSERT INTO "Suggestion_theme" ("id", "date_creation", "curator_id", "suggestion_theme_progress_id", "status_id", "student_id") SELECT "id", "date_creation", "curator_id", "suggestion_theme_progress_id", "status_id", NULL FROM "Suggestion_theme__old";
+CREATE TABLE "Suggestion_theme" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "date_creation" datetime NOT NULL, "curator_id" integer NULL REFERENCES "Curator" ("id") DEFERRABLE INITIALLY DEFERRED, "progress_id" integer NULL REFERENCES "Suggestion_theme_progress" ("id") DEFERRABLE INITIALLY DEFERRED, "status_id" integer NOT NULL REFERENCES "Suggestion_theme_status" ("id") DEFERRABLE INITIALLY DEFERRED, "student_id" integer NULL REFERENCES "Student" ("id") DEFERRABLE INITIALLY DEFERRED);
+INSERT INTO "Suggestion_theme" ("id", "date_creation", "curator_id", "progress_id", "status_id", "student_id") SELECT "id", "date_creation", "curator_id", "progress_id", "status_id", NULL FROM "Suggestion_theme__old";
 DROP TABLE "Suggestion_theme__old";
 CREATE INDEX "Suggestion_theme_curator_id_0a36d856" ON "Suggestion_theme" ("curator_id");
-CREATE INDEX "Suggestion_theme_suggestion_theme_progress_id_dfcdc56e" ON "Suggestion_theme" ("suggestion_theme_progress_id");
+CREATE INDEX "Suggestion_theme_progress_id_94e6bd86" ON "Suggestion_theme" ("progress_id");
 CREATE INDEX "Suggestion_theme_status_id_600846c8" ON "Suggestion_theme" ("status_id");
 CREATE INDEX "Suggestion_theme_student_id_27921146" ON "Suggestion_theme" ("student_id");
 --
 -- Add field theme to suggestiontheme
 --
 ALTER TABLE "Suggestion_theme" RENAME TO "Suggestion_theme__old";
-CREATE TABLE "Suggestion_theme" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "date_creation" datetime NOT NULL, "curator_id" integer NOT NULL REFERENCES "Curator" ("id") DEFERRABLE INITIALLY DEFERRED, "suggestion_theme_progress_id" integer NULL REFERENCES "Suggestion_theme_progress" ("id") DEFERRABLE INITIALLY DEFERRED, "status_id" integer NULL REFERENCES "Suggestion_theme_status" ("id") DEFERRABLE INITIALLY DEFERRED, "student_id" integer NOT NULL REFERENCES "Student" ("id") DEFERRABLE INITIALLY DEFERRED, "theme_id" integer NOT NULL REFERENCES "Theme" ("id") DEFERRABLE INITIALLY DEFERRED);
-INSERT INTO "Suggestion_theme" ("id", "date_creation", "curator_id", "suggestion_theme_progress_id", "status_id", "student_id", "theme_id") SELECT "id", "date_creation", "curator_id", "suggestion_theme_progress_id", "status_id", "student_id", NULL FROM "Suggestion_theme__old";
+CREATE TABLE "Suggestion_theme" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "date_creation" datetime NOT NULL, "curator_id" integer NULL REFERENCES "Curator" ("id") DEFERRABLE INITIALLY DEFERRED, "progress_id" integer NULL REFERENCES "Suggestion_theme_progress" ("id") DEFERRABLE INITIALLY DEFERRED, "status_id" integer NOT NULL REFERENCES "Suggestion_theme_status" ("id") DEFERRABLE INITIALLY DEFERRED, "student_id" integer NULL REFERENCES "Student" ("id") DEFERRABLE INITIALLY DEFERRED, "theme_id" integer NOT NULL REFERENCES "Theme" ("id") DEFERRABLE INITIALLY DEFERRED);
+INSERT INTO "Suggestion_theme" ("id", "date_creation", "curator_id", "progress_id", "status_id", "student_id", "theme_id") SELECT "id", "date_creation", "curator_id", "progress_id", "status_id", "student_id", NULL FROM "Suggestion_theme__old";
 DROP TABLE "Suggestion_theme__old";
 CREATE INDEX "Suggestion_theme_curator_id_0a36d856" ON "Suggestion_theme" ("curator_id");
-CREATE INDEX "Suggestion_theme_suggestion_theme_progress_id_dfcdc56e" ON "Suggestion_theme" ("suggestion_theme_progress_id");
+CREATE INDEX "Suggestion_theme_progress_id_94e6bd86" ON "Suggestion_theme" ("progress_id");
 CREATE INDEX "Suggestion_theme_status_id_600846c8" ON "Suggestion_theme" ("status_id");
 CREATE INDEX "Suggestion_theme_student_id_27921146" ON "Suggestion_theme" ("student_id");
 CREATE INDEX "Suggestion_theme_theme_id_a5cdf114" ON "Suggestion_theme" ("theme_id");
 --
--- Add field skills to student
---
-ALTER TABLE "Student" RENAME TO "Student__old";
-CREATE TABLE "Student" ("name" varchar(35) NOT NULL, "last_name" varchar(35) NOT NULL, "patronymic" varchar(35) NOT NULL, "description" varchar(200) NOT NULL, "id" integer NOT NULL PRIMARY KEY AUTOINCREMENT);
-INSERT INTO "Student" ("name", "last_name", "patronymic", "description", "id") SELECT "name", "last_name", "patronymic", "description", "id" FROM "Student__old";
-DROP TABLE "Student__old";
---
--- Add field skill to curatorskill
---
-ALTER TABLE "Curator_skill" RENAME TO "Curator_skill__old";
-CREATE TABLE "Curator_skill" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "curator_id" integer NOT NULL REFERENCES "Curator" ("id") DEFERRABLE INITIALLY DEFERRED, "skill_id" integer NOT NULL REFERENCES "Skill" ("id") DEFERRABLE INITIALLY DEFERRED);
-INSERT INTO "Curator_skill" ("id", "curator_id", "skill_id") SELECT "id", "curator_id", NULL FROM "Curator_skill__old";
-DROP TABLE "Curator_skill__old";
-CREATE INDEX "Curator_skill_curator_id_ec5f0bf3" ON "Curator_skill" ("curator_id");
-CREATE INDEX "Curator_skill_skill_id_c5eb49ac" ON "Curator_skill" ("skill_id");
---
 -- Add field skills to curator
 --
-ALTER TABLE "Curator" RENAME TO "Curator__old";
-CREATE TABLE "Curator" ("name" varchar(35) NOT NULL, "last_name" varchar(35) NOT NULL, "patronymic" varchar(35) NOT NULL, "description" varchar(200) NOT NULL, "id" integer NOT NULL PRIMARY KEY AUTOINCREMENT);
-INSERT INTO "Curator" ("name", "last_name", "patronymic", "description", "id") SELECT "name", "last_name", "patronymic", "description", "id" FROM "Curator__old";
-DROP TABLE "Curator__old";
+CREATE TABLE "Curator_skills" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "curator_id" integer NOT NULL REFERENCES "Curator" ("id") DEFERRABLE INITIALLY DEFERRED, "skill_id" integer NOT NULL REFERENCES "Skill" ("id") DEFERRABLE INITIALLY DEFERRED);
+CREATE UNIQUE INDEX "Curator_skills_curator_id_skill_id_caa89ac3_uniq" ON "Curator_skills" ("curator_id", "skill_id");
+CREATE INDEX "Curator_skills_curator_id_e56cbb05" ON "Curator_skills" ("curator_id");
+CREATE INDEX "Curator_skills_skill_id_fec572d0" ON "Curator_skills" ("skill_id");
 COMMIT;

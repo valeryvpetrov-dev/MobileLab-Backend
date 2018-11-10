@@ -1,5 +1,0 @@
-Migrations for 'api':
-  api\migrations\0003_auto_20181108_2140.py
-    - Rename field skills1 on curator to skills
-    - Rename field skills1 on student to skills
-    - Rename field required_skills1 on theme to required_skills
