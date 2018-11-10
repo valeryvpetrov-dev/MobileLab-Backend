@@ -34,7 +34,7 @@ class SuggestionThemeProgressSerializer(serializers.ModelSerializer):
 
 
 class StudentSerializerSkillsID(serializers.ModelSerializer):
-    skills = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+    skills = serializers.PrimaryKeyRelatedField(many=True, queryset=Skill.objects.all())
 
     class Meta:
         model = Student
@@ -48,13 +48,6 @@ class StudentSerializerSkillsIntermediate(serializers.ModelSerializer):
         model = Student
         fields = ('id', 'name', 'last_name', 'patronymic', 'description', 'skills')
 
-    def create(self, validated_data):
-        skills_data = validated_data.pop('skills')
-        student = Student.objects.create(**validated_data)
-        for skill_data in skills_data:
-            Skill.objects.create(student=student, **skill_data)
-        return student
-
 
 class StudentSerializerNoSkills(serializers.ModelSerializer):
     class Meta:
@@ -63,7 +56,7 @@ class StudentSerializerNoSkills(serializers.ModelSerializer):
 
 
 class CuratorSerializerSkillsID(serializers.ModelSerializer):
-    skills = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+    skills = serializers.PrimaryKeyRelatedField(many=True, queryset=Skill.objects.all())
 
     class Meta:
         model = Curator
@@ -77,13 +70,6 @@ class CuratorSerializerSkillsIntermediate(serializers.ModelSerializer):
         model = Curator
         fields = ('id', 'name', 'last_name', 'patronymic', 'description', 'skills')
 
-    def create(self, validated_data):
-        skills_data = validated_data.pop('skills')
-        curator = Curator.objects.create(**validated_data)
-        for skill_data in skills_data:
-            Skill.objects.create(curator=curator, **skill_data)
-        return curator
-
 
 class CuratorSerializerNoSkills(serializers.ModelSerializer):
     class Meta:
@@ -92,10 +78,10 @@ class CuratorSerializerNoSkills(serializers.ModelSerializer):
 
 
 class ThemeSerializer(serializers.ModelSerializer):
-    curator = CuratorSerializerNoSkills(read_only=True)
-    student = StudentSerializerNoSkills(read_only=True)
-    subject = SubjectSerializer(read_only=True)
-    skills = SkillSerializer(many=True, read_only=True)
+    curator = CuratorSerializerNoSkills(read_only=True, allow_null=True)
+    student = StudentSerializerNoSkills(read_only=True, allow_null=True)
+    subject = SubjectSerializer(read_only=True, allow_null=True)
+    skills = SkillSerializer(many=True, read_only=True, allow_null=True)
 
     class Meta:
         model = Theme
@@ -104,9 +90,9 @@ class ThemeSerializer(serializers.ModelSerializer):
 
 
 class ThemeSerializerNoSkills(serializers.ModelSerializer):
-    curator = CuratorSerializerNoSkills(read_only=True)
-    student = StudentSerializerNoSkills(read_only=True)
-    subject = SubjectSerializer(read_only=True)
+    curator = CuratorSerializerNoSkills(read_only=True, allow_null=True)
+    student = StudentSerializerNoSkills(read_only=True, allow_null=True)
+    subject = SubjectSerializer(read_only=True, allow_null=True)
 
     class Meta:
         model = Theme
@@ -150,10 +136,10 @@ class WorkStepMaterialSerializer(serializers.ModelSerializer):
 
 class SuggestionThemeSerializer(serializers.ModelSerializer):
     theme = ThemeSerializerNoSkills(read_only=True)
-    student = StudentSerializerNoSkills(read_only=True)
-    curator = CuratorSerializerNoSkills(read_only=True)
+    student = StudentSerializerNoSkills(read_only=True, allow_null=True)
+    curator = CuratorSerializerNoSkills(read_only=True, allow_null=True)
     status = SuggestionThemeStatusSerializer(read_only=True)
-    progress = serializers.PrimaryKeyRelatedField(read_only=True)
+    progress = serializers.PrimaryKeyRelatedField(read_only=True, allow_null=True)
 
     class Meta:
         model = SuggestionTheme
