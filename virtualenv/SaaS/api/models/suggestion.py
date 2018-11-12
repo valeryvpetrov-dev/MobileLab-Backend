@@ -54,7 +54,7 @@ class SuggestionTheme(models.Model):
 
 class SuggestionThemeComment(Comment):
     id = models.AutoField(primary_key=True)
-    suggestion = models.ForeignKey(SuggestionTheme, on_delete=models.CASCADE, db_column='suggestion_id')
+    suggestion = models.ForeignKey(SuggestionTheme, on_delete=models.CASCADE, db_column='suggestion_id', related_name='comment_set')
 
     class Meta:
         db_table = "Suggestion_theme_comment"

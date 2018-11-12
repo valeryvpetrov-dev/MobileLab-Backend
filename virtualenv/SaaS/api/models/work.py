@@ -39,7 +39,7 @@ class WorkStepStatus(models.Model):
 
 class WorkStep(models.Model):
     id = models.AutoField(primary_key=True)
-    work = models.ForeignKey(Work, on_delete=models.CASCADE, db_column='work_id')
+    work = models.ForeignKey(Work, on_delete=models.CASCADE, db_column='work_id', related_name='step_set')
     status = models.ForeignKey(WorkStepStatus, on_delete=models.DO_NOTHING, db_column='status_id')
     title = models.CharField(max_length=100)
     description = models.CharField(max_length=250)
@@ -64,7 +64,7 @@ class WorkStep(models.Model):
 
 class WorkStepComment(Comment):
     id = models.AutoField(primary_key=True)
-    step = models.ForeignKey(WorkStep, on_delete=models.CASCADE, db_column='work_step_id')
+    step = models.ForeignKey(WorkStep, on_delete=models.CASCADE, db_column='work_step_id', related_name='comment_set')
 
     class Meta:
         db_table = "Work_step_comment"
@@ -72,7 +72,7 @@ class WorkStepComment(Comment):
 
 class WorkStepMaterial(models.Model):
     id = models.AutoField(primary_key=True)
-    step = models.ForeignKey(WorkStep, on_delete=models.CASCADE, db_column='step_id')
+    step = models.ForeignKey(WorkStep, on_delete=models.CASCADE, db_column='step_id', related_name='material_set')
     content = models.CharField(max_length=200)
 
     class Meta:
