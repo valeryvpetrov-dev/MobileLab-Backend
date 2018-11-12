@@ -136,6 +136,10 @@ venv.bak/
 # File-based project format
 *.iws
 
+# sqlite database
+*.sqlite
+*.sqlite3
+
 # secrets
 /virtualenv/SaaS/properties/postgres-test-db-auth.properties
 /virtualenv/SaaS/properties/postgres-prod-db-auth.properties
