@@ -4,28 +4,28 @@ from rest_framework import status
 
 from django.http import Http404
 
-from ..models.curator import Curator
+from ..models.student import Student
 from ..models.work import Work, WorkStep
 
-from ..serializers.curator import CuratorSerializerSkillsIntermediate, CuratorSerializerSkillsID
+from ..serializers.student import StudentSerializerSkillsIntermediate, StudentSerializerSkillsID
 from ..serializers.skill import SkillSerializer
 from ..serializers.work import WorkSerializer, WorkStepSerializer, WorkStepMaterialSerializer, WorkStepCommentSerializer
 from ..serializers.theme import ThemeSerializerRelatedID, ThemeSerializerRelatedIntermediate
 from ..serializers.suggestion import SuggestionThemeSerializer, SuggestionThemeCommentSerializer
 
 
-class CuratorBaseView(APIView):
+class StudentBaseView(APIView):
     """
-    Curator base view
+    Student base view
     """
-    def get_curator(self, pk):
+    def get_student(self, pk):
         try:
-            return Curator.objects.get(pk=pk)
-        except Curator.DoesNotExist:
+            return Student.objects.get(pk=pk)
+        except Student.DoesNotExist:
             raise Http404
 
-    def get_related_work(self, curator: Curator, work_id: int):
-        for theme in curator.theme_set.all():
+    def get_related_work(self, student: Student, work_id: int):
+        for theme in student.theme_set.all():
             try:
                 work = theme.work_set.get(pk=work_id)
                 return work
@@ -41,141 +41,141 @@ class CuratorBaseView(APIView):
             pass
         return None
 
-    def get_related_theme(self, curator: Curator, theme_id: int):
-        for theme in curator.theme_set.all():
+    def get_related_theme(self, student: Student, theme_id: int):
+        for theme in student.theme_set.all():
             if theme.id == theme_id:
                 return theme
         return None
 
-    def get_related_suggestion(self, curator: Curator, suggestion_id: int):
-        for suggestion in curator.suggestiontheme_set.all():
+    def get_related_suggestion(self, student: Student, suggestion_id: int):
+        for suggestion in student.suggestiontheme_set.all():
             if suggestion.id == suggestion_id:
                 return suggestion
         return None
 
 
-class CuratorList(CuratorBaseView):
+class StudentList(StudentBaseView):
     """
     Methods: GET
-    Description: List of curators
+    Description: List of students
     """
     def get(self, request):
         """
-        READ: Curator list
-        :return: json of curator list
+        READ: Student list
+        :return: json of Student list
         """
-        curators = Curator.objects.all()
-        serializer = CuratorSerializerSkillsIntermediate(curators, many=True)
+        students = Student.objects.all()
+        serializer = StudentSerializerSkillsIntermediate(students, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-class CuratorDetail(CuratorBaseView):
+class StudentDetail(StudentBaseView):
     """
     Methods: GET, PUT
-    Description: Curator details
+    Description: Student details
     """
-    def get(self, request, curator_id):
+    def get(self, request, student_id):
         """
-        READ: Curator details
-        :return: json of curator
+        READ: Student details
+        :return: json of student
         """
-        curator = self.get_curator(curator_id)
-        serializer = CuratorSerializerSkillsIntermediate(curator)
+        student = self.get_student(student_id)
+        serializer = StudentSerializerSkillsIntermediate(student)
         return Response(serializer.data)
 
-    def put(self, request, curator_id):
+    def put(self, request, student_id):
         """
-        UPDATE: Curator details
-        :param request: json of updated curator
-        :param curator_id:
-        :return: json of updated curator
+        UPDATE: Student details
+        :param request: json of updated student
+        :param student_id:
+        :return: json of updated student
         """
-        curator = self.get_curator(curator_id)
-        serializer = CuratorSerializerSkillsID(curator, data=request.data)
+        student = self.get_student(student_id)
+        serializer = StudentSerializerSkillsID(student, data=request.data)
         if serializer.is_valid():
-            serializer.update(curator, validated_data=serializer.validated_data)
+            serializer.update(student, validated_data=serializer.validated_data)
             return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 # related skills
-class CuratorSkillList(CuratorBaseView):
+class StudentSkillList(StudentBaseView):
     """
     Methods: GET
-    Description: Curator related skills
+    Description: Student related skills
     """
-    def get(self, request, curator_id):
+    def get(self, request, student_id):
         """
-        READ: Curator skills list
-        :return: json of curator skills list
+        READ: Student skills list
+        :return: json of student skills list
         """
-        curator = self.get_curator(curator_id)
-        serializer = SkillSerializer(curator.skills, many=True)
+        student = self.get_student(student_id)
+        serializer = SkillSerializer(student.skills, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 # related works
-class CuratorWorkList(CuratorBaseView):
+class StudentWorkList(StudentBaseView):
     """
     Methods: GET, POST
-    Description: Curator related works
+    Description: Student related works
     """
-    def get(self, request, curator_id):
+    def get(self, request, student_id):
         """
-        READ: Curator works list
-        :return: json of curator works list
+        READ: Student works list
+        :return: json of student works list
         """
-        curator = self.get_curator(curator_id)
+        student = self.get_student(student_id)
         related_works = []
-        for theme in curator.theme_set.all():
+        for theme in student.theme_set.all():
             for work in theme.work_set.all():
                 related_works.append(work)
         serializer = WorkSerializer(related_works, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def post(self, request, curator_id):
+    def post(self, request, student_id):
         """
-        CREATE: Curator work
+        CREATE: Student work
         :param request: json of new work
-        :param curator_id:
+        :param student_id:
         :return: json of created work
         """
-        curator = self.get_curator(curator_id)
+        student = self.get_student(student_id)
         serializer = WorkSerializer(data=request.data)
         if serializer.is_valid():
             work = serializer.create(validated_data=serializer.validated_data)
-            curator.theme_set.add(work.theme)
+            student.theme_set.add(work.theme)
             return Response(serializer.validated_data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class CuratorWorkDetail(CuratorBaseView):
+class StudentWorkDetail(StudentBaseView):
     """
     Methods: GET, PUT
-    Description: Curator related work details
+    Description: Student related work details
     """
-    def get(self, request, curator_id, work_id):
+    def get(self, request, student_id, work_id):
         """
-        READ: Curator related work details
-        :return: json of curator related work
+        READ: Student related work details
+        :return: json of student related work
         """
-        curator = self.get_curator(curator_id)
-        work = self.get_related_work(curator, work_id)
+        student = self.get_student(student_id)
+        work = self.get_related_work(student, work_id)
         if work:
             serializer = WorkSerializer(work)
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
-    def put(self, request, curator_id, work_id):
+    def put(self, request, student_id, work_id):
         """
-        UPDATE: Curator related work details
+        UPDATE: Student related work details
         :param request: json of updated work
-        :param curator_id:
+        :param student_id:
         :param work_id:
-        :return: json of updated curator related work
+        :return: json of updated student related work
         """
-        curator = self.get_curator(curator_id)
-        work = self.get_related_work(curator, work_id)
+        student = self.get_student(student_id)
+        work = self.get_related_work(student, work_id)
         serializer = WorkSerializer(work, data=request.data)
         if serializer.is_valid():
             serializer.update(work, validated_data=serializer.validated_data)
@@ -184,32 +184,32 @@ class CuratorWorkDetail(CuratorBaseView):
 
 
 # related work-steps
-class CuratorWorkStepList(CuratorBaseView):
+class StudentWorkStepList(StudentBaseView):
     """
     Methods: GET, POST
-    Description: Curator related work steps
+    Description: Student related work steps
     """
-    def get(self, request, curator_id, work_id):
+    def get(self, request, student_id, work_id):
         """
-        READ: Curator related work steps list
-        :return: json of curator related work steps list
+        READ: Student related work steps list
+        :return: json of student related work steps list
         """
-        work = self.get_related_work(self.get_curator(curator_id), work_id)
+        work = self.get_related_work(self.get_student(student_id), work_id)
         related_steps = []
         for step in work.step_set.all():
             related_steps.append(step)
         serializer = WorkStepSerializer(related_steps, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def post(self, request, curator_id, work_id):
+    def post(self, request, student_id, work_id):
         """
-        CREATE: Curator related work step
+        CREATE: Student related work step
         :param request: json of new step
-        :param curator_id:
+        :param student_id:
         :param work_id:
         :return: json of new step
         """
-        work = self.get_related_work(self.get_curator(curator_id), work_id)
+        work = self.get_related_work(self.get_student(student_id), work_id)
         serializer = WorkStepSerializer(data=request.data)
         if serializer.is_valid():
             step = serializer.create(validated_data=serializer.validated_data)
@@ -218,35 +218,35 @@ class CuratorWorkStepList(CuratorBaseView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class CuratorWorkStepDetail(CuratorBaseView):
+class StudentWorkStepDetail(StudentBaseView):
     """
     Methods: GET, PUT
-    Description: Curator related work step details
+    Description: Student related work step details
     """
-    def get(self, request, curator_id, work_id, step_id):
+    def get(self, request, student_id, work_id, step_id):
         """
-        READ: Curator related work step details
-        :return: json of curator related work step
+        READ: Student related work step details
+        :return: json of student related work step
         """
-        curator = self.get_curator(curator_id)
-        related_work = self.get_related_work(curator, work_id)
+        student = self.get_student(student_id)
+        related_work = self.get_related_work(student, work_id)
         step = self.get_related_step(related_work, step_id)
         if step:
             serializer = WorkStepSerializer(step)
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
-    def put(self, request, curator_id, work_id, step_id):
+    def put(self, request, student_id, work_id, step_id):
         """
-        UPDATE: Curator related work step details
+        UPDATE: Student related work step details
         :param request: json of updated work step
-        :param curator_id:
+        :param student_id:
         :param work_id:
         :param step_id:
-        :return: json of updated curator related work step
+        :return: json of updated student related work step
         """
-        curator = self.get_curator(curator_id)
-        related_work = self.get_related_work(curator, work_id)
+        student = self.get_student(student_id)
+        related_work = self.get_related_work(student, work_id)
         step = self.get_related_step(related_work, step_id)
         serializer = WorkStepSerializer(step, data=request.data)
         if serializer.is_valid():
@@ -256,18 +256,18 @@ class CuratorWorkStepDetail(CuratorBaseView):
 
 
 # related work-step-materials
-class CuratorWorkStepMaterialList(CuratorBaseView):
+class StudentWorkStepMaterialList(StudentBaseView):
     """
     Methods: GET, POST
-    Description: Curator related work step materials
+    Description: Student related work step materials
     """
-    def get(self, request, curator_id, work_id, step_id):
+    def get(self, request, student_id, work_id, step_id):
         """
-        READ: Curator related work step materials list
-        :return: json of curator related work steps materials list
+        READ: Student related work step materials list
+        :return: json of student related work steps materials list
         """
-        curator = self.get_curator(curator_id)
-        related_work = self.get_related_work(curator, work_id)
+        student = self.get_student(student_id)
+        related_work = self.get_related_work(student, work_id)
         step = self.get_related_step(related_work, step_id)
         related_materials = []
         for material in step.material_set.all():
@@ -275,17 +275,17 @@ class CuratorWorkStepMaterialList(CuratorBaseView):
         serializer = WorkStepMaterialSerializer(related_materials, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def post(self, request, curator_id, work_id, step_id):
+    def post(self, request, student_id, work_id, step_id):
         """
-        CREATE: Curator related work step material
+        CREATE: Student related work step material
         :param request: json of new material
-        :param curator_id:
+        :param student_id:
         :param work_id:
         :param step_id:
         :return: json of new material
         """
-        curator = self.get_curator(curator_id)
-        related_work = self.get_related_work(curator, work_id)
+        student = self.get_student(student_id)
+        related_work = self.get_related_work(student, work_id)
         step = self.get_related_step(related_work, step_id)
         serializer = WorkStepMaterialSerializer(data=request.data)
         if serializer.is_valid():
@@ -296,18 +296,18 @@ class CuratorWorkStepMaterialList(CuratorBaseView):
 
 
 # related work-step-comments
-class CuratorWorkStepCommentList(CuratorBaseView):
+class StudentWorkStepCommentList(StudentBaseView):
     """
     Methods: GET, POST
-    Description: Curator related work step comments
+    Description: Student related work step comments
     """
-    def get(self, request, curator_id, work_id, step_id):
+    def get(self, request, student_id, work_id, step_id):
         """
-        READ: Curator related work step comments list
-        :return: json of curator related work steps comments list
+        READ: Student related work step comments list
+        :return: json of student related work steps comments list
         """
-        curator = self.get_curator(curator_id)
-        related_work = self.get_related_work(curator, work_id)
+        student = self.get_student(student_id)
+        related_work = self.get_related_work(student, work_id)
         step = self.get_related_step(related_work, step_id)
         related_comments = []
         for comment in step.comment_set.all():
@@ -315,17 +315,17 @@ class CuratorWorkStepCommentList(CuratorBaseView):
         serializer = WorkStepCommentSerializer(related_comments, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def post(self, request, curator_id, work_id, step_id):
+    def post(self, request, student_id, work_id, step_id):
         """
-        CREATE: Curator related work step comment
+        CREATE: Student related work step comment
         :param request: json of new comment
-        :param curator_id:
+        :param student_id:
         :param work_id:
         :param step_id:
         :return: json of new comment
         """
-        curator = self.get_curator(curator_id)
-        related_work = self.get_related_work(curator, work_id)
+        student = self.get_student(student_id)
+        related_work = self.get_related_work(student, work_id)
         step = self.get_related_step(related_work, step_id)
         serializer = WorkStepCommentSerializer(data=request.data)
         if serializer.is_valid():
@@ -336,63 +336,63 @@ class CuratorWorkStepCommentList(CuratorBaseView):
 
 
 # related themes
-class CuratorThemeList(CuratorBaseView):
+class StudentThemeList(StudentBaseView):
     """
     Methods: GET, POST
-    Description: Curator related themes
+    Description: Student related themes
     """
-    def get(self, request, curator_id):
+    def get(self, request, student_id):
         """
-        READ: Curator themes list
-        :return: json of curator themes list
+        READ: Student themes list
+        :return: json of student themes list
         """
-        curator = self.get_curator(curator_id)
-        serializer = ThemeSerializerRelatedIntermediate(curator.theme_set, many=True)
+        student = self.get_student(student_id)
+        serializer = ThemeSerializerRelatedIntermediate(student.theme_set, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def post(self, request, curator_id):
+    def post(self, request, student_id):
         """
-        CREATE: Curator theme
+        CREATE: Student theme
         :param request: json of new theme
-        :param curator_id:
+        :param student_id:
         :return: json of created theme
         """
-        curator = self.get_curator(curator_id)
+        student = self.get_student(student_id)
         serializer = ThemeSerializerRelatedIntermediate(data=request.data)
         if serializer.is_valid():
             theme = serializer.create(validated_data=serializer.validated_data)
-            curator.theme_set.add(theme)
+            student.theme_set.add(theme)
             return Response(serializer.validated_data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class CuratorThemeDetail(CuratorBaseView):
+class StudentThemeDetail(StudentBaseView):
     """
     Methods: GET, PUT
-    Description: Curator related theme details
+    Description: Student related theme details
     """
-    def get(self, request, curator_id, theme_id):
+    def get(self, request, student_id, theme_id):
         """
-        READ: Curator related theme details
-        :return: json of curator related theme
+        READ: Student related theme details
+        :return: json of student related theme
         """
-        curator = self.get_curator(curator_id)
-        theme = self.get_related_theme(curator, theme_id)
+        student = self.get_student(student_id)
+        theme = self.get_related_theme(student, theme_id)
         if theme:
             serializer = ThemeSerializerRelatedIntermediate(theme)
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
-    def put(self, request, curator_id, theme_id):
+    def put(self, request, student_id, theme_id):
         """
-        UPDATE: Curator related theme details
+        UPDATE: Student related theme details
         :param request: json of updated theme
-        :param curator_id:
+        :param student_id:
         :param theme_id:
-        :return: json of updated curator related theme
+        :return: json of updated Student related theme
         """
-        curator = self.get_curator(curator_id)
-        theme = self.get_related_theme(curator, theme_id)
+        student = self.get_student(student_id)
+        theme = self.get_related_theme(student, theme_id)
         serializer = ThemeSerializerRelatedID(theme, data=request.data)
         if serializer.is_valid():
             serializer.update(theme, validated_data=serializer.validated_data)
@@ -401,63 +401,63 @@ class CuratorThemeDetail(CuratorBaseView):
 
 
 # related suggestions
-class CuratorSuggestionList(CuratorBaseView):
+class StudentSuggestionList(StudentBaseView):
     """
     Methods: GET, POST
-    Description: Curator related suggestions
+    Description: Student related suggestions
     """
-    def get(self, request, curator_id):
+    def get(self, request, student_id):
         """
-        READ: Curator suggestions list
-        :return: json of curator suggestions list
+        READ: Student suggestions list
+        :return: json of student suggestions list
         """
-        curator = self.get_curator(curator_id)
-        serializer = SuggestionThemeSerializer(curator.suggestiontheme_set, many=True)
+        student = self.get_student(student_id)
+        serializer = SuggestionThemeSerializer(student.suggestiontheme_set, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def post(self, request, curator_id):
+    def post(self, request, student_id):
         """
-        CREATE: Curator suggestion
+        CREATE: Student suggestion
         :param request: json of new suggestion
-        :param curator_id:
+        :param student_id:
         :return: json of created suggestion
         """
-        curator = self.get_curator(curator_id)
+        Student = self.get_student(student_id)
         serializer = SuggestionThemeSerializer(data=request.data)
         if serializer.is_valid():
             suggestion = serializer.create(validated_data=serializer.validated_data)
-            curator.suggestiontheme_set.add(suggestion)
+            Student.suggestiontheme_set.add(suggestion)
             return Response(serializer.validated_data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class CuratorSuggestionDetail(CuratorBaseView):
+class StudentSuggestionDetail(StudentBaseView):
     """
     Methods: GET, PUT
-    Description: Curator related suggestion details
+    Description: Student related suggestion details
     """
-    def get(self, request, curator_id, suggestion_id):
+    def get(self, request, student_id, suggestion_id):
         """
-        READ: Curator related suggestion details
-        :return: json of curator related suggestion
+        READ: Student related suggestion details
+        :return: json of student related suggestion
         """
-        curator = self.get_curator(curator_id)
-        suggestion = self.get_related_suggestion(curator, suggestion_id)
+        student = self.get_student(student_id)
+        suggestion = self.get_related_suggestion(student, suggestion_id)
         if suggestion:
             serializer = SuggestionThemeSerializer(suggestion)
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
-    def put(self, request, curator_id, suggestion_id):
+    def put(self, request, student_id, suggestion_id):
         """
-        UPDATE: Curator related suggestion details
+        UPDATE: Student related suggestion details
         :param request: json of updated suggestion
-        :param curator_id:
+        :param student_id:
         :param suggestion_id:
-        :return: json of updated curator related suggestion
+        :return: json of updated student related suggestion
         """
-        curator = self.get_curator(curator_id)
-        suggestion = self.get_related_suggestion(curator, suggestion_id)
+        student = self.get_student(student_id)
+        suggestion = self.get_related_suggestion(student, suggestion_id)
         serializer = SuggestionThemeSerializer(suggestion, data=request.data)
         if serializer.is_valid():
             serializer.update(suggestion, validated_data=serializer.validated_data)
@@ -466,31 +466,31 @@ class CuratorSuggestionDetail(CuratorBaseView):
 
 
 # related suggestion-comments
-class CuratorSuggestionCommentList(CuratorBaseView):
+class StudentSuggestionCommentList(StudentBaseView):
     """
     Methods: GET, POST
-    Description: Curator related suggestion comments
+    Description: Student related suggestion comments
     """
-    def get(self, request, curator_id, suggestion_id):
+    def get(self, request, student_id, suggestion_id):
         """
-        READ: Curator suggestion comments list
-        :return: json of curator suggestion comments list
+        READ: Student suggestion comments list
+        :return: json of student suggestion comments list
         """
-        curator = self.get_curator(curator_id)
-        suggestion = self.get_related_suggestion(curator, suggestion_id)
+        student = self.get_student(student_id)
+        suggestion = self.get_related_suggestion(student, suggestion_id)
         serializer = SuggestionThemeCommentSerializer(suggestion.comment_set, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def post(self, request, curator_id, suggestion_id):
+    def post(self, request, student_id, suggestion_id):
         """
-        CREATE: Curator suggestion comment
+        CREATE: Student suggestion comment
         :param request: json of new comment
-        :param curator_id:
+        :param student_id:
         :param suggestion_id:
         :return: json of created comment
         """
-        curator = self.get_curator(curator_id)
-        suggestion = self.get_related_suggestion(curator, suggestion_id)
+        student = self.get_student(student_id)
+        suggestion = self.get_related_suggestion(student, suggestion_id)
         serializer = SuggestionThemeCommentSerializer(data=request.data)
         if serializer.is_valid():
             comment = serializer.create(validated_data=serializer.validated_data)
