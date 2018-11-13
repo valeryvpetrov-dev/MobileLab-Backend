@@ -31,8 +31,8 @@ class ThemeList(ThemeBaseView):
         READ: Theme list
         :return: json of theme list
         """
-        curators = Theme.objects.all()
-        serializer = ThemeSerializerRelatedID(curators, many=True)
+        themes = Theme.objects.all()
+        serializer = ThemeSerializerRelatedID(themes, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
