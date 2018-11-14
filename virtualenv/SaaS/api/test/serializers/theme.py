@@ -6,8 +6,11 @@ from rest_framework.parsers import JSONParser
 import io
 from datetime import datetime, timezone, timedelta
 
-from ...serializers import ThemeSerializerRelatedID, ThemeSerializerRelatedIntermediate
-from ...models import Theme, Student, Curator, Subject, Skill
+from ...serializers.theme import ThemeSerializerRelatedID, ThemeSerializerRelatedIntermediate
+from ...models.theme import Theme, Subject
+from ...models.student import Student
+from ...models.curator import Curator
+from ...models.skill import Skill
 
 
 class TestThemeSerializer(TestCase):

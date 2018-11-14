@@ -5,8 +5,8 @@ from rest_framework.parsers import JSONParser
 
 import io
 
-from ...serializers import SkillSerializer
-from ...models import Skill
+from ...serializers.skill import SkillSerializer
+from ...models.skill import Skill
 
 
 class TestSkillSerializer(TestCase):

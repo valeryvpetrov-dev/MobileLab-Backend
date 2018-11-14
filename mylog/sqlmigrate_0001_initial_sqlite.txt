@@ -27,7 +27,7 @@ CREATE TABLE "Suggestion_theme_comment" ("author_name" varchar(35) NOT NULL, "co
 --
 -- Create model SuggestionThemeProgress
 --
-CREATE TABLE "Suggestion_theme_progress" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "title" varchar(75) NOT NULL, "description" varchar(150) NOT NULL, "date_update" datetime NOT NULL);
+CREATE TABLE "Suggestion_theme_progress" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "title" varchar(75) NOT NULL, "description" varchar(150) NOT NULL, "date_update" datetime NULL);
 --
 -- Create model SuggestionThemeStatus
 --
@@ -35,12 +35,12 @@ CREATE TABLE "Suggestion_theme_status" ("id" integer NOT NULL PRIMARY KEY AUTOIN
 --
 -- Create model Theme
 --
-CREATE TABLE "Theme" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "title" varchar(100) NOT NULL, "description" varchar(250) NOT NULL, "date_creation" datetime NOT NULL, "date_acceptance" datetime NOT NULL, "curator_id" integer NULL REFERENCES "Curator" ("id") DEFERRABLE INITIALLY DEFERRED, "student_id" integer NULL REFERENCES "Student" ("id") DEFERRABLE INITIALLY DEFERRED, "subject_id" integer NULL REFERENCES "Subject" ("id") DEFERRABLE INITIALLY DEFERRED);
+CREATE TABLE "Theme" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "title" varchar(100) NOT NULL, "description" varchar(250) NOT NULL, "date_creation" datetime NOT NULL, "date_acceptance" datetime NULL, "curator_id" integer NULL REFERENCES "Curator" ("id") DEFERRABLE INITIALLY DEFERRED, "student_id" integer NULL REFERENCES "Student" ("id") DEFERRABLE INITIALLY DEFERRED, "subject_id" integer NULL REFERENCES "Subject" ("id") DEFERRABLE INITIALLY DEFERRED);
 CREATE TABLE "Theme_skills" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "theme_id" integer NOT NULL REFERENCES "Theme" ("id") DEFERRABLE INITIALLY DEFERRED, "skill_id" integer NOT NULL REFERENCES "Skill" ("id") DEFERRABLE INITIALLY DEFERRED);
 --
 -- Create model Work
 --
-CREATE TABLE "Work" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "date_start" datetime NOT NULL, "date_finish" datetime NOT NULL, "theme_id" integer NOT NULL REFERENCES "Theme" ("id") DEFERRABLE INITIALLY DEFERRED);
+CREATE TABLE "Work" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "date_start" datetime NOT NULL, "date_finish" datetime NULL, "theme_id" integer NOT NULL REFERENCES "Theme" ("id") DEFERRABLE INITIALLY DEFERRED);
 --
 -- Create model WorkStep
 --

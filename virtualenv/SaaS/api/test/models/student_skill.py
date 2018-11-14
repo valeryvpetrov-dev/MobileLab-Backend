@@ -1,6 +1,7 @@
 from django.test import TestCase
 
-from SaaS.api.models import Skill, Student
+from ...models.student import Student
+from ...models.skill import Skill
 
 
 # Create your tests here.
