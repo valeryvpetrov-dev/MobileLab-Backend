@@ -4,28 +4,25 @@ from django.forms import ValidationError
 from .base import Comment
 from .theme import Theme
 
-import datetime
+from datetime import datetime, timezone
 
 
 class Work(models.Model):
     id = models.AutoField(primary_key=True)
     theme = models.ForeignKey(Theme, on_delete=models.CASCADE, db_column='theme_id')
     date_start = models.DateTimeField()
-    date_finish = models.DateTimeField()
+    date_finish = models.DateTimeField(null=True)
 
     class Meta:
         db_table = "Work"
 
     def save(self, *args, **kwargs):
-        if self.date_start.date() >= self.date_finish.date() and \
-                self.date_start.time() > self.date_finish.time():
-            raise ValidationError('Date start is greater than date acceptance.')
-        if self.date_start.date() >= datetime.datetime.today().date() and \
-                self.date_start.time() > datetime.datetime.today().time():
-            raise ValidationError('Date start is in future.')
-        if self.date_finish.date() >= datetime.datetime.today().date() and \
-                self.date_finish.time() > datetime.datetime.today().time():
-            raise ValidationError('Date finish is in future.')
+        if self.date_finish:
+            if self.date_start > self.date_finish:
+                raise ValidationError('Date start is greater than date finish.')
+            if self.date_start > datetime.now(timezone.utc):
+                raise ValidationError('Date start is in future.')
+
         super(Work, self).save(*args, **kwargs)
 
 
@@ -50,15 +47,10 @@ class WorkStep(models.Model):
         db_table = "Work_step"
 
     def save(self, *args, **kwargs):
-        if self.date_start.date() >= self.date_finish.date() and \
-                self.date_start.time() > self.date_finish.time():
+        if self.date_start > self.date_finish:
             raise ValidationError('Date start is greater than date acceptance.')
-        if self.date_start.date() >= datetime.datetime.today().date() and \
-                self.date_start.time() > datetime.datetime.today().time():
+        if self.date_start > datetime.now(timezone.utc):
             raise ValidationError('Date start is in future.')
-        if self.date_finish.date() >= datetime.datetime.today().date() and \
-                self.date_finish.time() > datetime.datetime.today().time():
-            raise ValidationError('Date finish is in future.')
         super(WorkStep, self).save(*args, **kwargs)
 
 

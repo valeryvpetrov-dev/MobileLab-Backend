@@ -6,7 +6,7 @@ from .theme import Theme
 from .student import Student
 from .curator import Curator
 
-import datetime
+from datetime import datetime, timezone
 
 
 class SuggestionThemeStatus(models.Model):
@@ -21,15 +21,16 @@ class SuggestionThemeProgress(models.Model):
     id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=75)
     description = models.CharField(max_length=150)
-    date_update = models.DateTimeField()
+    date_update = models.DateTimeField(null=True)
 
     class Meta:
         db_table = "Suggestion_theme_progress"
 
     def save(self, *args, **kwargs):
-        if self.date_update.date() >= datetime.datetime.today().date() and \
-                self.date_update.time() > datetime.datetime.today().time():
-            raise ValidationError('Date update is in future.')
+        if self.date_update:
+            if self.date_update > datetime.today():
+                raise ValidationError('Date update is in future.')
+
         super(SuggestionThemeProgress, self).save(*args, **kwargs)
 
 
@@ -46,8 +47,7 @@ class SuggestionTheme(models.Model):
         db_table = "Suggestion_theme"
 
     def save(self, *args, **kwargs):
-        if self.date_creation.date() >= datetime.datetime.today().date() and \
-                self.date_creation.time() > datetime.datetime.today().time():
+        if self.date_creation > datetime.now(timezone.utc):
             raise ValidationError('Date creation is in future.')
         super(SuggestionTheme, self).save(*args, **kwargs)
 

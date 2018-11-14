@@ -5,7 +5,7 @@ from .curator import Curator
 from .student import Student
 from .skill import Skill
 
-import datetime
+from datetime import datetime, timezone
 
 
 class Subject(models.Model):
@@ -25,19 +25,17 @@ class Theme(models.Model):
     title = models.CharField(max_length=100)
     description = models.CharField(max_length=250)
     date_creation = models.DateTimeField()
-    date_acceptance = models.DateTimeField()
+    date_acceptance = models.DateTimeField(null=True)
 
     class Meta:
         db_table = "Theme"
 
     def save(self, *args, **kwargs):
-        if self.date_creation.date() >= self.date_acceptance.date() and \
-                self.date_creation.time() > self.date_acceptance.time():
-            raise ValidationError('Date creation is greater than date acceptance.')
-        if self.date_creation.date() >= datetime.datetime.today().date() and \
-                self.date_creation.time() > datetime.datetime.today().time():
+        if self.date_acceptance:
+            if self.date_creation > self.date_acceptance:
+                raise ValidationError('Date creation is greater than date acceptance.')
+
+        if self.date_creation > datetime.now(timezone.utc):
             raise ValidationError('Date creation is in future.')
-        if self.date_acceptance.date() >= datetime.datetime.today().date() and \
-                self.date_acceptance.time() > datetime.datetime.today().time():
-            raise ValidationError('Date acceptance is in future.')
+
         super(Theme, self).save(*args, **kwargs)
