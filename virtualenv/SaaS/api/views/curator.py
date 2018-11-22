@@ -4,10 +4,12 @@ from rest_framework import status
 
 from django.http import Http404
 
+from ..models.theme import Theme
+from ..models.suggestion import SuggestionTheme
 from ..models.curator import Curator
 from ..models.work import Work, WorkStep
 
-from ..serializers.curator import CuratorSerializerSkillsIntermediate, CuratorSerializerSkillsID
+from ..serializers.curator import CuratorSerializerSkillsIntermediate, CuratorSerializerSkillsID, CuratorSerializerNoSkills
 from ..serializers.skill import SkillSerializer
 from ..serializers.work import WorkSerializer, WorkStepSerializer, WorkStepMaterialSerializer, WorkStepCommentSerializer
 from ..serializers.theme import ThemeSerializerRelatedID, ThemeSerializerRelatedIntermediate
@@ -25,33 +27,32 @@ class CuratorBaseView(APIView):
             raise Http404
 
     def get_related_work(self, curator: Curator, work_id: int):
+        work = None
         for theme in curator.theme_set.all():
             try:
                 work = theme.work_set.get(pk=work_id)
-                return work
             except Work.DoesNotExist:
                 pass
-        return None
+        if ~work: raise Http404
+        return work
 
     def get_related_step(self, related_work: Work, step_id: int):
         try:
-            step = related_work.step_set.get(pk=step_id)
-            return step
+            return related_work.step_set.get(pk=step_id)
         except WorkStep.DoesNotExist:
-            pass
-        return None
+            raise Http404
 
     def get_related_theme(self, curator: Curator, theme_id: int):
-        for theme in curator.theme_set.all():
-            if theme.id == theme_id:
-                return theme
-        return None
+        try:
+            return curator.theme_set.get(pk=theme_id)
+        except Theme.DoesNotExist:
+            raise Http404
 
     def get_related_suggestion(self, curator: Curator, suggestion_id: int):
-        for suggestion in curator.suggestiontheme_set.all():
-            if suggestion.id == suggestion_id:
-                return suggestion
-        return None
+        try:
+            return curator.suggestiontheme_set.get(pk=suggestion_id)
+        except SuggestionTheme.DoesNotExist:
+            raise Http404
 
 
 class CuratorList(CuratorBaseView):
@@ -65,7 +66,7 @@ class CuratorList(CuratorBaseView):
         :return: json of curator list
         """
         curators = Curator.objects.all()
-        serializer = CuratorSerializerSkillsIntermediate(curators, many=True)
+        serializer = CuratorSerializerNoSkills(curators, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -164,7 +165,7 @@ class CuratorWorkDetail(CuratorBaseView):
         if work:
             serializer = WorkSerializer(work)
             return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+        return Response(status=status.HTTP_404_NOT_FOUND)
 
     def put(self, request, curator_id, work_id):
         """
@@ -234,7 +235,7 @@ class CuratorWorkStepDetail(CuratorBaseView):
         if step:
             serializer = WorkStepSerializer(step)
             return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+        return Response(status=status.HTTP_404_NOT_FOUND)
 
     def put(self, request, curator_id, work_id, step_id):
         """
@@ -381,7 +382,7 @@ class CuratorThemeDetail(CuratorBaseView):
         if theme:
             serializer = ThemeSerializerRelatedIntermediate(theme)
             return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+        return Response(status=status.HTTP_404_NOT_FOUND)
 
     def put(self, request, curator_id, theme_id):
         """
@@ -446,7 +447,7 @@ class CuratorSuggestionDetail(CuratorBaseView):
         if suggestion:
             serializer = SuggestionThemeSerializer(suggestion)
             return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+        return Response(status=status.HTTP_404_NOT_FOUND)
 
     def put(self, request, curator_id, suggestion_id):
         """

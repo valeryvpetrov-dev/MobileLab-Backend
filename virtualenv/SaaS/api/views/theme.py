@@ -32,8 +32,10 @@ class ThemeList(ThemeBaseView):
         :return: json of theme list
         """
         themes = Theme.objects.all()
-        serializer = ThemeSerializerRelatedID(themes, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        if themes:
+            serializer = ThemeSerializerRelatedID(themes, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_404_NOT_FOUND)
 
 
 class ThemeDetail(ThemeBaseView):

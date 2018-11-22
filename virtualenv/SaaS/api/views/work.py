@@ -4,7 +4,7 @@ from rest_framework import status
 
 from django.http import Http404
 
-from ..models.work import Work
+from ..models.work import Work, WorkStep
 
 from ..serializers.work import WorkSerializer, WorkStepSerializer, WorkStepMaterialSerializer
 
@@ -22,7 +22,7 @@ class WorkBaseView(APIView):
     def get_related_step(self, work: Work, step_id: int):
         try:
             return work.step_set.get(pk=step_id)
-        except Work.DoesNotExist:
+        except WorkStep.DoesNotExist:
             raise Http404
 
 
@@ -31,6 +31,7 @@ class WorkList(WorkBaseView):
     Methods: GET
     Description: List of works
     """
+
     def get(self, request):
         """
         READ: Work list
@@ -46,6 +47,7 @@ class WorkDetail(WorkBaseView):
     Methods: GET, PUT
     Description: Work details
     """
+
     def get(self, request, work_id):
         """
         READ: Work details
@@ -117,22 +119,6 @@ class WorkStepDetail(WorkBaseView):
             return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    # related steps
-    class WorkStepList(WorkBaseView):
-        """
-        Methods: GET
-        Description: Work related steps
-        """
-
-        def get(self, request, work_id):
-            """
-            READ: Work steps list
-            :return: json of Work steps list
-            """
-            work = self.get_work(work_id)
-            serializer = WorkStepSerializer(work.step_set, many=True)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-
 
 # related step-materials
 class WorkStepMaterialList(WorkBaseView):
@@ -140,6 +126,7 @@ class WorkStepMaterialList(WorkBaseView):
     Methods: GET
     Description: Work step related materials
     """
+
     def get(self, request, work_id, step_id):
         """
         READ: Work steps materials list

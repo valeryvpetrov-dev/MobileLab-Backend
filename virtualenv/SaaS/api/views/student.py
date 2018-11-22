@@ -4,6 +4,8 @@ from rest_framework import status
 
 from django.http import Http404
 
+from ..models.theme import Theme
+from ..models.suggestion import SuggestionTheme
 from ..models.student import Student
 from ..models.work import Work, WorkStep
 
@@ -18,6 +20,7 @@ class StudentBaseView(APIView):
     """
     Student base view
     """
+
     def get_student(self, pk):
         try:
             return Student.objects.get(pk=pk)
@@ -25,33 +28,32 @@ class StudentBaseView(APIView):
             raise Http404
 
     def get_related_work(self, student: Student, work_id: int):
+        work = None
         for theme in student.theme_set.all():
             try:
                 work = theme.work_set.get(pk=work_id)
-                return work
             except Work.DoesNotExist:
                 pass
-        return None
+        if ~work: raise Http404
+        return work
 
     def get_related_step(self, related_work: Work, step_id: int):
         try:
-            step = related_work.step_set.get(pk=step_id)
-            return step
+            return related_work.step_set.get(pk=step_id)
         except WorkStep.DoesNotExist:
-            pass
-        return None
+            raise Http404
 
     def get_related_theme(self, student: Student, theme_id: int):
-        for theme in student.theme_set.all():
-            if theme.id == theme_id:
-                return theme
-        return None
+        try:
+            return student.theme_set.get(pk=theme_id)
+        except Theme.DoesNotExist:
+            raise Http404
 
     def get_related_suggestion(self, student: Student, suggestion_id: int):
-        for suggestion in student.suggestiontheme_set.all():
-            if suggestion.id == suggestion_id:
-                return suggestion
-        return None
+        try:
+            return student.suggestiontheme_set.get(pk=suggestion_id)
+        except SuggestionTheme.DoesNotExist:
+            raise Http404
 
 
 class StudentList(StudentBaseView):
@@ -59,6 +61,7 @@ class StudentList(StudentBaseView):
     Methods: GET
     Description: List of students
     """
+
     def get(self, request):
         """
         READ: Student list
@@ -74,6 +77,7 @@ class StudentDetail(StudentBaseView):
     Methods: GET, PUT
     Description: Student details
     """
+
     def get(self, request, student_id):
         """
         READ: Student details
@@ -104,6 +108,7 @@ class StudentSkillList(StudentBaseView):
     Methods: GET
     Description: Student related skills
     """
+
     def get(self, request, student_id):
         """
         READ: Student skills list
@@ -120,6 +125,7 @@ class StudentWorkList(StudentBaseView):
     Methods: GET, POST
     Description: Student related works
     """
+
     def get(self, request, student_id):
         """
         READ: Student works list
@@ -154,6 +160,7 @@ class StudentWorkDetail(StudentBaseView):
     Methods: GET, PUT
     Description: Student related work details
     """
+
     def get(self, request, student_id, work_id):
         """
         READ: Student related work details
@@ -164,7 +171,7 @@ class StudentWorkDetail(StudentBaseView):
         if work:
             serializer = WorkSerializer(work)
             return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+        return Response(status=status.HTTP_404_NOT_FOUND)
 
     def put(self, request, student_id, work_id):
         """
@@ -189,6 +196,7 @@ class StudentWorkStepList(StudentBaseView):
     Methods: GET, POST
     Description: Student related work steps
     """
+
     def get(self, request, student_id, work_id):
         """
         READ: Student related work steps list
@@ -223,6 +231,7 @@ class StudentWorkStepDetail(StudentBaseView):
     Methods: GET, PUT
     Description: Student related work step details
     """
+
     def get(self, request, student_id, work_id, step_id):
         """
         READ: Student related work step details
@@ -234,7 +243,7 @@ class StudentWorkStepDetail(StudentBaseView):
         if step:
             serializer = WorkStepSerializer(step)
             return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+        return Response(status=status.HTTP_404_NOT_FOUND)
 
     def put(self, request, student_id, work_id, step_id):
         """
@@ -261,6 +270,7 @@ class StudentWorkStepMaterialList(StudentBaseView):
     Methods: GET, POST
     Description: Student related work step materials
     """
+
     def get(self, request, student_id, work_id, step_id):
         """
         READ: Student related work step materials list
@@ -301,6 +311,7 @@ class StudentWorkStepCommentList(StudentBaseView):
     Methods: GET, POST
     Description: Student related work step comments
     """
+
     def get(self, request, student_id, work_id, step_id):
         """
         READ: Student related work step comments list
@@ -341,6 +352,7 @@ class StudentThemeList(StudentBaseView):
     Methods: GET, POST
     Description: Student related themes
     """
+
     def get(self, request, student_id):
         """
         READ: Student themes list
@@ -371,6 +383,7 @@ class StudentThemeDetail(StudentBaseView):
     Methods: GET, PUT
     Description: Student related theme details
     """
+
     def get(self, request, student_id, theme_id):
         """
         READ: Student related theme details
@@ -381,7 +394,7 @@ class StudentThemeDetail(StudentBaseView):
         if theme:
             serializer = ThemeSerializerRelatedIntermediate(theme)
             return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+        return Response(status=status.HTTP_404_NOT_FOUND)
 
     def put(self, request, student_id, theme_id):
         """
@@ -406,6 +419,7 @@ class StudentSuggestionList(StudentBaseView):
     Methods: GET, POST
     Description: Student related suggestions
     """
+
     def get(self, request, student_id):
         """
         READ: Student suggestions list
@@ -436,6 +450,7 @@ class StudentSuggestionDetail(StudentBaseView):
     Methods: GET, PUT
     Description: Student related suggestion details
     """
+
     def get(self, request, student_id, suggestion_id):
         """
         READ: Student related suggestion details
@@ -446,7 +461,7 @@ class StudentSuggestionDetail(StudentBaseView):
         if suggestion:
             serializer = SuggestionThemeSerializer(suggestion)
             return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+        return Response(status=status.HTTP_404_NOT_FOUND)
 
     def put(self, request, student_id, suggestion_id):
         """
@@ -471,6 +486,7 @@ class StudentSuggestionCommentList(StudentBaseView):
     Methods: GET, POST
     Description: Student related suggestion comments
     """
+
     def get(self, request, student_id, suggestion_id):
         """
         READ: Student suggestion comments list

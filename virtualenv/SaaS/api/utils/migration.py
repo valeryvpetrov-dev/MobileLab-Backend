@@ -61,6 +61,7 @@ def init_line_theme():
     theme.subject = subject
     for skill in skills:
         theme.skills.add(skill)
+    theme.save()
 
     work = Work.objects.create(theme=theme, date_start=theme.date_creation,
                                date_finish=theme.date_creation + timedelta(days=30))

@@ -20,13 +20,12 @@ class WorkSerializer(serializers.ModelSerializer):
 
 
 class WorkStepSerializer(serializers.ModelSerializer):
-    work = WorkSerializer(read_only=True)
     status = WorkStepStatusSerializer(read_only=True)
 
     class Meta:
         model = WorkStep
         fields = ('id', 'title', 'description', 'date_start', 'date_finish',
-                  'work', 'status')
+                  'status')
 
 
 class WorkStepCommentSerializer(serializers.ModelSerializer):
