@@ -1,6 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
 
 from django.http import Http404
 
@@ -15,11 +16,15 @@ from ..serializers.work import WorkSerializer, WorkStepSerializer, WorkStepMater
 from ..serializers.theme import ThemeSerializerRelatedID, ThemeSerializerRelatedIntermediate
 from ..serializers.suggestion import SuggestionThemeSerializer, SuggestionThemeCommentSerializer
 
+from ..permissions.group_curators import IsMemberOfCuratorsGroup
+
 
 class CuratorBaseView(APIView):
     """
     Curator base view
     """
+    permission_classes = (IsAuthenticated, IsMemberOfCuratorsGroup, )   # TODO Change behavior when student app will be developed
+
     def get_curator(self, pk):
         try:
             return Curator.objects.get(pk=pk)
@@ -152,7 +157,7 @@ class CuratorWorkList(CuratorBaseView):
 
 class CuratorWorkDetail(CuratorBaseView):
     """
-    Methods: GET, PUT
+    Methods: GET, PUT, DELETE
     Description: Curator related work details
     """
     def get(self, request, curator_id, work_id):
@@ -182,6 +187,21 @@ class CuratorWorkDetail(CuratorBaseView):
             serializer.update(work, validated_data=serializer.validated_data)
             return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, curator_id, work_id):
+        """
+        DELETE: Curator related work
+        :param request:
+        :param curator_id:
+        :param work_id:
+        :return: json of deleted curator related work
+        """
+        curator = self.get_curator(curator_id)
+        work = self.get_related_work(curator, work_id)
+        serializer = WorkSerializer(work)
+        if work.delete():
+            return Response(serializer.data, status=status.HTTP_204_NO_CONTENT)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 # related work-steps
@@ -221,7 +241,7 @@ class CuratorWorkStepList(CuratorBaseView):
 
 class CuratorWorkStepDetail(CuratorBaseView):
     """
-    Methods: GET, PUT
+    Methods: GET, PUT, DELETE
     Description: Curator related work step details
     """
     def get(self, request, curator_id, work_id, step_id):
@@ -254,6 +274,23 @@ class CuratorWorkStepDetail(CuratorBaseView):
             serializer.update(step, validated_data=serializer.validated_data)
             return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, curator_id, work_id, step_id):
+        """
+        DELETE: Curator related work step
+        :param request:
+        :param curator_id:
+        :param work_id:
+        :param step_id: step to delete
+        :return: json of deleted curator related work step
+        """
+        curator = self.get_curator(curator_id)
+        related_work = self.get_related_work(curator, work_id)
+        step = self.get_related_step(related_work, step_id)
+        serializer = WorkStepSerializer(step)
+        if step.delete():
+            return Response(serializer.data, status=status.HTTP_204_NO_CONTENT)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 # related work-step-materials
@@ -369,7 +406,7 @@ class CuratorThemeList(CuratorBaseView):
 
 class CuratorThemeDetail(CuratorBaseView):
     """
-    Methods: GET, PUT
+    Methods: GET, PUT, DELETE
     Description: Curator related theme details
     """
     def get(self, request, curator_id, theme_id):
@@ -399,6 +436,21 @@ class CuratorThemeDetail(CuratorBaseView):
             serializer.update(theme, validated_data=serializer.validated_data)
             return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, curator_id, theme_id):
+        """
+        DELETE: Curator related theme
+        :param request:
+        :param curator_id:
+        :param theme_id: theme to delete
+        :return: json of deleted curator related theme
+        """
+        curator = self.get_curator(curator_id)
+        theme = self.get_related_theme(curator, theme_id)
+        serializer = ThemeSerializerRelatedID(theme)
+        if theme.delete():
+            return Response(serializer.data, status=status.HTTP_204_NO_CONTENT)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 # related suggestions
@@ -434,7 +486,7 @@ class CuratorSuggestionList(CuratorBaseView):
 
 class CuratorSuggestionDetail(CuratorBaseView):
     """
-    Methods: GET, PUT
+    Methods: GET, PUT, DELETE
     Description: Curator related suggestion details
     """
     def get(self, request, curator_id, suggestion_id):
@@ -464,6 +516,21 @@ class CuratorSuggestionDetail(CuratorBaseView):
             serializer.update(suggestion, validated_data=serializer.validated_data)
             return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, curator_id, suggestion_id):
+        """
+        DELETE: Curator related suggestion
+        :param request:
+        :param curator_id:
+        :param suggestion_id: suggestion to delete
+        :return: json of deleted curator related suggestion
+        """
+        curator = self.get_curator(curator_id)
+        suggestion = self.get_related_suggestion(curator, suggestion_id)
+        serializer = SuggestionThemeSerializer(suggestion)
+        if suggestion.delete():
+            return Response(serializer.data, status=status.HTTP_204_NO_CONTENT)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 # related suggestion-comments

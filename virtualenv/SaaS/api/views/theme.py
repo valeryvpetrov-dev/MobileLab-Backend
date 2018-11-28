@@ -1,6 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
 
 from django.http import Http404
 
@@ -9,11 +10,15 @@ from ..models.theme import Theme
 from ..serializers.theme import ThemeSerializerRelatedID, ThemeSerializerRelatedIntermediate, ThemeSerializerNoSkills
 from ..serializers.skill import SkillSerializer
 
+from ..permissions.group_curators import IsMemberOfCuratorsGroup
+
 
 class ThemeBaseView(APIView):
     """
     Theme base view
     """
+    permission_classes = (IsAuthenticated, IsMemberOfCuratorsGroup,)  # TODO Change behavior when student app will be developed
+
     def get_theme(self, pk):
         try:
             return Theme.objects.get(pk=pk)
@@ -51,20 +56,6 @@ class ThemeDetail(ThemeBaseView):
         theme = self.get_theme(theme_id)
         serializer = ThemeSerializerRelatedIntermediate(theme)
         return Response(serializer.data)
-
-    def put(self, request, theme_id):
-        """
-        UPDATE: Theme details
-        :param request: json of updated theme
-        :param theme_id:
-        :return: json of updated theme
-        """
-        theme = self.get_theme(theme_id)
-        serializer = ThemeSerializerRelatedID(theme, data=request.data)
-        if serializer.is_valid():
-            serializer.update(theme, validated_data=serializer.validated_data)
-            return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 # related skills

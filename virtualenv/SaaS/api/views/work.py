@@ -1,6 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
 
 from django.http import Http404
 
@@ -8,11 +9,15 @@ from ..models.work import Work, WorkStep
 
 from ..serializers.work import WorkSerializer, WorkStepSerializer, WorkStepMaterialSerializer
 
+from ..permissions.group_curators import IsMemberOfCuratorsGroup
+
 
 class WorkBaseView(APIView):
     """
     Work base view
     """
+    permission_classes = (IsAuthenticated, IsMemberOfCuratorsGroup,)  # TODO Change behavior when student app will be developed
+
     def get_work(self, pk):
         try:
             return Work.objects.get(pk=pk)
@@ -44,7 +49,7 @@ class WorkList(WorkBaseView):
 
 class WorkDetail(WorkBaseView):
     """
-    Methods: GET, PUT
+    Methods: GET
     Description: Work details
     """
 
@@ -56,20 +61,6 @@ class WorkDetail(WorkBaseView):
         work = self.get_work(work_id)
         serializer = WorkSerializer(work)
         return Response(serializer.data)
-
-    def put(self, request, work_id):
-        """
-        UPDATE: Work details
-        :param request: json of updated work
-        :param work_id:
-        :return: json of updated work
-        """
-        work = self.get_work(work_id)
-        serializer = WorkSerializer(Work, data=request.data)
-        if serializer.is_valid():
-            serializer.update(work, validated_data=serializer.validated_data)
-            return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 # related steps
@@ -90,7 +81,7 @@ class WorkStepList(WorkBaseView):
 
 class WorkStepDetail(WorkBaseView):
     """
-    Methods: GET, PUT
+    Methods: GET
     Description: Work related step details
     """
     def get(self, request, work_id, step_id):
@@ -102,22 +93,6 @@ class WorkStepDetail(WorkBaseView):
         step = self.get_related_step(work, step_id)
         serializer = WorkStepSerializer(step)
         return Response(serializer.data, status=status.HTTP_200_OK)
-
-    def put(self, request, work_id, step_id):
-        """
-        UPDATE: Work related step details
-        :param request: json of updated step
-        :param work_id:
-        :param step_id:
-        :return: json of updated work related step
-        """
-        work = self.get_work(work_id)
-        step = self.get_related_step(work, step_id)
-        serializer = WorkSerializer(step, data=request.data, many=True)
-        if serializer.is_valid():
-            serializer.update(step, validated_data=serializer.validated_data)
-            return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 # related step-materials

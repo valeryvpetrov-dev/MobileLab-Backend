@@ -1,6 +1,8 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import permission_classes
 
 from django.http import Http404
 
@@ -14,6 +16,8 @@ from ..serializers.skill import SkillSerializer
 from ..serializers.work import WorkSerializer, WorkStepSerializer, WorkStepMaterialSerializer, WorkStepCommentSerializer
 from ..serializers.theme import ThemeSerializerRelatedID, ThemeSerializerRelatedIntermediate
 from ..serializers.suggestion import SuggestionThemeSerializer, SuggestionThemeCommentSerializer
+
+from ..permissions.group_curators import IsMemberOfCuratorsGroup
 
 
 class StudentBaseView(APIView):
@@ -61,6 +65,7 @@ class StudentList(StudentBaseView):
     Methods: GET
     Description: List of students
     """
+    permission_classes = (IsAuthenticated, IsMemberOfCuratorsGroup, )   # TODO Change behavior when student app will be developed
 
     def get(self, request):
         """
@@ -78,6 +83,7 @@ class StudentDetail(StudentBaseView):
     Description: Student details
     """
 
+    @permission_classes((IsAuthenticated, IsMemberOfCuratorsGroup, ))   # TODO Change behavior when student app will be developed
     def get(self, request, student_id):
         """
         READ: Student details
@@ -108,6 +114,7 @@ class StudentSkillList(StudentBaseView):
     Methods: GET
     Description: Student related skills
     """
+    permission_classes = (IsAuthenticated, IsMemberOfCuratorsGroup,)  # TODO Change behavior when student app will be developed
 
     def get(self, request, student_id):
         """
@@ -126,6 +133,7 @@ class StudentWorkList(StudentBaseView):
     Description: Student related works
     """
 
+    @permission_classes((IsAuthenticated, IsMemberOfCuratorsGroup, )) # TODO Change behavior when student app will be developed
     def get(self, request, student_id):
         """
         READ: Student works list
@@ -161,6 +169,7 @@ class StudentWorkDetail(StudentBaseView):
     Description: Student related work details
     """
 
+    @permission_classes((IsAuthenticated, IsMemberOfCuratorsGroup,))  # TODO Change behavior when student app will be developed
     def get(self, request, student_id, work_id):
         """
         READ: Student related work details
@@ -197,6 +206,7 @@ class StudentWorkStepList(StudentBaseView):
     Description: Student related work steps
     """
 
+    @permission_classes((IsAuthenticated, IsMemberOfCuratorsGroup,))  # TODO Change behavior when student app will be developed
     def get(self, request, student_id, work_id):
         """
         READ: Student related work steps list
@@ -232,6 +242,7 @@ class StudentWorkStepDetail(StudentBaseView):
     Description: Student related work step details
     """
 
+    @permission_classes((IsAuthenticated, IsMemberOfCuratorsGroup,))  # TODO Change behavior when student app will be developed
     def get(self, request, student_id, work_id, step_id):
         """
         READ: Student related work step details
@@ -271,6 +282,8 @@ class StudentWorkStepMaterialList(StudentBaseView):
     Description: Student related work step materials
     """
 
+    @permission_classes(
+        (IsAuthenticated, IsMemberOfCuratorsGroup,))  # TODO Change behavior when student app will be developed
     def get(self, request, student_id, work_id, step_id):
         """
         READ: Student related work step materials list
@@ -312,6 +325,8 @@ class StudentWorkStepCommentList(StudentBaseView):
     Description: Student related work step comments
     """
 
+    @permission_classes(
+        (IsAuthenticated, IsMemberOfCuratorsGroup,))  # TODO Change behavior when student app will be developed
     def get(self, request, student_id, work_id, step_id):
         """
         READ: Student related work step comments list
@@ -353,6 +368,8 @@ class StudentThemeList(StudentBaseView):
     Description: Student related themes
     """
 
+    @permission_classes(
+        (IsAuthenticated, IsMemberOfCuratorsGroup,))  # TODO Change behavior when student app will be developed
     def get(self, request, student_id):
         """
         READ: Student themes list
@@ -384,6 +401,8 @@ class StudentThemeDetail(StudentBaseView):
     Description: Student related theme details
     """
 
+    @permission_classes(
+        (IsAuthenticated, IsMemberOfCuratorsGroup,))  # TODO Change behavior when student app will be developed
     def get(self, request, student_id, theme_id):
         """
         READ: Student related theme details
@@ -420,6 +439,8 @@ class StudentSuggestionList(StudentBaseView):
     Description: Student related suggestions
     """
 
+    @permission_classes(
+        (IsAuthenticated, IsMemberOfCuratorsGroup,))  # TODO Change behavior when student app will be developed
     def get(self, request, student_id):
         """
         READ: Student suggestions list
@@ -451,6 +472,8 @@ class StudentSuggestionDetail(StudentBaseView):
     Description: Student related suggestion details
     """
 
+    @permission_classes(
+        (IsAuthenticated, IsMemberOfCuratorsGroup,))  # TODO Change behavior when student app will be developed
     def get(self, request, student_id, suggestion_id):
         """
         READ: Student related suggestion details
@@ -487,6 +510,8 @@ class StudentSuggestionCommentList(StudentBaseView):
     Description: Student related suggestion comments
     """
 
+    @permission_classes(
+        (IsAuthenticated, IsMemberOfCuratorsGroup,))  # TODO Change behavior when student app will be developed
     def get(self, request, student_id, suggestion_id):
         """
         READ: Student suggestion comments list
