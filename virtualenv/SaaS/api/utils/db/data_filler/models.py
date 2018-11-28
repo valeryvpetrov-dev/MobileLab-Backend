@@ -4,35 +4,71 @@ Util for filling database with test data
 
 import os
 
-from django.db import models
-from SaaS.api.models.curator import Curator
-from SaaS.api.models.student import Student
-from SaaS.api.models.skill import Skill
-from SaaS.api.models.theme import Subject, Theme
-from SaaS.api.models.work import Work, WorkStep, WorkStepStatus, WorkStepMaterial, WorkStepComment
-from SaaS.api.models.suggestion import SuggestionTheme, SuggestionThemeStatus
+from django.db.models.manager import Manager
+from django.contrib.auth.models import Group, User
 
-from SaaS.api.utils.db.csv import *
+from ....models.curator import Curator
+from ....models.student import Student
+from ....models.skill import Skill
+from ....models.theme import Subject, Theme
+from ....models.work import Work, WorkStep, WorkStepStatus, WorkStepMaterial, WorkStepComment
+from ....models.suggestion import SuggestionTheme, SuggestionThemeStatus
+
+from ....utils.db.csv import *
 
 import random
 from datetime import timedelta
-from SaaS.api.utils.datetime_converter import str2dt
+from ....utils.datetime_converter import str2dt
 
 date_field_name = ['date_creation', 'date_acceptance', 'date_start', 'date_finish']
 
 
-def migrate_to_db(manager: models.manager.Manager, csv_file_path: str):
+def migrate_to_db_user(manager_model: Manager,
+                       manager_user: Manager,
+                       group: Group,
+                       csv_file_path: str):
+    path = os.path.abspath(csv_file_path)
+    with open(path, encoding='utf8') as file:
+        _list = csv_entry_list_reader(file)
+
+    manager_model.all().delete()
+    print("All models(Manager: {}) deleted.".format(manager_model))
+    for entry in _list:
+        for date_field in date_field_name:
+            if entry.get(date_field, None):
+                entry[date_field] = str2dt(entry[date_field])
+            else:
+                entry.pop(date_field, None)
+
+        first_name = entry['name']
+        last_name = entry['last_name']
+        patronymic = entry['patronymic']
+        username = "{0}.{1}.{2}".format(first_name, last_name, patronymic)
+        password = username
+        user = manager_user.create_user(username=username, first_name=first_name, last_name=last_name, password=password)
+        user.groups.add(group)
+        user.save()
+
+        model = manager_model.create(credentials=user, **entry)
+        model.credentials = user
+        model.save()
+
+        print("User: {0}. Model: {1}.".format(user, model))
+
+
+def migrate_to_db(manager: Manager, csv_file_path: str):
     path = os.path.abspath(csv_file_path)
     with open(path, encoding='utf8') as file:
         _list = csv_entry_list_reader(file)
 
     manager.all().delete()
+    print("All models(Manager: {}) deleted.".format(manager))
     for entry in _list:
-        for date_filed in date_field_name:
-            if entry.get(date_filed, None):
-                entry[date_filed] = str2dt(entry[date_filed])
+        for date_field in date_field_name:
+            if entry.get(date_field, None):
+                entry[date_field] = str2dt(entry[date_field])
             else:
-                entry.pop(date_filed, None)
+                entry.pop(date_field, None)
 
         _object = manager.create(**entry)
         print(_object)
@@ -117,8 +153,12 @@ def init_line_theme_suggestion():
 def do():
     path = r'E:\Python\Django\MobileLab-Backend\mylog\db\test-data'
     migrate_to_db(Skill.objects, path + r'\skill.csv')
-    migrate_to_db(Curator.objects, path + r'\curator.csv')
-    migrate_to_db(Student.objects, path + r'\student.csv')
+
+    User.objects.all().delete()
+    print("All users(Manager: {}) deleted.".format(User.objects))
+    migrate_to_db_user(Curator.objects, User.objects, Group.objects.get(name="curators"), path + r'\curator.csv')
+    migrate_to_db_user(Student.objects, User.objects, Group.objects.get(name="students"), path + r'\student.csv')
+
     migrate_to_db(Subject.objects, path + r'\subject.csv')
     migrate_to_db(Theme.objects, path + r'\theme.csv')
     migrate_to_db(WorkStepStatus.objects, path + r'\work_step_status.csv')
