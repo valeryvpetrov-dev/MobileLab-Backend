@@ -1,10 +1,12 @@
 from django.db import models
+from django.contrib.auth.models import User
 from django.forms import ValidationError
 
-import datetime
+from datetime import datetime, timezone
 
 
 class Man(models.Model):
+    credentials = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=35)
     last_name = models.CharField(max_length=35)
     patronymic = models.CharField(max_length=35)
@@ -23,7 +25,6 @@ class Comment(models.Model):
         abstract = True
 
     def save(self, *args, **kwargs):
-        if self.date_creation.date() >= datetime.datetime.today().date() and \
-                self.date_creation.time() > datetime.datetime.today().time():
+        if self.date_creation > datetime.now(timezone.utc):
             raise ValidationError('Date creation is in future.')
         super(Comment, self).save(*args, **kwargs)

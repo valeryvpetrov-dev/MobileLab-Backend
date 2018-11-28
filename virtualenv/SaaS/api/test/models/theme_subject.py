@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from SaaS.api.models import Theme, Subject
+from ...models.theme import Theme, Subject
 
 import datetime
 

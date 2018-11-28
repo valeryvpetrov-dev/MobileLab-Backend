@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from SaaS.api.models import Student
+from ...models.student import Student
 
 
 # Create your tests here.

@@ -1,4 +1,0 @@
-Operations to perform:
-  Target specific migration: 0001_initial, from api
-Running migrations:
-  Applying api.0001_initial... OK
