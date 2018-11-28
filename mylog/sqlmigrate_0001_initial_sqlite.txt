@@ -2,7 +2,7 @@ BEGIN;
 --
 -- Create model Curator
 --
-CREATE TABLE "Curator" ("name" varchar(35) NOT NULL, "last_name" varchar(35) NOT NULL, "patronymic" varchar(35) NOT NULL, "description" varchar(200) NOT NULL, "id" integer NOT NULL PRIMARY KEY AUTOINCREMENT);
+CREATE TABLE "Curator" ("name" varchar(35) NOT NULL, "last_name" varchar(35) NOT NULL, "patronymic" varchar(35) NOT NULL, "description" varchar(200) NOT NULL, "id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "credentials_id" integer NOT NULL UNIQUE REFERENCES "auth_user" ("id") DEFERRABLE INITIALLY DEFERRED);
 --
 -- Create model Skill
 --
@@ -10,7 +10,7 @@ CREATE TABLE "Skill" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "name" va
 --
 -- Create model Student
 --
-CREATE TABLE "Student" ("name" varchar(35) NOT NULL, "last_name" varchar(35) NOT NULL, "patronymic" varchar(35) NOT NULL, "description" varchar(200) NOT NULL, "id" integer NOT NULL PRIMARY KEY AUTOINCREMENT);
+CREATE TABLE "Student" ("name" varchar(35) NOT NULL, "last_name" varchar(35) NOT NULL, "patronymic" varchar(35) NOT NULL, "description" varchar(200) NOT NULL, "id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "credentials_id" integer NOT NULL UNIQUE REFERENCES "auth_user" ("id") DEFERRABLE INITIALLY DEFERRED);
 CREATE TABLE "Student_skills" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "student_id" integer NOT NULL REFERENCES "Student" ("id") DEFERRABLE INITIALLY DEFERRED, "skill_id" integer NOT NULL REFERENCES "Skill" ("id") DEFERRABLE INITIALLY DEFERRED);
 --
 -- Create model Subject

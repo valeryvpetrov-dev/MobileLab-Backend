@@ -1,10 +1,12 @@
 from django.db import models
+from django.contrib.auth.models import User
 from django.forms import ValidationError
 
 from datetime import datetime, timezone
 
 
 class Man(models.Model):
+    credentials = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=35)
     last_name = models.CharField(max_length=35)
     patronymic = models.CharField(max_length=35)
