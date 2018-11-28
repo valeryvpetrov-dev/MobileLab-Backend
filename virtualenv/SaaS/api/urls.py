@@ -1,5 +1,6 @@
 from django.urls import path
 
+from .views.auth import *
 from .views.curator import *
 from .views.student import *
 from .views.theme import *
@@ -7,6 +8,9 @@ from .views.work import *
 
 
 urlpatterns = [
+    # login branch
+    path('login', Login.as_view()),
+    path('logout', Logout.as_view()),
     # curator branch
     path('curators', CuratorList.as_view()),
     path('curators/<int:curator_id>', CuratorDetail.as_view()),
