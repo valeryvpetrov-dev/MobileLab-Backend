@@ -5,18 +5,18 @@ Util for filling database with test data
 import os
 
 from django.db import models
-from ..models.curator import Curator
-from ..models.student import Student
-from ..models.skill import Skill
-from ..models.theme import Subject, Theme
-from ..models.work import Work, WorkStep, WorkStepStatus, WorkStepMaterial, WorkStepComment
-from ..models.suggestion import SuggestionTheme, SuggestionThemeComment, SuggestionThemeStatus
+from SaaS.api.models.curator import Curator
+from SaaS.api.models.student import Student
+from SaaS.api.models.skill import Skill
+from SaaS.api.models.theme import Subject, Theme
+from SaaS.api.models.work import Work, WorkStep, WorkStepStatus, WorkStepMaterial, WorkStepComment
+from SaaS.api.models.suggestion import SuggestionTheme, SuggestionThemeStatus
 
-from .csv import *
+from SaaS.api.utils.db.csv import *
 
 import random
 from datetime import timedelta
-from .datetime_converter import str2dt
+from SaaS.api.utils.datetime_converter import str2dt
 
 date_field_name = ['date_creation', 'date_acceptance', 'date_start', 'date_finish']
 
