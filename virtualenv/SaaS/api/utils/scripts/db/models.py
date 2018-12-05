@@ -7,6 +7,7 @@ import os
 from django.db.models.manager import Manager
 from django.contrib.auth.models import Group, User
 
+from .csv import csv_entry_list_reader
 from ....models.curator import Curator
 from ....models.student import Student
 from ....models.skill import Skill
@@ -14,11 +15,9 @@ from ....models.theme import Subject, Theme
 from ....models.work import Work, WorkStep, WorkStepStatus, WorkStepMaterial, WorkStepComment
 from ....models.suggestion import SuggestionTheme, SuggestionThemeStatus
 
-from ....utils.db.csv import *
-
 import random
 from datetime import timedelta
-from ....utils.datetime_converter import str2dt
+from ...datetime_converter import str2dt
 
 date_field_name = ['date_creation', 'date_acceptance', 'date_start', 'date_finish']
 

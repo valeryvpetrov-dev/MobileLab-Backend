@@ -135,3 +135,8 @@ def create_students_group():
     #     group_curators.permissions.add(permission)
     # group_curators.save()
     # print("Group: {} permissions granted.".format(group_curators))
+
+
+def do():
+    create_curators_group()
+    create_students_group()
