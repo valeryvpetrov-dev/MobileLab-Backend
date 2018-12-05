@@ -71,35 +71,35 @@ TEMPLATES = [
 WSGI_APPLICATION = 'SaaS.wsgi.application'
 
 # Database
-# https://docs.djangoproject.com/en/2.1/ref/settings/#databases
-db_auth_properties = {}
-with open('./properties/postgres-test-db-auth.properties', 'r') as properties_file:
+# https://docs.djangoproject.com/en/2.1/ref/settings/#database
+db_properties = {}
+with open('./SaaS/config/postgres-db-test.properties', 'r') as properties_file:
     for line in properties_file:
         if not line.startswith("#"):
             (key, value) = line.split('=')
-            db_auth_properties[key] = value.strip()
+            db_properties[key] = value.strip()
 
 DATABASES = {
-    'default': {     # sqlite-test-db
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'test-db.sqlite3'),
-    },
-    'postgres-test-db': {   # postgres-test-db
+    # 'sqlite-test-db': {     # sqlite-test-db
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': os.path.join(BASE_DIR, 'test-db.sqlite3'),
+    # },
+    'default': {   # postgres-test-db
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'MobileLab-Backend-test-db',
-        'USER': db_auth_properties['user'],
-        'PASSWORD': db_auth_properties['password'],
-        'HOST': 'localhost',
-        'PORT': '',
+        'NAME': db_properties['db_name'],
+        'USER': db_properties['user'],
+        'PASSWORD': db_properties['password'],
+        'HOST': db_properties['host'],
+        'PORT': db_properties['port'],
     },
-    'postgres-prod-db': {   # postgres-prod-db
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'MobileLab-Backend-prod-db',
-        'USER': db_auth_properties['user'],
-        'PASSWORD': db_auth_properties['password'],
-        'HOST': 'localhost',
-        'PORT': '',
-    },
+    # 'postgres-production-db': {   # postgres-production-db
+    #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    #     'NAME': db_properties['db_name'],
+    #     'USER': db_properties['user'],
+    #     'PASSWORD': db_properties['password'],
+    #     'HOST': db_properties['host'],
+    #     'PORT': db_properties['port'],
+    # },
 }
 
 # Password validation
