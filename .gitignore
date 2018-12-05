@@ -141,5 +141,4 @@ venv.bak/
 *.sqlite3
 
 # secrets
-/virtualenv/SaaS/properties/postgres-test-db-auth.properties
-/virtualenv/SaaS/properties/postgres-prod-db-auth.properties
+/virtualenv/SaaS/SaaS/config/*.properties
