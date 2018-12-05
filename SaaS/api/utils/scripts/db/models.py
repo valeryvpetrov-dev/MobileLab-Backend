@@ -150,18 +150,18 @@ def init_line_theme_suggestion():
 
 
 def do():
-    path = r'E:\Python\Django\MobileLab-Backend\mylog\db\test-data'
-    migrate_to_db(Skill.objects, path + r'\skill.csv')
+    path = './api/mylog/db/test-data'
+    migrate_to_db(Skill.objects, path + '/skill.csv')
 
     User.objects.all().delete()
     print("All users(Manager: {}) deleted.".format(User.objects))
-    migrate_to_db_user(Curator.objects, User.objects, Group.objects.get(name="curators"), path + r'\curator.csv')
-    migrate_to_db_user(Student.objects, User.objects, Group.objects.get(name="students"), path + r'\student.csv')
+    migrate_to_db_user(Curator.objects, User.objects, Group.objects.get(name="curators"), path + '/curator.csv')
+    migrate_to_db_user(Student.objects, User.objects, Group.objects.get(name="students"), path + '/student.csv')
 
-    migrate_to_db(Subject.objects, path + r'\subject.csv')
-    migrate_to_db(Theme.objects, path + r'\theme.csv')
-    migrate_to_db(WorkStepStatus.objects, path + r'\work_step_status.csv')
-    migrate_to_db(SuggestionThemeStatus.objects, path + r'\suggestion_theme_status.csv')
+    migrate_to_db(Subject.objects, path + '/subject.csv')
+    migrate_to_db(Theme.objects, path + '/theme.csv')
+    migrate_to_db(WorkStepStatus.objects, path + '/work_step_status.csv')
+    migrate_to_db(SuggestionThemeStatus.objects, path + '/suggestion_theme_status.csv')
 
     skills = list(Skill.objects.all())
     link_skills_to_man(skills, list(Curator.objects.all()))
