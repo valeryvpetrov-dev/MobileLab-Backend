@@ -94,9 +94,6 @@ celerybeat-schedule
 *.sqlite
 *.sqlite3
 
-# secrets
-SaaS/SaaS/config/*.properties
-
 # my log
 SaaS/api/mylog/db/migrations/*
 SaaS/api/mylog/db/sql/*
