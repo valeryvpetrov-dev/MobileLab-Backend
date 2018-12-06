@@ -1,4 +1,4 @@
-# git ignore file for dev branch
+# git ignore file for release branch
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -93,9 +93,6 @@ celerybeat-schedule
 # sqlite database
 *.sqlite
 *.sqlite3
-
-# secrets
-SaaS/SaaS/config/*.properties
 
 # my log
 SaaS/api/mylog/db/migrations/*
