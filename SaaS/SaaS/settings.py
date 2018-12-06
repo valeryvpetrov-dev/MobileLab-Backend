@@ -12,8 +12,6 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 
 import os
 
-import django_heroku
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -94,14 +92,6 @@ DATABASES = {
         'HOST': db_properties['host'],
         'PORT': db_properties['port'],
     },
-    # 'postgres-production-db': {   # postgres-production-db
-    #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
-    #     'NAME': db_properties['db_name'],
-    #     'USER': db_properties['user'],
-    #     'PASSWORD': db_properties['password'],
-    #     'HOST': db_properties['host'],
-    #     'PORT': db_properties['port'],
-    # },
 }
 
 # Password validation
@@ -148,5 +138,3 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated', )
 }
-
-django_heroku.settings(locals())

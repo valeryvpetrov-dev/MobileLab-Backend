@@ -1,3 +1,5 @@
+# git ignore file for dev branch
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -96,7 +98,8 @@ celerybeat-schedule
 SaaS/SaaS/config/*.properties
 
 # my log
-SaaS/api/mylog
+SaaS/api/mylog/db/migrations/*
+SaaS/api/mylog/db/sql/*
 
 # virtual environments
-virtualenv/
+virtualenv/*
