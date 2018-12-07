@@ -1,0 +1,16 @@
+1. Perform migration of Django models, api application models to db
+    python manage.py migrate
+    - django.db.utils.ProgrammingError: ОШИБКА:  отношение "auth_group" не существует
+2. Comment IsMemberOfCuratorGroup class body
+3. Try again migration
+    python manage.py migrate
+    - Operations to perform: Apply all migrations: admin, api, auth, authtoken, contenttypes, sessions
+4. Uncomment IsMemberOfCuratorGroup class body
+5. Fill authentication stuff data
+    python manage.py shell
+    >> from api.utils.scripts.db.auth import do
+    >> do()
+6. Fill api application part of db with test data
+    python manage.py shell
+    >> from api.utils.scripts.db.models import do
+    >> do()
