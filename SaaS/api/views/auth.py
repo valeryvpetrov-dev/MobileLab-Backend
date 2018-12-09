@@ -12,7 +12,7 @@ class Login(APIView):
     Methods: POST
     Description: Login view
     """
-    permission_classes = (AllowAny, )
+    permission_classes = (AllowAny,)
 
     def post(self, request):
         username = request.data.get("username")
@@ -24,9 +24,10 @@ class Login(APIView):
         if not user:
             return Response({'error': 'Invalid Credentials'},
                             status=status.HTTP_404_NOT_FOUND)
-        token, created = Token.objects.get_or_create(user=user)    # exception is here
+        token, created = Token.objects.get_or_create(user=user)  # exception is here
         login(request, user)
-        return Response({'token': token.key},
+        return Response({'token': token.key,
+                         'user_id': token.user_id},  # !ATTENTION! gets ID from auth_user, not Curator/Student.
                         status=status.HTTP_200_OK)
 
 
@@ -35,7 +36,7 @@ class Logout(APIView):
     Methods: POST
     Description: Logout view
     """
-    permission_classes = (IsAuthenticated, )
+    permission_classes = (IsAuthenticated,)
 
     def post(self, request):
         logout(request)

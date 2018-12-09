@@ -2,10 +2,10 @@
     python manage.py migrate
     - Operations to perform: Apply all migrations: admin, api, auth, authtoken, contenttypes, sessions
 2. Fill authentication stuff data
-    python ./SaaS/manage.py shell
+    heroku run python ./SaaS/manage.py shell
     >> from api.utils.scripts.db.auth import do
     >> do()
 3. Fill api application part of db with test data
-    python ./SaaS/manage.py shell
+    heroku run python ./SaaS/manage.py shell
     >> from api.utils.scripts.db.models import do
     >> do()
