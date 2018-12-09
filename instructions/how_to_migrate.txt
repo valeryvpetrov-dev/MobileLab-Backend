@@ -1,0 +1,11 @@
+1. Perform migration of Django models, api application models to db
+    python manage.py migrate
+    - Operations to perform: Apply all migrations: admin, api, auth, authtoken, contenttypes, sessions
+2. Fill authentication stuff data
+    heroku run python ./SaaS/manage.py shell
+    >> from api.utils.scripts.db.auth import do
+    >> do()
+3. Fill api application part of db with test data
+    heroku run python ./SaaS/manage.py shell
+    >> from api.utils.scripts.db.models import do
+    >> do()

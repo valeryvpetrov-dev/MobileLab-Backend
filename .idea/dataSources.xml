@@ -18,5 +18,15 @@
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
       <jdbc-url>jdbc:postgresql://localhost:5432/SaaS-api_db_test</jdbc-url>
     </data-source>
+    <data-source source="LOCAL" name="postgres-db-heroku" uuid="b328d3f9-e73a-48db-b301-b76d72e8bf48">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://ec2-79-125-26-222.eu-west-1.compute.amazonaws.com:5432/d1tjqtp9h5u9c</jdbc-url>
+      <driver-properties>
+        <property name="ssl" value="true" />
+        <property name="sslfactory" value="org.postgresql.ssl.NonValidatingFactory" />
+      </driver-properties>
+    </data-source>
   </component>
 </project>
