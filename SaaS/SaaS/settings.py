@@ -12,6 +12,10 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 
 import os
 
+import dj_database_url
+
+import django_heroku
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -37,7 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
-    "api"
+    'api'
 ]
 
 MIDDLEWARE = [
@@ -72,26 +76,8 @@ WSGI_APPLICATION = 'SaaS.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#database
-db_properties = {}
-with open('./SaaS/config/postgres-db-test.properties', 'r') as properties_file:
-    for line in properties_file:
-        if not line.startswith("#"):
-            (key, value) = line.split('=')
-            db_properties[key] = value.strip()
-
 DATABASES = {
-    # 'sqlite-test-db': {     # sqlite-test-db
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': os.path.join(BASE_DIR, 'test-db.sqlite3'),
-    # },
-    'default': {   # postgres-test-db
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': db_properties['db_name'],
-        'USER': db_properties['user'],
-        'PASSWORD': db_properties['password'],
-        'HOST': db_properties['host'],
-        'PORT': db_properties['port'],
-    },
+    'default': dj_database_url.config()
 }
 
 # Password validation
@@ -138,3 +124,5 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated', )
 }
+
+django_heroku.settings(locals())

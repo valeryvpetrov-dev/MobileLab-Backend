@@ -1,4 +1,4 @@
-# git ignore file for dev branch
+# git ignore file for release branch
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
