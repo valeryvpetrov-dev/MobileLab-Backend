@@ -55,7 +55,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'SaaS.urls'
+ROOT_URLCONF = 'SaaS.SaaS.urls'
 
 TEMPLATES = [
     {
@@ -78,15 +78,7 @@ WSGI_APPLICATION = 'SaaS.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#database
 DATABASES = {
-    # 'default': dj_database_url.config()
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'SaaS-api_db_test',
-        'USER': 'SaaS-api_role_user',
-        'PASSWORD': 'SaaS-api_role_user',
-        'HOST': 'localhost',
-        'PORT': '',
-    },
+    'default': dj_database_url.config()
 }
 
 # Password validation
