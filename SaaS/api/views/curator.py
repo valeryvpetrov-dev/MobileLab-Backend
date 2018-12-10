@@ -18,11 +18,14 @@ from ..serializers.suggestion import SuggestionThemeSerializer, SuggestionThemeC
 
 from ..permissions.group_curators import IsMemberOfCuratorsGroup
 
+from rest_framework.authentication import TokenAuthentication
+
 
 class CuratorBaseView(APIView):
     """
     Curator base view
     """
+    authentication_classes = (TokenAuthentication, )
     permission_classes = (IsAuthenticated, IsMemberOfCuratorsGroup, )   # TODO Change behavior when student app will be developed
 
     def get_curator(self, pk):

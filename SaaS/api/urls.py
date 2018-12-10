@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 
 from rest_framework_swagger.views import get_swagger_view
 
@@ -10,7 +10,7 @@ from .views.work import *
 
 
 urlpatterns = [
-    # swagger
+    # docs
     path('', get_swagger_view(title="MobileLab-Backend API")),
     # login branch
     path('login', Login.as_view()),

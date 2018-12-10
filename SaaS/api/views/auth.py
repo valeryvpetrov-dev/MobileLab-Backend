@@ -12,8 +12,8 @@ from ..serializers.auth import UserSerializer
 
 class Login(CreateAPIView):
     """
-    Methods: POST
-    Description: Login view
+    post:
+    Perform login via 'username', 'password' credentials.
     """
     permission_classes = (AllowAny,)
     serializer_class = UserSerializer
@@ -35,13 +35,14 @@ class Login(CreateAPIView):
                         status=status.HTTP_200_OK)
 
 
-class Logout(GenericAPIView):
+class Logout(CreateAPIView):
     """
     Methods: POST
     Description: Logout view
     """
     permission_classes = (IsAuthenticated,)
+    serializer_class = UserSerializer
 
-    def post(self, request):
+    def post(self, request, *args, **kwargs):
         logout(request)
         return Response(status=status.HTTP_200_OK)
