@@ -13,7 +13,7 @@ from ..serializers.auth import UserSerializer
 class Login(CreateAPIView):
     """
     post:
-    Perform login via 'username', 'password' credentials.
+    LOGIN - 'username', 'password' credentials. Returns token, user_id.
     """
     permission_classes = (AllowAny,)
     serializer_class = UserSerializer
@@ -37,8 +37,8 @@ class Login(CreateAPIView):
 
 class Logout(CreateAPIView):
     """
-    Methods: POST
-    Description: Logout view
+    post:
+    LOGOUT.
     """
     permission_classes = (IsAuthenticated,)
     serializer_class = UserSerializer

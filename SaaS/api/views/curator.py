@@ -2,6 +2,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.generics import ListAPIView
+from rest_framework.authentication import TokenAuthentication
 
 from django.http import Http404
 
@@ -18,10 +20,8 @@ from ..serializers.suggestion import SuggestionThemeSerializer, SuggestionThemeC
 
 from ..permissions.group_curators import IsMemberOfCuratorsGroup
 
-from rest_framework.authentication import TokenAuthentication
 
-
-class CuratorBaseView(APIView):
+class CuratorBaseViewAbstract:
     """
     Curator base view
     """
@@ -63,42 +63,33 @@ class CuratorBaseView(APIView):
             raise Http404
 
 
-class CuratorList(CuratorBaseView):
+class CuratorBaseView(CuratorBaseViewAbstract, APIView):
+    pass
+
+
+class CuratorList(CuratorBaseViewAbstract, ListAPIView):
     """
-    Methods: GET
-    Description: List of curators
+    get:
+    READ - List of curators.
     """
-    def get(self, request):
-        """
-        READ: Curator list
-        :return: json of curator list
-        """
-        curators = Curator.objects.all()
-        serializer = CuratorSerializerNoSkills(curators, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+    queryset = Curator.objects.all()
+    serializer_class = CuratorSerializerNoSkills
 
 
 class CuratorDetail(CuratorBaseView):
     """
-    Methods: GET, PUT
-    Description: Curator details
+    get:
+    READ - Curator instance details.
+
+    put:
+    UPDATE - Curator instance details.
     """
     def get(self, request, curator_id):
-        """
-        READ: Curator details
-        :return: json of curator
-        """
         curator = self.get_curator(curator_id)
         serializer = CuratorSerializerSkillsIntermediate(curator)
         return Response(serializer.data)
 
     def put(self, request, curator_id):
-        """
-        UPDATE: Curator details
-        :param request: json of updated curator
-        :param curator_id:
-        :return: json of updated curator
-        """
         curator = self.get_curator(curator_id)
         serializer = CuratorSerializerSkillsID(curator, data=request.data)
         if serializer.is_valid():
@@ -110,14 +101,10 @@ class CuratorDetail(CuratorBaseView):
 # related skills
 class CuratorSkillList(CuratorBaseView):
     """
-    Methods: GET
-    Description: Curator related skills
+    get:
+    READ - List of curator instance related skills.
     """
     def get(self, request, curator_id):
-        """
-        READ: Curator skills list
-        :return: json of curator skills list
-        """
         curator = self.get_curator(curator_id)
         serializer = SkillSerializer(curator.skills, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
@@ -126,14 +113,13 @@ class CuratorSkillList(CuratorBaseView):
 # related works
 class CuratorWorkList(CuratorBaseView):
     """
-    Methods: GET, POST
-    Description: Curator related works
+    get:
+    READ - List of curator instance related works.
+
+    post:
+    CREATE - Curator instance related work.
     """
     def get(self, request, curator_id):
-        """
-        READ: Curator works list
-        :return: json of curator works list
-        """
         curator = self.get_curator(curator_id)
         related_works = []
         for theme in curator.theme_set.all():
@@ -143,12 +129,6 @@ class CuratorWorkList(CuratorBaseView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request, curator_id):
-        """
-        CREATE: Curator work
-        :param request: json of new work
-        :param curator_id:
-        :return: json of created work
-        """
         curator = self.get_curator(curator_id)
         serializer = WorkSerializer(data=request.data)
         if serializer.is_valid():
@@ -160,14 +140,16 @@ class CuratorWorkList(CuratorBaseView):
 
 class CuratorWorkDetail(CuratorBaseView):
     """
-    Methods: GET, PUT, DELETE
-    Description: Curator related work details
+    get:
+    READ - Curator instance related work.
+
+    put:
+    UPDATE - Curator instance related work.
+
+    delete:
+    DELETE - Curator instance related work.
     """
     def get(self, request, curator_id, work_id):
-        """
-        READ: Curator related work details
-        :return: json of curator related work
-        """
         curator = self.get_curator(curator_id)
         work = self.get_related_work(curator, work_id)
         if work:
@@ -176,13 +158,6 @@ class CuratorWorkDetail(CuratorBaseView):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     def put(self, request, curator_id, work_id):
-        """
-        UPDATE: Curator related work details
-        :param request: json of updated work
-        :param curator_id:
-        :param work_id:
-        :return: json of updated curator related work
-        """
         curator = self.get_curator(curator_id)
         work = self.get_related_work(curator, work_id)
         serializer = WorkSerializer(work, data=request.data)
@@ -192,13 +167,6 @@ class CuratorWorkDetail(CuratorBaseView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, curator_id, work_id):
-        """
-        DELETE: Curator related work
-        :param request:
-        :param curator_id:
-        :param work_id:
-        :return: json of deleted curator related work
-        """
         curator = self.get_curator(curator_id)
         work = self.get_related_work(curator, work_id)
         serializer = WorkSerializer(work)
@@ -210,14 +178,13 @@ class CuratorWorkDetail(CuratorBaseView):
 # related work-steps
 class CuratorWorkStepList(CuratorBaseView):
     """
-    Methods: GET, POST
-    Description: Curator related work steps
+    get:
+    READ - Curator instance related work steps.
+
+    post:
+    CREATE - Curator instance related work step.
     """
     def get(self, request, curator_id, work_id):
-        """
-        READ: Curator related work steps list
-        :return: json of curator related work steps list
-        """
         work = self.get_related_work(self.get_curator(curator_id), work_id)
         related_steps = []
         for step in work.step_set.all():
@@ -226,13 +193,6 @@ class CuratorWorkStepList(CuratorBaseView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request, curator_id, work_id):
-        """
-        CREATE: Curator related work step
-        :param request: json of new step
-        :param curator_id:
-        :param work_id:
-        :return: json of new step
-        """
         work = self.get_related_work(self.get_curator(curator_id), work_id)
         serializer = WorkStepSerializer(data=request.data)
         if serializer.is_valid():
@@ -244,14 +204,16 @@ class CuratorWorkStepList(CuratorBaseView):
 
 class CuratorWorkStepDetail(CuratorBaseView):
     """
-    Methods: GET, PUT, DELETE
-    Description: Curator related work step details
+    get:
+    READ - Curator instance related work step details.
+
+    put:
+    UPDATE - Curator instance related work step details.
+
+    delete:
+    DELETE - Curator instance related work step.
     """
     def get(self, request, curator_id, work_id, step_id):
-        """
-        READ: Curator related work step details
-        :return: json of curator related work step
-        """
         curator = self.get_curator(curator_id)
         related_work = self.get_related_work(curator, work_id)
         step = self.get_related_step(related_work, step_id)
@@ -261,14 +223,6 @@ class CuratorWorkStepDetail(CuratorBaseView):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     def put(self, request, curator_id, work_id, step_id):
-        """
-        UPDATE: Curator related work step details
-        :param request: json of updated work step
-        :param curator_id:
-        :param work_id:
-        :param step_id:
-        :return: json of updated curator related work step
-        """
         curator = self.get_curator(curator_id)
         related_work = self.get_related_work(curator, work_id)
         step = self.get_related_step(related_work, step_id)
@@ -279,14 +233,6 @@ class CuratorWorkStepDetail(CuratorBaseView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, curator_id, work_id, step_id):
-        """
-        DELETE: Curator related work step
-        :param request:
-        :param curator_id:
-        :param work_id:
-        :param step_id: step to delete
-        :return: json of deleted curator related work step
-        """
         curator = self.get_curator(curator_id)
         related_work = self.get_related_work(curator, work_id)
         step = self.get_related_step(related_work, step_id)
@@ -299,14 +245,13 @@ class CuratorWorkStepDetail(CuratorBaseView):
 # related work-step-materials
 class CuratorWorkStepMaterialList(CuratorBaseView):
     """
-    Methods: GET, POST
-    Description: Curator related work step materials
+    get:
+    READ - Curator instance related work step materials.
+
+    post:
+    CREATE - Curator instance related work step material.
     """
     def get(self, request, curator_id, work_id, step_id):
-        """
-        READ: Curator related work step materials list
-        :return: json of curator related work steps materials list
-        """
         curator = self.get_curator(curator_id)
         related_work = self.get_related_work(curator, work_id)
         step = self.get_related_step(related_work, step_id)
@@ -317,14 +262,6 @@ class CuratorWorkStepMaterialList(CuratorBaseView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request, curator_id, work_id, step_id):
-        """
-        CREATE: Curator related work step material
-        :param request: json of new material
-        :param curator_id:
-        :param work_id:
-        :param step_id:
-        :return: json of new material
-        """
         curator = self.get_curator(curator_id)
         related_work = self.get_related_work(curator, work_id)
         step = self.get_related_step(related_work, step_id)
@@ -339,14 +276,13 @@ class CuratorWorkStepMaterialList(CuratorBaseView):
 # related work-step-comments
 class CuratorWorkStepCommentList(CuratorBaseView):
     """
-    Methods: GET, POST
-    Description: Curator related work step comments
+    get:
+    READ - Curator instance related work step comments.
+
+    post:
+    CREATE - Curator instance related work step comment.
     """
     def get(self, request, curator_id, work_id, step_id):
-        """
-        READ: Curator related work step comments list
-        :return: json of curator related work steps comments list
-        """
         curator = self.get_curator(curator_id)
         related_work = self.get_related_work(curator, work_id)
         step = self.get_related_step(related_work, step_id)
@@ -357,14 +293,6 @@ class CuratorWorkStepCommentList(CuratorBaseView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request, curator_id, work_id, step_id):
-        """
-        CREATE: Curator related work step comment
-        :param request: json of new comment
-        :param curator_id:
-        :param work_id:
-        :param step_id:
-        :return: json of new comment
-        """
         curator = self.get_curator(curator_id)
         related_work = self.get_related_work(curator, work_id)
         step = self.get_related_step(related_work, step_id)
@@ -379,25 +307,18 @@ class CuratorWorkStepCommentList(CuratorBaseView):
 # related themes
 class CuratorThemeList(CuratorBaseView):
     """
-    Methods: GET, POST
-    Description: Curator related themes
+    get:
+    READ - Curator instance related themes.
+
+    post:
+    CREATE - Curator instance related theme.
     """
     def get(self, request, curator_id):
-        """
-        READ: Curator themes list
-        :return: json of curator themes list
-        """
         curator = self.get_curator(curator_id)
         serializer = ThemeSerializerRelatedIntermediate(curator.theme_set, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request, curator_id):
-        """
-        CREATE: Curator theme
-        :param request: json of new theme
-        :param curator_id:
-        :return: json of created theme
-        """
         curator = self.get_curator(curator_id)
         serializer = ThemeSerializerRelatedIntermediate(data=request.data)
         if serializer.is_valid():
@@ -409,14 +330,16 @@ class CuratorThemeList(CuratorBaseView):
 
 class CuratorThemeDetail(CuratorBaseView):
     """
-    Methods: GET, PUT, DELETE
-    Description: Curator related theme details
+    get:
+    READ - Curator instance related theme details.
+
+    put:
+    UPDATE - Curator instance related theme details.
+
+    delete:
+    DELETE - Curator instance related theme.
     """
     def get(self, request, curator_id, theme_id):
-        """
-        READ: Curator related theme details
-        :return: json of curator related theme
-        """
         curator = self.get_curator(curator_id)
         theme = self.get_related_theme(curator, theme_id)
         if theme:
@@ -425,13 +348,6 @@ class CuratorThemeDetail(CuratorBaseView):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     def put(self, request, curator_id, theme_id):
-        """
-        UPDATE: Curator related theme details
-        :param request: json of updated theme
-        :param curator_id:
-        :param theme_id:
-        :return: json of updated curator related theme
-        """
         curator = self.get_curator(curator_id)
         theme = self.get_related_theme(curator, theme_id)
         serializer = ThemeSerializerRelatedID(theme, data=request.data)
@@ -441,13 +357,6 @@ class CuratorThemeDetail(CuratorBaseView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, curator_id, theme_id):
-        """
-        DELETE: Curator related theme
-        :param request:
-        :param curator_id:
-        :param theme_id: theme to delete
-        :return: json of deleted curator related theme
-        """
         curator = self.get_curator(curator_id)
         theme = self.get_related_theme(curator, theme_id)
         serializer = ThemeSerializerRelatedID(theme)
@@ -459,25 +368,18 @@ class CuratorThemeDetail(CuratorBaseView):
 # related suggestions
 class CuratorSuggestionList(CuratorBaseView):
     """
-    Methods: GET, POST
-    Description: Curator related suggestions
+    get:
+    READ - Curator instance related suggestions.
+
+    post:
+    CREATE - Curator instance related suggestion.
     """
     def get(self, request, curator_id):
-        """
-        READ: Curator suggestions list
-        :return: json of curator suggestions list
-        """
         curator = self.get_curator(curator_id)
         serializer = SuggestionThemeSerializer(curator.suggestiontheme_set, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request, curator_id):
-        """
-        CREATE: Curator suggestion
-        :param request: json of new suggestion
-        :param curator_id:
-        :return: json of created suggestion
-        """
         curator = self.get_curator(curator_id)
         serializer = SuggestionThemeSerializer(data=request.data)
         if serializer.is_valid():
@@ -489,14 +391,16 @@ class CuratorSuggestionList(CuratorBaseView):
 
 class CuratorSuggestionDetail(CuratorBaseView):
     """
-    Methods: GET, PUT, DELETE
-    Description: Curator related suggestion details
+    get:
+    READ - Curator instance related suggestion details.
+
+    put:
+    UPDATE - Curator instance related suggestion details.
+
+    delete:
+    DELETE - Curator instance related suggestion.
     """
     def get(self, request, curator_id, suggestion_id):
-        """
-        READ: Curator related suggestion details
-        :return: json of curator related suggestion
-        """
         curator = self.get_curator(curator_id)
         suggestion = self.get_related_suggestion(curator, suggestion_id)
         if suggestion:
@@ -505,13 +409,6 @@ class CuratorSuggestionDetail(CuratorBaseView):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     def put(self, request, curator_id, suggestion_id):
-        """
-        UPDATE: Curator related suggestion details
-        :param request: json of updated suggestion
-        :param curator_id:
-        :param suggestion_id:
-        :return: json of updated curator related suggestion
-        """
         curator = self.get_curator(curator_id)
         suggestion = self.get_related_suggestion(curator, suggestion_id)
         serializer = SuggestionThemeSerializer(suggestion, data=request.data)
@@ -521,13 +418,6 @@ class CuratorSuggestionDetail(CuratorBaseView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, curator_id, suggestion_id):
-        """
-        DELETE: Curator related suggestion
-        :param request:
-        :param curator_id:
-        :param suggestion_id: suggestion to delete
-        :return: json of deleted curator related suggestion
-        """
         curator = self.get_curator(curator_id)
         suggestion = self.get_related_suggestion(curator, suggestion_id)
         serializer = SuggestionThemeSerializer(suggestion)
@@ -539,27 +429,19 @@ class CuratorSuggestionDetail(CuratorBaseView):
 # related suggestion-comments
 class CuratorSuggestionCommentList(CuratorBaseView):
     """
-    Methods: GET, POST
-    Description: Curator related suggestion comments
+    get:
+    READ - Curator instance related suggestion comments.
+
+    post:
+    CREATE - Curator instance related suggestion comment.
     """
     def get(self, request, curator_id, suggestion_id):
-        """
-        READ: Curator suggestion comments list
-        :return: json of curator suggestion comments list
-        """
         curator = self.get_curator(curator_id)
         suggestion = self.get_related_suggestion(curator, suggestion_id)
         serializer = SuggestionThemeCommentSerializer(suggestion.comment_set, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request, curator_id, suggestion_id):
-        """
-        CREATE: Curator suggestion comment
-        :param request: json of new comment
-        :param curator_id:
-        :param suggestion_id:
-        :return: json of created comment
-        """
         curator = self.get_curator(curator_id)
         suggestion = self.get_related_suggestion(curator, suggestion_id)
         serializer = SuggestionThemeCommentSerializer(data=request.data)

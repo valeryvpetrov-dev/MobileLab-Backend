@@ -2,6 +2,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.generics import ListAPIView
+from rest_framework.authentication import TokenAuthentication
 
 from django.http import Http404
 
@@ -12,10 +14,11 @@ from ..serializers.work import WorkSerializer, WorkStepSerializer, WorkStepMater
 from ..permissions.group_curators import IsMemberOfCuratorsGroup
 
 
-class WorkBaseView(APIView):
+class WorkBaseViewAbstract:
     """
     Work base view
     """
+    authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated, IsMemberOfCuratorsGroup,)  # TODO Change behavior when student app will be developed
 
     def get_work(self, pk):
@@ -31,33 +34,25 @@ class WorkBaseView(APIView):
             raise Http404
 
 
-class WorkList(WorkBaseView):
-    """
-    Methods: GET
-    Description: List of works
-    """
+class WorkBaseView(WorkBaseViewAbstract, APIView):
+    pass
 
-    def get(self, request):
-        """
-        READ: Work list
-        :return: json of work list
-        """
-        works = Work.objects.all()
-        serializer = WorkSerializer(works, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+
+class WorkList(WorkBaseViewAbstract, ListAPIView):
+    """
+    get:
+    READ - List of works.
+    """
+    queryset = Work.objects.all()
+    serializer_class = WorkSerializer
 
 
 class WorkDetail(WorkBaseView):
     """
-    Methods: GET
-    Description: Work details
+    get:
+    READ - Work instance details.
     """
-
     def get(self, request, work_id):
-        """
-        READ: Work details
-        :return: json of Work
-        """
         work = self.get_work(work_id)
         serializer = WorkSerializer(work)
         return Response(serializer.data)
@@ -65,30 +60,22 @@ class WorkDetail(WorkBaseView):
 
 # related steps
 class WorkStepList(WorkBaseView):
-    """
-    Methods: GET
-    Description: Work related steps
+    """"
+    get:
+    READ - Work instance related steps.
     """
     def get(self, request, work_id):
-        """
-        READ: Work steps list
-        :return: json of work steps list
-        """
         work = self.get_work(work_id)
         serializer = WorkStepSerializer(work.step_set, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class WorkStepDetail(WorkBaseView):
-    """
-    Methods: GET
-    Description: Work related step details
+    """"
+    get:
+    READ - Work instance related step details.
     """
     def get(self, request, work_id, step_id):
-        """
-        READ: Work related step details
-        :return: json of work related step
-        """
         work = self.get_work(work_id)
         step = self.get_related_step(work, step_id)
         serializer = WorkStepSerializer(step)
@@ -97,16 +84,11 @@ class WorkStepDetail(WorkBaseView):
 
 # related step-materials
 class WorkStepMaterialList(WorkBaseView):
+    """"
+    get:
+    READ - Work instance related step materials.
     """
-    Methods: GET
-    Description: Work step related materials
-    """
-
     def get(self, request, work_id, step_id):
-        """
-        READ: Work steps materials list
-        :return: json of work step materials list
-        """
         work = self.get_work(work_id)
         step = self.get_related_step(work, step_id)
         serializer = WorkStepMaterialSerializer(step.material_set, many=True)
