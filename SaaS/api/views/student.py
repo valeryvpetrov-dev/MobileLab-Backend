@@ -3,6 +3,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import permission_classes
+from rest_framework.generics import ListAPIView
+from rest_framework.authentication import TokenAuthentication
 
 from django.http import Http404
 
@@ -20,10 +22,12 @@ from ..serializers.suggestion import SuggestionThemeSerializer, SuggestionThemeC
 from ..permissions.group_curators import IsMemberOfCuratorsGroup
 
 
-class StudentBaseView(APIView):
+class StudentBaseViewAbstract:
     """
     Student base view
     """
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated, IsMemberOfCuratorsGroup,)  # TODO Change behavior when student app will be developed
 
     def get_student(self, pk):
         try:
@@ -60,46 +64,35 @@ class StudentBaseView(APIView):
             raise Http404
 
 
-class StudentList(StudentBaseView):
+class StudentBaseView(StudentBaseViewAbstract, APIView):
+    pass
+
+
+class StudentList(StudentBaseViewAbstract, ListAPIView):
     """
-    Methods: GET
-    Description: List of students
+    get:
+    READ - List of students.
     """
     permission_classes = (IsAuthenticated, IsMemberOfCuratorsGroup, )   # TODO Change behavior when student app will be developed
-
-    def get(self, request):
-        """
-        READ: Student list
-        :return: json of Student list
-        """
-        students = Student.objects.all()
-        serializer = StudentSerializerSkillsIntermediate(students, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+    queryset = Student.objects.all()
+    serializer_class = StudentSerializerSkillsID
 
 
 class StudentDetail(StudentBaseView):
     """
-    Methods: GET, PUT
-    Description: Student details
-    """
+    get:
+    READ - Student instance details.
 
+    put:
+    UPDATE - Student instance details.
+    """
     @permission_classes((IsAuthenticated, IsMemberOfCuratorsGroup, ))   # TODO Change behavior when student app will be developed
     def get(self, request, student_id):
-        """
-        READ: Student details
-        :return: json of student
-        """
         student = self.get_student(student_id)
         serializer = StudentSerializerSkillsIntermediate(student)
         return Response(serializer.data)
 
     def put(self, request, student_id):
-        """
-        UPDATE: Student details
-        :param request: json of updated student
-        :param student_id:
-        :return: json of updated student
-        """
         student = self.get_student(student_id)
         serializer = StudentSerializerSkillsID(student, data=request.data)
         if serializer.is_valid():
@@ -111,16 +104,12 @@ class StudentDetail(StudentBaseView):
 # related skills
 class StudentSkillList(StudentBaseView):
     """
-    Methods: GET
-    Description: Student related skills
+    get:
+    READ - List of student instance related skills.
     """
     permission_classes = (IsAuthenticated, IsMemberOfCuratorsGroup,)  # TODO Change behavior when student app will be developed
 
     def get(self, request, student_id):
-        """
-        READ: Student skills list
-        :return: json of student skills list
-        """
         student = self.get_student(student_id)
         serializer = SkillSerializer(student.skills, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
@@ -129,16 +118,14 @@ class StudentSkillList(StudentBaseView):
 # related works
 class StudentWorkList(StudentBaseView):
     """
-    Methods: GET, POST
-    Description: Student related works
-    """
+    get:
+    READ - List of student instance related works.
 
+    post:
+    CREATE - Student instance related work.
+    """
     @permission_classes((IsAuthenticated, IsMemberOfCuratorsGroup, )) # TODO Change behavior when student app will be developed
     def get(self, request, student_id):
-        """
-        READ: Student works list
-        :return: json of student works list
-        """
         student = self.get_student(student_id)
         related_works = []
         for theme in student.theme_set.all():
@@ -148,12 +135,6 @@ class StudentWorkList(StudentBaseView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request, student_id):
-        """
-        CREATE: Student work
-        :param request: json of new work
-        :param student_id:
-        :return: json of created work
-        """
         student = self.get_student(student_id)
         serializer = WorkSerializer(data=request.data)
         if serializer.is_valid():
@@ -165,16 +146,17 @@ class StudentWorkList(StudentBaseView):
 
 class StudentWorkDetail(StudentBaseView):
     """
-    Methods: GET, PUT
-    Description: Student related work details
-    """
+    get:
+    READ - Student instance related work.
 
+    put:
+    UPDATE - Student instance related work.
+
+    delete:
+    DELETE - Student instance related work.
+    """
     @permission_classes((IsAuthenticated, IsMemberOfCuratorsGroup,))  # TODO Change behavior when student app will be developed
     def get(self, request, student_id, work_id):
-        """
-        READ: Student related work details
-        :return: json of student related work
-        """
         student = self.get_student(student_id)
         work = self.get_related_work(student, work_id)
         if work:
@@ -183,13 +165,6 @@ class StudentWorkDetail(StudentBaseView):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     def put(self, request, student_id, work_id):
-        """
-        UPDATE: Student related work details
-        :param request: json of updated work
-        :param student_id:
-        :param work_id:
-        :return: json of updated student related work
-        """
         student = self.get_student(student_id)
         work = self.get_related_work(student, work_id)
         serializer = WorkSerializer(work, data=request.data)
@@ -202,16 +177,14 @@ class StudentWorkDetail(StudentBaseView):
 # related work-steps
 class StudentWorkStepList(StudentBaseView):
     """
-    Methods: GET, POST
-    Description: Student related work steps
-    """
+    get:
+    READ - Student instance related work steps.
 
+    post:
+    CREATE - Student instance related work step.
+    """
     @permission_classes((IsAuthenticated, IsMemberOfCuratorsGroup,))  # TODO Change behavior when student app will be developed
     def get(self, request, student_id, work_id):
-        """
-        READ: Student related work steps list
-        :return: json of student related work steps list
-        """
         work = self.get_related_work(self.get_student(student_id), work_id)
         related_steps = []
         for step in work.step_set.all():
@@ -220,13 +193,6 @@ class StudentWorkStepList(StudentBaseView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request, student_id, work_id):
-        """
-        CREATE: Student related work step
-        :param request: json of new step
-        :param student_id:
-        :param work_id:
-        :return: json of new step
-        """
         work = self.get_related_work(self.get_student(student_id), work_id)
         serializer = WorkStepSerializer(data=request.data)
         if serializer.is_valid():
@@ -238,16 +204,17 @@ class StudentWorkStepList(StudentBaseView):
 
 class StudentWorkStepDetail(StudentBaseView):
     """
-    Methods: GET, PUT
-    Description: Student related work step details
-    """
+    get:
+    READ - Student instance related work step details.
 
+    put:
+    UPDATE - Student instance related work step details.
+
+    delete:
+    DELETE - Student instance related work step.
+    """
     @permission_classes((IsAuthenticated, IsMemberOfCuratorsGroup,))  # TODO Change behavior when student app will be developed
     def get(self, request, student_id, work_id, step_id):
-        """
-        READ: Student related work step details
-        :return: json of student related work step
-        """
         student = self.get_student(student_id)
         related_work = self.get_related_work(student, work_id)
         step = self.get_related_step(related_work, step_id)
@@ -257,14 +224,6 @@ class StudentWorkStepDetail(StudentBaseView):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     def put(self, request, student_id, work_id, step_id):
-        """
-        UPDATE: Student related work step details
-        :param request: json of updated work step
-        :param student_id:
-        :param work_id:
-        :param step_id:
-        :return: json of updated student related work step
-        """
         student = self.get_student(student_id)
         related_work = self.get_related_work(student, work_id)
         step = self.get_related_step(related_work, step_id)
@@ -278,17 +237,15 @@ class StudentWorkStepDetail(StudentBaseView):
 # related work-step-materials
 class StudentWorkStepMaterialList(StudentBaseView):
     """
-    Methods: GET, POST
-    Description: Student related work step materials
-    """
+    get:
+    READ - Student instance related work step materials.
 
+    post:
+    CREATE - Student instance related work step material.
+    """
     @permission_classes(
         (IsAuthenticated, IsMemberOfCuratorsGroup,))  # TODO Change behavior when student app will be developed
     def get(self, request, student_id, work_id, step_id):
-        """
-        READ: Student related work step materials list
-        :return: json of student related work steps materials list
-        """
         student = self.get_student(student_id)
         related_work = self.get_related_work(student, work_id)
         step = self.get_related_step(related_work, step_id)
@@ -299,14 +256,6 @@ class StudentWorkStepMaterialList(StudentBaseView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request, student_id, work_id, step_id):
-        """
-        CREATE: Student related work step material
-        :param request: json of new material
-        :param student_id:
-        :param work_id:
-        :param step_id:
-        :return: json of new material
-        """
         student = self.get_student(student_id)
         related_work = self.get_related_work(student, work_id)
         step = self.get_related_step(related_work, step_id)
@@ -321,17 +270,15 @@ class StudentWorkStepMaterialList(StudentBaseView):
 # related work-step-comments
 class StudentWorkStepCommentList(StudentBaseView):
     """
-    Methods: GET, POST
-    Description: Student related work step comments
-    """
+    get:
+    READ - Student instance related work step comments.
 
+    post:
+    CREATE - Student instance related work step comment.
+    """
     @permission_classes(
         (IsAuthenticated, IsMemberOfCuratorsGroup,))  # TODO Change behavior when student app will be developed
     def get(self, request, student_id, work_id, step_id):
-        """
-        READ: Student related work step comments list
-        :return: json of student related work steps comments list
-        """
         student = self.get_student(student_id)
         related_work = self.get_related_work(student, work_id)
         step = self.get_related_step(related_work, step_id)
@@ -342,14 +289,6 @@ class StudentWorkStepCommentList(StudentBaseView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request, student_id, work_id, step_id):
-        """
-        CREATE: Student related work step comment
-        :param request: json of new comment
-        :param student_id:
-        :param work_id:
-        :param step_id:
-        :return: json of new comment
-        """
         student = self.get_student(student_id)
         related_work = self.get_related_work(student, work_id)
         step = self.get_related_step(related_work, step_id)
@@ -364,28 +303,20 @@ class StudentWorkStepCommentList(StudentBaseView):
 # related themes
 class StudentThemeList(StudentBaseView):
     """
-    Methods: GET, POST
-    Description: Student related themes
-    """
+    get:
+    READ - Student instance related themes.
 
+    post:
+    CREATE - Student instance related theme.
+    """
     @permission_classes(
         (IsAuthenticated, IsMemberOfCuratorsGroup,))  # TODO Change behavior when student app will be developed
     def get(self, request, student_id):
-        """
-        READ: Student themes list
-        :return: json of student themes list
-        """
         student = self.get_student(student_id)
         serializer = ThemeSerializerRelatedIntermediate(student.theme_set, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request, student_id):
-        """
-        CREATE: Student theme
-        :param request: json of new theme
-        :param student_id:
-        :return: json of created theme
-        """
         student = self.get_student(student_id)
         serializer = ThemeSerializerRelatedIntermediate(data=request.data)
         if serializer.is_valid():
@@ -397,17 +328,18 @@ class StudentThemeList(StudentBaseView):
 
 class StudentThemeDetail(StudentBaseView):
     """
-    Methods: GET, PUT
-    Description: Student related theme details
-    """
+    get:
+    READ - Student instance related theme details.
 
+    put:
+    UPDATE - Student instance related theme details.
+
+    delete:
+    DELETE - Student instance related theme.
+    """
     @permission_classes(
         (IsAuthenticated, IsMemberOfCuratorsGroup,))  # TODO Change behavior when student app will be developed
     def get(self, request, student_id, theme_id):
-        """
-        READ: Student related theme details
-        :return: json of student related theme
-        """
         student = self.get_student(student_id)
         theme = self.get_related_theme(student, theme_id)
         if theme:
@@ -416,13 +348,6 @@ class StudentThemeDetail(StudentBaseView):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     def put(self, request, student_id, theme_id):
-        """
-        UPDATE: Student related theme details
-        :param request: json of updated theme
-        :param student_id:
-        :param theme_id:
-        :return: json of updated Student related theme
-        """
         student = self.get_student(student_id)
         theme = self.get_related_theme(student, theme_id)
         serializer = ThemeSerializerRelatedID(theme, data=request.data)
@@ -435,50 +360,43 @@ class StudentThemeDetail(StudentBaseView):
 # related suggestions
 class StudentSuggestionList(StudentBaseView):
     """
-    Methods: GET, POST
-    Description: Student related suggestions
-    """
+    get:
+    READ - Student instance related suggestions.
 
+    post:
+    CREATE - Student instance related suggestion.
+    """
     @permission_classes(
         (IsAuthenticated, IsMemberOfCuratorsGroup,))  # TODO Change behavior when student app will be developed
     def get(self, request, student_id):
-        """
-        READ: Student suggestions list
-        :return: json of student suggestions list
-        """
         student = self.get_student(student_id)
         serializer = SuggestionThemeSerializer(student.suggestiontheme_set, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request, student_id):
-        """
-        CREATE: Student suggestion
-        :param request: json of new suggestion
-        :param student_id:
-        :return: json of created suggestion
-        """
-        Student = self.get_student(student_id)
+        student = self.get_student(student_id)
         serializer = SuggestionThemeSerializer(data=request.data)
         if serializer.is_valid():
             suggestion = serializer.create(validated_data=serializer.validated_data)
-            Student.suggestiontheme_set.add(suggestion)
+            student.suggestiontheme_set.add(suggestion)
             return Response(serializer.validated_data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class StudentSuggestionDetail(StudentBaseView):
     """
-    Methods: GET, PUT
-    Description: Student related suggestion details
-    """
+    get:
+    READ - Student instance related suggestion details.
 
+    put:
+    UPDATE - Student instance related suggestion details.
+
+    delete:
+    DELETE - Student instance related suggestion.
+    """
     @permission_classes(
         (IsAuthenticated, IsMemberOfCuratorsGroup,))  # TODO Change behavior when student app will be developed
     def get(self, request, student_id, suggestion_id):
-        """
-        READ: Student related suggestion details
-        :return: json of student related suggestion
-        """
         student = self.get_student(student_id)
         suggestion = self.get_related_suggestion(student, suggestion_id)
         if suggestion:
@@ -487,13 +405,6 @@ class StudentSuggestionDetail(StudentBaseView):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     def put(self, request, student_id, suggestion_id):
-        """
-        UPDATE: Student related suggestion details
-        :param request: json of updated suggestion
-        :param student_id:
-        :param suggestion_id:
-        :return: json of updated student related suggestion
-        """
         student = self.get_student(student_id)
         suggestion = self.get_related_suggestion(student, suggestion_id)
         serializer = SuggestionThemeSerializer(suggestion, data=request.data)
@@ -506,30 +417,21 @@ class StudentSuggestionDetail(StudentBaseView):
 # related suggestion-comments
 class StudentSuggestionCommentList(StudentBaseView):
     """
-    Methods: GET, POST
-    Description: Student related suggestion comments
-    """
+    get:
+    READ - Student instance related suggestion comments.
 
+    post:
+    CREATE - Student instance related suggestion comment.
+    """
     @permission_classes(
         (IsAuthenticated, IsMemberOfCuratorsGroup,))  # TODO Change behavior when student app will be developed
     def get(self, request, student_id, suggestion_id):
-        """
-        READ: Student suggestion comments list
-        :return: json of student suggestion comments list
-        """
         student = self.get_student(student_id)
         suggestion = self.get_related_suggestion(student, suggestion_id)
         serializer = SuggestionThemeCommentSerializer(suggestion.comment_set, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request, student_id, suggestion_id):
-        """
-        CREATE: Student suggestion comment
-        :param request: json of new comment
-        :param student_id:
-        :param suggestion_id:
-        :return: json of created comment
-        """
         student = self.get_student(student_id)
         suggestion = self.get_related_suggestion(student, suggestion_id)
         serializer = SuggestionThemeCommentSerializer(data=request.data)

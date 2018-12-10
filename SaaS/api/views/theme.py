@@ -2,6 +2,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.generics import ListAPIView
+from rest_framework.authentication import TokenAuthentication
 
 from django.http import Http404
 
@@ -13,10 +15,11 @@ from ..serializers.skill import SkillSerializer
 from ..permissions.group_curators import IsMemberOfCuratorsGroup
 
 
-class ThemeBaseView(APIView):
+class ThemeBaseViewAbstract:
     """
     Theme base view
     """
+    authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated, IsMemberOfCuratorsGroup,)  # TODO Change behavior when student app will be developed
 
     def get_theme(self, pk):
@@ -26,33 +29,25 @@ class ThemeBaseView(APIView):
             raise Http404
 
 
-class ThemeList(ThemeBaseView):
+class ThemeBaseView(ThemeBaseViewAbstract, APIView):
+    pass
+
+
+class ThemeList(ThemeBaseViewAbstract, ListAPIView):
     """
-    Methods: GET
-    Description: List of themes
+    get:
+    READ - List of themes.
     """
-    def get(self, request):
-        """
-        READ: Theme list
-        :return: json of theme list
-        """
-        themes = Theme.objects.all()
-        if themes:
-            serializer = ThemeSerializerRelatedID(themes, many=True)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(status=status.HTTP_404_NOT_FOUND)
+    queryset = Theme.objects.all()
+    serializer_class = ThemeSerializerRelatedID
 
 
 class ThemeDetail(ThemeBaseView):
     """
-    Methods: GET, PUT
-    Description: Theme details
+    get:
+    READ - Theme instance details.
     """
     def get(self, request, theme_id):
-        """
-        READ: Theme details
-        :return: json of theme
-        """
         theme = self.get_theme(theme_id)
         serializer = ThemeSerializerRelatedIntermediate(theme)
         return Response(serializer.data)
@@ -61,14 +56,10 @@ class ThemeDetail(ThemeBaseView):
 # related skills
 class ThemeSkillList(ThemeBaseView):
     """
-    Methods: GET
-    Description: Theme related skills
+    get:
+    READ - Theme instance related skills.
     """
     def get(self, request, theme_id):
-        """
-        READ: Theme skills list
-        :return: json of theme skills list
-        """
         theme = self.get_theme(theme_id)
         serializer = SkillSerializer(theme.skills, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)

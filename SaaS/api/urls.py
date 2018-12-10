@@ -1,5 +1,7 @@
 from django.urls import path
 
+from rest_framework_swagger.views import get_swagger_view
+
 from .views.auth import *
 from .views.curator import *
 from .views.student import *
@@ -8,6 +10,8 @@ from .views.work import *
 
 
 urlpatterns = [
+    # docs
+    path('', get_swagger_view(title="MobileLab-Backend API")),
     # login branch
     path('login', Login.as_view()),
     path('logout', Logout.as_view()),
