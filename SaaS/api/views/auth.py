@@ -1,4 +1,5 @@
-from rest_framework.views import APIView
+from rest_framework.generics import GenericAPIView, CreateAPIView
+
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.authtoken.models import Token
@@ -6,15 +7,18 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 
 from django.contrib.auth import authenticate, login, logout
 
+from ..serializers.auth import UserSerializer
 
-class Login(APIView):
+
+class Login(CreateAPIView):
     """
     Methods: POST
     Description: Login view
     """
     permission_classes = (AllowAny,)
+    serializer_class = UserSerializer
 
-    def post(self, request):
+    def post(self, request, *args, **kwargs):
         username = request.data.get("username")
         password = request.data.get("password")
         if username is None or password is None:
@@ -24,14 +28,14 @@ class Login(APIView):
         if not user:
             return Response({'error': 'Invalid Credentials'},
                             status=status.HTTP_404_NOT_FOUND)
-        token, created = Token.objects.get_or_create(user=user)  # exception is here
+        token, created = Token.objects.get_or_create(user=user)
         login(request, user)
         return Response({'token': token.key,
                          'user_id': token.user_id},  # !ATTENTION! gets ID from auth_user, not Curator/Student.
                         status=status.HTTP_200_OK)
 
 
-class Logout(APIView):
+class Logout(GenericAPIView):
     """
     Methods: POST
     Description: Logout view
