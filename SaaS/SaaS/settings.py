@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
-    'api'
+    'api',
+    'rest_framework_swagger'
 ]
 
 MIDDLEWARE = [
@@ -77,7 +78,15 @@ WSGI_APPLICATION = 'SaaS.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#database
 DATABASES = {
-    'default': dj_database_url.config()
+    # 'default': dj_database_url.config()
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'SaaS-api_db_test',
+        'USER': 'SaaS-api_role_user',
+        'PASSWORD': 'SaaS-api_role_user',
+        'HOST': 'localhost',
+        'PORT': '',
+    },
 }
 
 # Password validation
@@ -122,7 +131,8 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated', )
+        'rest_framework.permissions.IsAuthenticated',
+    ),
 }
 
 django_heroku.settings(locals())
