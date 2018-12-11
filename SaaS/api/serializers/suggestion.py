@@ -19,7 +19,20 @@ class SuggestionThemeProgressSerializer(serializers.ModelSerializer):
         fields = ('id', 'title', 'description', 'date_update')
 
 
-class SuggestionThemeSerializer(serializers.ModelSerializer):
+class SuggestionThemeSerializerRelatedID(serializers.ModelSerializer):
+    theme = serializers.PrimaryKeyRelatedField(queryset=Theme.objects.all(), allow_null=False, required=True)
+    student = serializers.PrimaryKeyRelatedField(queryset=Student.objects.all(), allow_null=False, required=True)
+    curator = serializers.PrimaryKeyRelatedField(queryset=Curator.objects.all(), allow_null=False, required=True)
+    status = serializers.PrimaryKeyRelatedField(queryset=SuggestionThemeStatus.objects.all(), allow_null=False, required=True)
+    progress = serializers.PrimaryKeyRelatedField(read_only=True, allow_null=False)
+
+    class Meta:
+        model = SuggestionTheme
+        fields = ('id', 'date_creation',
+                  'theme', 'student', 'curator', 'status', 'progress')
+
+
+class SuggestionThemeSerializerRelatedIntermediate(serializers.ModelSerializer):
     theme = ThemeSerializerNoSkills(read_only=True)
     student = StudentSerializerNoSkills(read_only=True, allow_null=True)
     curator = CuratorSerializerNoSkills(read_only=True, allow_null=True)

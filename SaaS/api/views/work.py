@@ -1,15 +1,14 @@
-from rest_framework.views import APIView
+from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import ListAPIView, get_object_or_404
 from rest_framework.authentication import TokenAuthentication
-
-from django.http import Http404
 
 from ..models.work import Work, WorkStep
 
-from ..serializers.work import WorkSerializer, WorkStepSerializer, WorkStepMaterialSerializer
+from ..serializers.work import WorkSerializerRelatedID, WorkSerializerRelatedIntermediate, \
+    WorkStepSerializer, WorkStepMaterialSerializer
 
 from ..permissions.group_curators import IsMemberOfCuratorsGroup
 
@@ -22,19 +21,13 @@ class WorkBaseViewAbstract:
     permission_classes = (IsAuthenticated, IsMemberOfCuratorsGroup,)  # TODO Change behavior when student app will be developed
 
     def get_work(self, pk):
-        try:
-            return Work.objects.get(pk=pk)
-        except Work.DoesNotExist:
-            raise Http404
+        return get_object_or_404(Work, pk=pk)
 
     def get_related_step(self, work: Work, step_id: int):
-        try:
-            return work.step_set.get(pk=step_id)
-        except WorkStep.DoesNotExist:
-            raise Http404
+        return get_object_or_404(work.step_set, pk=step_id)
 
 
-class WorkBaseView(WorkBaseViewAbstract, APIView):
+class WorkBaseView(WorkBaseViewAbstract, GenericAPIView):
     pass
 
 
@@ -44,7 +37,7 @@ class WorkList(WorkBaseViewAbstract, ListAPIView):
     READ - List of works.
     """
     queryset = Work.objects.all()
-    serializer_class = WorkSerializer
+    serializer_class = WorkSerializerRelatedID
 
 
 class WorkDetail(WorkBaseView):
@@ -54,7 +47,7 @@ class WorkDetail(WorkBaseView):
     """
     def get(self, request, work_id):
         work = self.get_work(work_id)
-        serializer = WorkSerializer(work)
+        serializer = WorkSerializerRelatedIntermediate(work)
         return Response(serializer.data)
 
 
