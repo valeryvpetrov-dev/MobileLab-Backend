@@ -9,7 +9,8 @@ from django.http import Http404
 
 from ..models.work import Work, WorkStep
 
-from ..serializers.work import WorkSerializer, WorkStepSerializer, WorkStepMaterialSerializer
+from ..serializers.work import WorkSerializer, WorkSerializerRelatedIntermediate, \
+    WorkStepSerializer, WorkStepMaterialSerializer
 
 from ..permissions.group_curators import IsMemberOfCuratorsGroup
 
@@ -78,7 +79,7 @@ class WorkStepDetail(WorkBaseView):
     def get(self, request, work_id, step_id):
         work = self.get_work(work_id)
         step = self.get_related_step(work, step_id)
-        serializer = WorkStepSerializer(step)
+        serializer = WorkSerializerRelatedIntermediate(step)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 

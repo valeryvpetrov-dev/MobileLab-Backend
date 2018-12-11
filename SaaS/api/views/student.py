@@ -13,11 +13,13 @@ from ..models.suggestion import SuggestionTheme
 from ..models.student import Student
 from ..models.work import Work, WorkStep
 
-from ..serializers.student import StudentSerializerSkillsIntermediate, StudentSerializerSkillsID
+from ..serializers.student import StudentSerializerSkillsIntermediate, StudentSerializerNoSkills, StudentSerializerSkillsID
 from ..serializers.skill import SkillSerializer
-from ..serializers.work import WorkSerializer, WorkStepSerializer, WorkStepMaterialSerializer, WorkStepCommentSerializer
+from ..serializers.work import WorkSerializer, WorkSerializerRelatedIntermediate, \
+    WorkStepSerializer, WorkStepMaterialSerializer, WorkStepCommentSerializer
 from ..serializers.theme import ThemeSerializerRelatedID, ThemeSerializerRelatedIntermediate
-from ..serializers.suggestion import SuggestionThemeSerializer, SuggestionThemeCommentSerializer
+from ..serializers.suggestion import SuggestionThemeSerializerRelatedID, SuggestionThemeSerializerRelatedIntermediate, \
+    SuggestionThemeCommentSerializer
 
 from ..permissions.group_curators import IsMemberOfCuratorsGroup
 
@@ -75,7 +77,7 @@ class StudentList(StudentBaseViewAbstract, ListAPIView):
     """
     permission_classes = (IsAuthenticated, IsMemberOfCuratorsGroup, )   # TODO Change behavior when student app will be developed
     queryset = Student.objects.all()
-    serializer_class = StudentSerializerSkillsID
+    serializer_class = StudentSerializerNoSkills
 
 
 class StudentDetail(StudentBaseView):
@@ -160,7 +162,7 @@ class StudentWorkDetail(StudentBaseView):
         student = self.get_student(student_id)
         work = self.get_related_work(student, work_id)
         if work:
-            serializer = WorkSerializer(work)
+            serializer = WorkSerializerRelatedIntermediate(work)
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -313,12 +315,12 @@ class StudentThemeList(StudentBaseView):
         (IsAuthenticated, IsMemberOfCuratorsGroup,))  # TODO Change behavior when student app will be developed
     def get(self, request, student_id):
         student = self.get_student(student_id)
-        serializer = ThemeSerializerRelatedIntermediate(student.theme_set, many=True)
+        serializer = ThemeSerializerRelatedID(student.theme_set, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request, student_id):
         student = self.get_student(student_id)
-        serializer = ThemeSerializerRelatedIntermediate(data=request.data)
+        serializer = ThemeSerializerRelatedID(data=request.data)
         if serializer.is_valid():
             theme = serializer.create(validated_data=serializer.validated_data)
             student.theme_set.add(theme)
@@ -370,12 +372,12 @@ class StudentSuggestionList(StudentBaseView):
         (IsAuthenticated, IsMemberOfCuratorsGroup,))  # TODO Change behavior when student app will be developed
     def get(self, request, student_id):
         student = self.get_student(student_id)
-        serializer = SuggestionThemeSerializer(student.suggestiontheme_set, many=True)
+        serializer = SuggestionThemeSerializerRelatedID(student.suggestiontheme_set, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request, student_id):
         student = self.get_student(student_id)
-        serializer = SuggestionThemeSerializer(data=request.data)
+        serializer = SuggestionThemeSerializerRelatedID(data=request.data)
         if serializer.is_valid():
             suggestion = serializer.create(validated_data=serializer.validated_data)
             student.suggestiontheme_set.add(suggestion)
@@ -400,14 +402,14 @@ class StudentSuggestionDetail(StudentBaseView):
         student = self.get_student(student_id)
         suggestion = self.get_related_suggestion(student, suggestion_id)
         if suggestion:
-            serializer = SuggestionThemeSerializer(suggestion)
+            serializer = SuggestionThemeSerializerRelatedIntermediate(suggestion)
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     def put(self, request, student_id, suggestion_id):
         student = self.get_student(student_id)
         suggestion = self.get_related_suggestion(student, suggestion_id)
-        serializer = SuggestionThemeSerializer(suggestion, data=request.data)
+        serializer = SuggestionThemeSerializerRelatedID(suggestion, data=request.data)
         if serializer.is_valid():
             serializer.update(suggestion, validated_data=serializer.validated_data)
             return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
