@@ -1,15 +1,13 @@
-from rest_framework.views import APIView
+from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import ListAPIView, get_object_or_404
 from rest_framework.authentication import TokenAuthentication
 
-from django.http import Http404
+from ..models.theme import Theme, Subject
 
-from ..models.theme import Theme
-
-from ..serializers.theme import ThemeSerializerRelatedID, ThemeSerializerRelatedIntermediate, ThemeSerializerNoSkills
+from ..serializers.theme import ThemeSerializerRelatedID, ThemeSerializerRelatedIntermediate, SubjectSerializer
 from ..serializers.skill import SkillSerializer
 
 from ..permissions.group_curators import IsMemberOfCuratorsGroup
@@ -23,13 +21,10 @@ class ThemeBaseViewAbstract:
     permission_classes = (IsAuthenticated, IsMemberOfCuratorsGroup,)  # TODO Change behavior when student app will be developed
 
     def get_theme(self, pk):
-        try:
-            return Theme.objects.get(pk=pk)
-        except Theme.DoesNotExist:
-            raise Http404
+        return get_object_or_404(Theme, pk=pk)
 
 
-class ThemeBaseView(ThemeBaseViewAbstract, APIView):
+class ThemeBaseView(ThemeBaseViewAbstract, GenericAPIView):
     pass
 
 
@@ -62,4 +57,24 @@ class ThemeSkillList(ThemeBaseView):
     def get(self, request, theme_id):
         theme = self.get_theme(theme_id)
         serializer = SkillSerializer(theme.skills, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class SubjectList(ThemeBaseView, ListAPIView):
+    """
+    get:
+    READ - Theme subjects list.
+    """
+    queryset = Subject.objects.all()
+    serializer_class = SubjectSerializer
+
+
+class SubjectDetail(ThemeBaseView):
+    """
+    get:
+    READ - Theme subject details.
+    """
+    def get(self, request, subject_id):
+        subject = get_object_or_404(Subject, pk=subject_id)
+        serializer = SubjectSerializer(subject)
         return Response(serializer.data, status=status.HTTP_200_OK)

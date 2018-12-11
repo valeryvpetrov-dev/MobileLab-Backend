@@ -7,6 +7,7 @@ from .views.curator import *
 from .views.student import *
 from .views.theme import *
 from .views.work import *
+from .views.skill import *
 
 
 urlpatterns = [
@@ -49,10 +50,16 @@ urlpatterns = [
     path('themes', ThemeList.as_view()),
     path('themes/<int:theme_id>', ThemeDetail.as_view()),
     path('themes/<int:theme_id>/skills', ThemeSkillList.as_view()),
+    # theme subject branch
+    path('subjects', SubjectList.as_view()),
+    path('subjects/<int:subject_id>', SubjectDetail.as_view()),
     # works branch
     path('works', WorkList.as_view()),
     path('works/<int:work_id>', WorkDetail.as_view()),
     path('works/<int:work_id>/steps', WorkStepList.as_view()),
     path('works/<int:work_id>/steps/<int:step_id>', WorkStepDetail.as_view()),
     path('works/<int:work_id>/steps/<int:step_id>/materials', WorkStepMaterialList.as_view()),
+    # skills branch
+    path('skills', SkillList.as_view()),
+    path('skills/<int:skill_id>', SkillDetail.as_view())
 ]

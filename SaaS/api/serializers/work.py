@@ -11,7 +11,7 @@ class WorkStepStatusSerializer(serializers.ModelSerializer):
         fields = ('id', 'name')
 
 
-class WorkSerializer(serializers.ModelSerializer):
+class WorkSerializerRelatedID(serializers.ModelSerializer):
     theme = ThemeSerializerRelatedID(read_only=True)
 
     class Meta:
