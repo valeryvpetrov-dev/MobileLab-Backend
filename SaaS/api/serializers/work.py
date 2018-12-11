@@ -2,7 +2,7 @@ from rest_framework import serializers
 
 from ..models.work import *
 
-from .theme import ThemeSerializerRelatedID
+from .theme import ThemeSerializerRelatedID, ThemeSerializerRelatedIntermediate
 
 
 class WorkStepStatusSerializer(serializers.ModelSerializer):
@@ -11,8 +11,16 @@ class WorkStepStatusSerializer(serializers.ModelSerializer):
         fields = ('id', 'name')
 
 
-class WorkSerializer(serializers.ModelSerializer):
+class WorkSerializerRelatedID(serializers.ModelSerializer):
     theme = ThemeSerializerRelatedID(read_only=True)
+
+    class Meta:
+        model = Work
+        fields = ('id', 'date_start', 'date_finish', 'theme')
+
+
+class WorkSerializerRelatedIntermediate(serializers.ModelSerializer):
+    theme = ThemeSerializerRelatedIntermediate(read_only=True)
 
     class Meta:
         model = Work

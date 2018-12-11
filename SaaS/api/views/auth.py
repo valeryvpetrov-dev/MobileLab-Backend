@@ -1,5 +1,4 @@
-from rest_framework.generics import GenericAPIView, CreateAPIView
-
+from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.authtoken.models import Token
@@ -10,7 +9,7 @@ from django.contrib.auth import authenticate, login, logout
 from ..serializers.auth import UserSerializer
 
 
-class Login(CreateAPIView):
+class Login(GenericAPIView):
     """
     post:
     LOGIN - 'username', 'password' credentials. Returns token, user_id.
@@ -18,7 +17,7 @@ class Login(CreateAPIView):
     permission_classes = (AllowAny,)
     serializer_class = UserSerializer
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request):
         username = request.data.get("username")
         password = request.data.get("password")
         if username is None or password is None:
@@ -35,7 +34,7 @@ class Login(CreateAPIView):
                         status=status.HTTP_200_OK)
 
 
-class Logout(CreateAPIView):
+class Logout(GenericAPIView):
     """
     post:
     LOGOUT.
@@ -43,6 +42,6 @@ class Logout(CreateAPIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = UserSerializer
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request):
         logout(request)
         return Response(status=status.HTTP_200_OK)
