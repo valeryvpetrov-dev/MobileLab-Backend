@@ -42,7 +42,7 @@ class StudentBaseViewAbstract:
                 work = theme.work_set.get(pk=work_id)
             except Work.DoesNotExist:
                 pass
-        if ~work: raise Http404
+        if not work: raise Http404
         return work
 
     def get_related_step(self, related_work: Work, step_id: int):

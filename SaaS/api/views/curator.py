@@ -25,8 +25,8 @@ class CuratorBaseViewAbstract:
     """
     Curator base view
     """
-    authentication_classes = (TokenAuthentication, )
-    permission_classes = (IsAuthenticated, IsMemberOfCuratorsGroup, )   # TODO Change behavior when student app will be developed
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated, IsMemberOfCuratorsGroup,)  # TODO Change behavior when student app will be developed
 
     def get_curator(self, pk):
         try:
@@ -41,7 +41,8 @@ class CuratorBaseViewAbstract:
                 work = theme.work_set.get(pk=work_id)
             except Work.DoesNotExist:
                 pass
-        if ~work: raise Http404
+        if not work:
+            raise Http404
         return work
 
     def get_related_step(self, related_work: Work, step_id: int):
@@ -84,6 +85,7 @@ class CuratorDetail(CuratorBaseView):
     put:
     UPDATE - Curator instance details.
     """
+
     def get(self, request, curator_id):
         curator = self.get_curator(curator_id)
         serializer = CuratorSerializerSkillsIntermediate(curator)
@@ -104,6 +106,7 @@ class CuratorSkillList(CuratorBaseView):
     get:
     READ - List of curator instance related skills.
     """
+
     def get(self, request, curator_id):
         curator = self.get_curator(curator_id)
         serializer = SkillSerializer(curator.skills, many=True)
@@ -119,6 +122,7 @@ class CuratorWorkList(CuratorBaseView):
     post:
     CREATE - Curator instance related work.
     """
+
     def get(self, request, curator_id):
         curator = self.get_curator(curator_id)
         related_works = []
@@ -149,6 +153,7 @@ class CuratorWorkDetail(CuratorBaseView):
     delete:
     DELETE - Curator instance related work.
     """
+
     def get(self, request, curator_id, work_id):
         curator = self.get_curator(curator_id)
         work = self.get_related_work(curator, work_id)
@@ -184,6 +189,7 @@ class CuratorWorkStepList(CuratorBaseView):
     post:
     CREATE - Curator instance related work step.
     """
+
     def get(self, request, curator_id, work_id):
         work = self.get_related_work(self.get_curator(curator_id), work_id)
         related_steps = []
@@ -213,6 +219,7 @@ class CuratorWorkStepDetail(CuratorBaseView):
     delete:
     DELETE - Curator instance related work step.
     """
+
     def get(self, request, curator_id, work_id, step_id):
         curator = self.get_curator(curator_id)
         related_work = self.get_related_work(curator, work_id)
@@ -251,6 +258,7 @@ class CuratorWorkStepMaterialList(CuratorBaseView):
     post:
     CREATE - Curator instance related work step material.
     """
+
     def get(self, request, curator_id, work_id, step_id):
         curator = self.get_curator(curator_id)
         related_work = self.get_related_work(curator, work_id)
@@ -282,6 +290,7 @@ class CuratorWorkStepCommentList(CuratorBaseView):
     post:
     CREATE - Curator instance related work step comment.
     """
+
     def get(self, request, curator_id, work_id, step_id):
         curator = self.get_curator(curator_id)
         related_work = self.get_related_work(curator, work_id)
@@ -313,6 +322,7 @@ class CuratorThemeList(CuratorBaseView):
     post:
     CREATE - Curator instance related theme.
     """
+
     def get(self, request, curator_id):
         curator = self.get_curator(curator_id)
         serializer = ThemeSerializerRelatedIntermediate(curator.theme_set, many=True)
@@ -339,6 +349,7 @@ class CuratorThemeDetail(CuratorBaseView):
     delete:
     DELETE - Curator instance related theme.
     """
+
     def get(self, request, curator_id, theme_id):
         curator = self.get_curator(curator_id)
         theme = self.get_related_theme(curator, theme_id)
@@ -374,6 +385,7 @@ class CuratorSuggestionList(CuratorBaseView):
     post:
     CREATE - Curator instance related suggestion.
     """
+
     def get(self, request, curator_id):
         curator = self.get_curator(curator_id)
         serializer = SuggestionThemeSerializer(curator.suggestiontheme_set, many=True)
@@ -400,6 +412,7 @@ class CuratorSuggestionDetail(CuratorBaseView):
     delete:
     DELETE - Curator instance related suggestion.
     """
+
     def get(self, request, curator_id, suggestion_id):
         curator = self.get_curator(curator_id)
         suggestion = self.get_related_suggestion(curator, suggestion_id)
@@ -435,6 +448,7 @@ class CuratorSuggestionCommentList(CuratorBaseView):
     post:
     CREATE - Curator instance related suggestion comment.
     """
+
     def get(self, request, curator_id, suggestion_id):
         curator = self.get_curator(curator_id)
         suggestion = self.get_related_suggestion(curator, suggestion_id)
