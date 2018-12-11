@@ -1,12 +1,10 @@
-from rest_framework.views import APIView
+from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import permission_classes
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import ListAPIView, get_object_or_404
 from rest_framework.authentication import TokenAuthentication
-
-from django.http import Http404
 
 from ..models.theme import Theme
 from ..models.suggestion import SuggestionTheme
@@ -15,7 +13,7 @@ from ..models.work import Work, WorkStep
 
 from ..serializers.student import StudentSerializerSkillsIntermediate, StudentSerializerNoSkills, StudentSerializerSkillsID
 from ..serializers.skill import SkillSerializer
-from ..serializers.work import WorkSerializer, WorkSerializerRelatedIntermediate, \
+from ..serializers.work import WorkSerializerRelatedID, WorkSerializerRelatedIntermediate, \
     WorkStepSerializer, WorkStepMaterialSerializer, WorkStepCommentSerializer
 from ..serializers.theme import ThemeSerializerRelatedID, ThemeSerializerRelatedIntermediate
 from ..serializers.suggestion import SuggestionThemeSerializerRelatedID, SuggestionThemeSerializerRelatedIntermediate, \
@@ -31,42 +29,23 @@ class StudentBaseViewAbstract:
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAuthenticated, IsMemberOfCuratorsGroup,)  # TODO Change behavior when student app will be developed
 
-    def get_student(self, pk):
-        try:
-            return Student.objects.get(pk=pk)
-        except Student.DoesNotExist:
-            raise Http404
+    def get_student(self, student_id: int) -> Student:
+        return get_object_or_404(Student, pk=student_id)
 
-    def get_related_work(self, student: Student, work_id: int):
-        work = None
-        for theme in student.theme_set.all():
-            try:
-                work = theme.work_set.get(pk=work_id)
-            except Work.DoesNotExist:
-                pass
-        if not work: raise Http404
-        return work
+    def get_related_work(self, student_id: int, work_id: int) -> Work:
+        return get_object_or_404(Work, theme__student__id=student_id, pk=work_id)
 
-    def get_related_step(self, related_work: Work, step_id: int):
-        try:
-            return related_work.step_set.get(pk=step_id)
-        except WorkStep.DoesNotExist:
-            raise Http404
+    def get_related_step(self, student_id: int, work_id: int, step_id: int) -> WorkStep:
+        return get_object_or_404(WorkStep, work__theme__student__id=student_id, work_id=work_id, pk=step_id)
 
-    def get_related_theme(self, student: Student, theme_id: int):
-        try:
-            return student.theme_set.get(pk=theme_id)
-        except Theme.DoesNotExist:
-            raise Http404
+    def get_related_theme(self, student_id: int, theme_id: int) -> Theme:
+        return get_object_or_404(Theme, student__id=student_id, pk=theme_id)
 
-    def get_related_suggestion(self, student: Student, suggestion_id: int):
-        try:
-            return student.suggestiontheme_set.get(pk=suggestion_id)
-        except SuggestionTheme.DoesNotExist:
-            raise Http404
+    def get_related_suggestion(self, student_id: int, suggestion_id: int) -> SuggestionTheme:
+        return get_object_or_404(SuggestionTheme, student__id=student_id, pk=suggestion_id)
 
 
-class StudentBaseView(StudentBaseViewAbstract, APIView):
+class StudentBaseView(StudentBaseViewAbstract, GenericAPIView):
     pass
 
 
@@ -88,6 +67,8 @@ class StudentDetail(StudentBaseView):
     put:
     UPDATE - Student instance details.
     """
+    serializer_class = StudentSerializerSkillsID
+
     @permission_classes((IsAuthenticated, IsMemberOfCuratorsGroup, ))   # TODO Change behavior when student app will be developed
     def get(self, request, student_id):
         student = self.get_student(student_id)
@@ -126,6 +107,8 @@ class StudentWorkList(StudentBaseView):
     post:
     CREATE - Student instance related work.
     """
+    serializer_class = WorkSerializerRelatedID
+
     @permission_classes((IsAuthenticated, IsMemberOfCuratorsGroup, )) # TODO Change behavior when student app will be developed
     def get(self, request, student_id):
         student = self.get_student(student_id)
@@ -133,12 +116,12 @@ class StudentWorkList(StudentBaseView):
         for theme in student.theme_set.all():
             for work in theme.work_set.all():
                 related_works.append(work)
-        serializer = WorkSerializer(related_works, many=True)
+        serializer = WorkSerializerRelatedID(related_works, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request, student_id):
         student = self.get_student(student_id)
-        serializer = WorkSerializer(data=request.data)
+        serializer = WorkSerializerRelatedID(data=request.data)
         if serializer.is_valid():
             work = serializer.create(validated_data=serializer.validated_data)
             student.theme_set.add(work.theme)
@@ -153,23 +136,18 @@ class StudentWorkDetail(StudentBaseView):
 
     put:
     UPDATE - Student instance related work.
-
-    delete:
-    DELETE - Student instance related work.
     """
+    serializer_class = WorkSerializerRelatedID
+
     @permission_classes((IsAuthenticated, IsMemberOfCuratorsGroup,))  # TODO Change behavior when student app will be developed
     def get(self, request, student_id, work_id):
-        student = self.get_student(student_id)
-        work = self.get_related_work(student, work_id)
-        if work:
-            serializer = WorkSerializerRelatedIntermediate(work)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(status=status.HTTP_404_NOT_FOUND)
+        work = self.get_related_work(student_id, work_id)
+        serializer = WorkSerializerRelatedIntermediate(work)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     def put(self, request, student_id, work_id):
-        student = self.get_student(student_id)
-        work = self.get_related_work(student, work_id)
-        serializer = WorkSerializer(work, data=request.data)
+        work = self.get_related_work(student_id, work_id)
+        serializer = WorkSerializerRelatedID(work, data=request.data)
         if serializer.is_valid():
             serializer.update(work, validated_data=serializer.validated_data)
             return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
@@ -185,9 +163,11 @@ class StudentWorkStepList(StudentBaseView):
     post:
     CREATE - Student instance related work step.
     """
+    serializer_class = WorkStepSerializer
+
     @permission_classes((IsAuthenticated, IsMemberOfCuratorsGroup,))  # TODO Change behavior when student app will be developed
     def get(self, request, student_id, work_id):
-        work = self.get_related_work(self.get_student(student_id), work_id)
+        work = self.get_related_work(student_id, work_id)
         related_steps = []
         for step in work.step_set.all():
             related_steps.append(step)
@@ -195,7 +175,7 @@ class StudentWorkStepList(StudentBaseView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request, student_id, work_id):
-        work = self.get_related_work(self.get_student(student_id), work_id)
+        work = self.get_related_work(student_id, work_id)
         serializer = WorkStepSerializer(data=request.data)
         if serializer.is_valid():
             step = serializer.create(validated_data=serializer.validated_data)
@@ -211,24 +191,17 @@ class StudentWorkStepDetail(StudentBaseView):
 
     put:
     UPDATE - Student instance related work step details.
-
-    delete:
-    DELETE - Student instance related work step.
     """
+    serializer_class = WorkStepSerializer
+
     @permission_classes((IsAuthenticated, IsMemberOfCuratorsGroup,))  # TODO Change behavior when student app will be developed
     def get(self, request, student_id, work_id, step_id):
-        student = self.get_student(student_id)
-        related_work = self.get_related_work(student, work_id)
-        step = self.get_related_step(related_work, step_id)
-        if step:
-            serializer = WorkStepSerializer(step)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(status=status.HTTP_404_NOT_FOUND)
+        step = self.get_related_step(student_id, work_id, step_id)
+        serializer = WorkStepSerializer(step)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     def put(self, request, student_id, work_id, step_id):
-        student = self.get_student(student_id)
-        related_work = self.get_related_work(student, work_id)
-        step = self.get_related_step(related_work, step_id)
+        step = self.get_related_step(student_id, work_id, step_id)
         serializer = WorkStepSerializer(step, data=request.data)
         if serializer.is_valid():
             serializer.update(step, validated_data=serializer.validated_data)
@@ -245,12 +218,12 @@ class StudentWorkStepMaterialList(StudentBaseView):
     post:
     CREATE - Student instance related work step material.
     """
+    serializer_class = WorkStepMaterialSerializer
+
     @permission_classes(
         (IsAuthenticated, IsMemberOfCuratorsGroup,))  # TODO Change behavior when student app will be developed
     def get(self, request, student_id, work_id, step_id):
-        student = self.get_student(student_id)
-        related_work = self.get_related_work(student, work_id)
-        step = self.get_related_step(related_work, step_id)
+        step = self.get_related_step(student_id, work_id, step_id)
         related_materials = []
         for material in step.material_set.all():
             related_materials.append(material)
@@ -258,9 +231,7 @@ class StudentWorkStepMaterialList(StudentBaseView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request, student_id, work_id, step_id):
-        student = self.get_student(student_id)
-        related_work = self.get_related_work(student, work_id)
-        step = self.get_related_step(related_work, step_id)
+        step = self.get_related_step(student_id, work_id, step_id)
         serializer = WorkStepMaterialSerializer(data=request.data)
         if serializer.is_valid():
             material = serializer.create(validated_data=serializer.validated_data)
@@ -278,12 +249,12 @@ class StudentWorkStepCommentList(StudentBaseView):
     post:
     CREATE - Student instance related work step comment.
     """
+    serializer_class = WorkStepCommentSerializer
+
     @permission_classes(
         (IsAuthenticated, IsMemberOfCuratorsGroup,))  # TODO Change behavior when student app will be developed
     def get(self, request, student_id, work_id, step_id):
-        student = self.get_student(student_id)
-        related_work = self.get_related_work(student, work_id)
-        step = self.get_related_step(related_work, step_id)
+        step = self.get_related_step(student_id, work_id, step_id)
         related_comments = []
         for comment in step.comment_set.all():
             related_comments.append(comment)
@@ -291,9 +262,7 @@ class StudentWorkStepCommentList(StudentBaseView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request, student_id, work_id, step_id):
-        student = self.get_student(student_id)
-        related_work = self.get_related_work(student, work_id)
-        step = self.get_related_step(related_work, step_id)
+        step = self.get_related_step(student_id, work_id, step_id)
         serializer = WorkStepCommentSerializer(data=request.data)
         if serializer.is_valid():
             comment = serializer.create(validated_data=serializer.validated_data)
@@ -311,6 +280,8 @@ class StudentThemeList(StudentBaseView):
     post:
     CREATE - Student instance related theme.
     """
+    serializer_class = ThemeSerializerRelatedID
+
     @permission_classes(
         (IsAuthenticated, IsMemberOfCuratorsGroup,))  # TODO Change behavior when student app will be developed
     def get(self, request, student_id):
@@ -335,23 +306,20 @@ class StudentThemeDetail(StudentBaseView):
 
     put:
     UPDATE - Student instance related theme details.
-
-    delete:
-    DELETE - Student instance related theme.
     """
+    serializer_class = ThemeSerializerRelatedID
+
     @permission_classes(
         (IsAuthenticated, IsMemberOfCuratorsGroup,))  # TODO Change behavior when student app will be developed
     def get(self, request, student_id, theme_id):
-        student = self.get_student(student_id)
-        theme = self.get_related_theme(student, theme_id)
+        theme = self.get_related_theme(student_id, theme_id)
         if theme:
             serializer = ThemeSerializerRelatedIntermediate(theme)
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     def put(self, request, student_id, theme_id):
-        student = self.get_student(student_id)
-        theme = self.get_related_theme(student, theme_id)
+        theme = self.get_related_theme(student_id, theme_id)
         serializer = ThemeSerializerRelatedID(theme, data=request.data)
         if serializer.is_valid():
             serializer.update(theme, validated_data=serializer.validated_data)
@@ -368,6 +336,8 @@ class StudentSuggestionList(StudentBaseView):
     post:
     CREATE - Student instance related suggestion.
     """
+    serializer_class = SuggestionThemeSerializerRelatedID
+
     @permission_classes(
         (IsAuthenticated, IsMemberOfCuratorsGroup,))  # TODO Change behavior when student app will be developed
     def get(self, request, student_id):
@@ -392,23 +362,20 @@ class StudentSuggestionDetail(StudentBaseView):
 
     put:
     UPDATE - Student instance related suggestion details.
-
-    delete:
-    DELETE - Student instance related suggestion.
     """
+    serializer_class = SuggestionThemeSerializerRelatedID
+
     @permission_classes(
         (IsAuthenticated, IsMemberOfCuratorsGroup,))  # TODO Change behavior when student app will be developed
     def get(self, request, student_id, suggestion_id):
-        student = self.get_student(student_id)
-        suggestion = self.get_related_suggestion(student, suggestion_id)
+        suggestion = self.get_related_suggestion(student_id, suggestion_id)
         if suggestion:
             serializer = SuggestionThemeSerializerRelatedIntermediate(suggestion)
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     def put(self, request, student_id, suggestion_id):
-        student = self.get_student(student_id)
-        suggestion = self.get_related_suggestion(student, suggestion_id)
+        suggestion = self.get_related_suggestion(student_id, suggestion_id)
         serializer = SuggestionThemeSerializerRelatedID(suggestion, data=request.data)
         if serializer.is_valid():
             serializer.update(suggestion, validated_data=serializer.validated_data)
@@ -425,17 +392,17 @@ class StudentSuggestionCommentList(StudentBaseView):
     post:
     CREATE - Student instance related suggestion comment.
     """
+    serializer_class = SuggestionThemeCommentSerializer
+
     @permission_classes(
         (IsAuthenticated, IsMemberOfCuratorsGroup,))  # TODO Change behavior when student app will be developed
     def get(self, request, student_id, suggestion_id):
-        student = self.get_student(student_id)
-        suggestion = self.get_related_suggestion(student, suggestion_id)
+        suggestion = self.get_related_suggestion(student_id, suggestion_id)
         serializer = SuggestionThemeCommentSerializer(suggestion.comment_set, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request, student_id, suggestion_id):
-        student = self.get_student(student_id)
-        suggestion = self.get_related_suggestion(student, suggestion_id)
+        suggestion = self.get_related_suggestion(student_id, suggestion_id)
         serializer = SuggestionThemeCommentSerializer(data=request.data)
         if serializer.is_valid():
             comment = serializer.create(validated_data=serializer.validated_data)
