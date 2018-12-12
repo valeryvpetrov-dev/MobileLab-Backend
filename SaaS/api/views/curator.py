@@ -110,7 +110,7 @@ class CuratorWorkList(CuratorBaseView):
         for theme in curator.theme_set.all():
             for work in theme.work_set.all():
                 related_works.append(work)
-        serializer = WorkSerializerRelatedID(related_works, many=True)
+        serializer = WorkSerializerRelatedIntermediate(related_works, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request, curator_id):
@@ -291,7 +291,7 @@ class CuratorThemeList(CuratorBaseView):
 
     def get(self, request, curator_id):
         curator = self.get_curator(curator_id)
-        serializer = ThemeSerializerRelatedID(curator.theme_set, many=True)
+        serializer = ThemeSerializerRelatedIntermediate(curator.theme_set, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request, curator_id):
@@ -351,7 +351,7 @@ class CuratorSuggestionList(CuratorBaseView):
 
     def get(self, request, curator_id):
         curator = self.get_curator(curator_id)
-        serializer = SuggestionThemeSerializerRelatedID(curator.suggestiontheme_set, many=True)
+        serializer = SuggestionThemeSerializerRelatedIntermediate(curator.suggestiontheme_set, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request, curator_id):
