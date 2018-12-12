@@ -37,7 +37,7 @@ class WorkList(WorkBaseViewAbstract, ListAPIView):
     READ - List of works.
     """
     queryset = Work.objects.all()
-    serializer_class = WorkSerializerRelatedID
+    serializer_class = WorkSerializerRelatedIntermediate
 
 
 class WorkDetail(WorkBaseView):

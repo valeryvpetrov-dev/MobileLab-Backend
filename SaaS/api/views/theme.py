@@ -34,7 +34,7 @@ class ThemeList(ThemeBaseViewAbstract, ListAPIView):
     READ - List of themes.
     """
     queryset = Theme.objects.all()
-    serializer_class = ThemeSerializerRelatedID
+    serializer_class = ThemeSerializerRelatedIntermediate
 
 
 class ThemeDetail(ThemeBaseView):
