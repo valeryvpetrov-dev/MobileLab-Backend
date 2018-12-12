@@ -116,7 +116,7 @@ class StudentWorkList(StudentBaseView):
         for theme in student.theme_set.all():
             for work in theme.work_set.all():
                 related_works.append(work)
-        serializer = WorkSerializerRelatedID(related_works, many=True)
+        serializer = WorkSerializerRelatedIntermediate(related_works, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request, student_id):
@@ -286,7 +286,7 @@ class StudentThemeList(StudentBaseView):
         (IsAuthenticated, IsMemberOfCuratorsGroup,))  # TODO Change behavior when student app will be developed
     def get(self, request, student_id):
         student = self.get_student(student_id)
-        serializer = ThemeSerializerRelatedID(student.theme_set, many=True)
+        serializer = ThemeSerializerRelatedIntermediate(student.theme_set, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request, student_id):
@@ -342,7 +342,7 @@ class StudentSuggestionList(StudentBaseView):
         (IsAuthenticated, IsMemberOfCuratorsGroup,))  # TODO Change behavior when student app will be developed
     def get(self, request, student_id):
         student = self.get_student(student_id)
-        serializer = SuggestionThemeSerializerRelatedID(student.suggestiontheme_set, many=True)
+        serializer = SuggestionThemeSerializerRelatedIntermediate(student.suggestiontheme_set, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request, student_id):
