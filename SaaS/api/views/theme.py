@@ -6,9 +6,11 @@ from rest_framework.generics import ListAPIView, get_object_or_404
 from rest_framework.authentication import TokenAuthentication
 
 from ..models.theme import Theme, Subject
+from ..models.suggestion import SuggestionThemeStatus
 
 from ..serializers.theme import ThemeSerializerRelatedID, ThemeSerializerRelatedIntermediate, SubjectSerializer
 from ..serializers.skill import SkillSerializer
+from ..serializers.suggestion import SuggestionThemeStatusSerializer
 
 from ..permissions.group_curators import IsMemberOfCuratorsGroup
 
@@ -77,4 +79,16 @@ class SubjectDetail(ThemeBaseView):
     def get(self, request, subject_id):
         subject = get_object_or_404(Subject, pk=subject_id)
         serializer = SubjectSerializer(subject)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class ThemeSuggestionStatusList(ThemeBaseView):
+    """
+    get:
+    READ - List of theme suggestion statuses.
+    """
+
+    def get(self, request):
+        statuses = SuggestionThemeStatus.objects.all()
+        serializer = SuggestionThemeStatusSerializer(statuses, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
