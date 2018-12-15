@@ -81,7 +81,9 @@ class StudentDetail(StudentBaseView):
         serializer = StudentSerializerSkillsID(student, data=request.data)
         if serializer.is_valid():
             serializer.update(student, validated_data=serializer.validated_data)
-            return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
+            # serializing response
+            serializer_resp = StudentSerializerSkillsIntermediate(student)
+            return Response(serializer_resp.data, status=status.HTTP_202_ACCEPTED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -126,7 +128,9 @@ class StudentWorkList(StudentBaseView):
         if serializer.is_valid():
             work = serializer.create(validated_data=serializer.validated_data)
             student.theme_set.add(work.theme)
-            return Response(serializer.validated_data, status=status.HTTP_201_CREATED)
+            # serializing response
+            serializer_resp = WorkSerializerRelatedIntermediate(work)
+            return Response(serializer_resp.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -151,7 +155,9 @@ class StudentWorkDetail(StudentBaseView):
         serializer = WorkSerializerRelatedID(work, data=request.data)
         if serializer.is_valid():
             serializer.update(work, validated_data=serializer.validated_data)
-            return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
+            # serializing response
+            serializer_resp = WorkSerializerRelatedIntermediate(work)
+            return Response(serializer_resp.data, status=status.HTTP_202_ACCEPTED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -181,7 +187,9 @@ class StudentWorkStepList(StudentBaseView):
         if serializer.is_valid():
             step = serializer.create(validated_data=serializer.validated_data)
             work.step_set.add(step)
-            return Response(serializer.validated_data, status=status.HTTP_201_CREATED)
+            # serializing response
+            serializer_resp = WorkStepSerializer(step)
+            return Response(serializer_resp.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -206,7 +214,9 @@ class StudentWorkStepDetail(StudentBaseView):
         serializer = WorkStepSerializerRelatedID(step, data=request.data)
         if serializer.is_valid():
             serializer.update(step, validated_data=serializer.validated_data)
-            return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
+            # serializing response
+            serializer_resp = WorkStepSerializer(step)
+            return Response(serializer_resp.data, status=status.HTTP_202_ACCEPTED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -237,7 +247,9 @@ class StudentWorkStepMaterialList(StudentBaseView):
         if serializer.is_valid():
             material = serializer.create(validated_data=serializer.validated_data)
             step.material_set.add(material)
-            return Response(serializer.validated_data, status=status.HTTP_201_CREATED)
+            # serializing response
+            serializer_resp = WorkStepMaterialSerializer(step)
+            return Response(serializer_resp.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -268,7 +280,9 @@ class StudentWorkStepCommentList(StudentBaseView):
         if serializer.is_valid():
             comment = serializer.create(validated_data=serializer.validated_data)
             step.comment_set.add(comment)
-            return Response(serializer.validated_data, status=status.HTTP_201_CREATED)
+            # serializing response
+            serializer_resp = WorkStepCommentSerializer(comment)
+            return Response(serializer_resp.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -296,7 +310,9 @@ class StudentThemeList(StudentBaseView):
         if serializer.is_valid():
             theme = serializer.create(validated_data=serializer.validated_data)
             student.theme_set.add(theme)
-            return Response(serializer.validated_data, status=status.HTTP_201_CREATED)
+            # serializing response
+            serializer_resp = ThemeSerializerRelatedIntermediate(theme)
+            return Response(serializer_resp.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -324,7 +340,9 @@ class StudentThemeDetail(StudentBaseView):
         serializer = ThemeSerializerRelatedID(theme, data=request.data)
         if serializer.is_valid():
             serializer.update(theme, validated_data=serializer.validated_data)
-            return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
+            # serializing response
+            serializer_resp = ThemeSerializerRelatedIntermediate(theme)
+            return Response(serializer_resp.data, status=status.HTTP_202_ACCEPTED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -352,7 +370,9 @@ class StudentSuggestionList(StudentBaseView):
         if serializer.is_valid():
             suggestion = serializer.create(validated_data=serializer.validated_data)
             student.suggestiontheme_set.add(suggestion)
-            return Response(serializer.validated_data, status=status.HTTP_201_CREATED)
+            # serializing response
+            serializer_resp = SuggestionThemeSerializerRelatedIntermediate(suggestion)
+            return Response(serializer_resp.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -380,7 +400,9 @@ class StudentSuggestionDetail(StudentBaseView):
         serializer = SuggestionThemeSerializerRelatedID(suggestion, data=request.data)
         if serializer.is_valid():
             serializer.update(suggestion, validated_data=serializer.validated_data)
-            return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
+            # serializing response
+            serializer_resp = SuggestionThemeSerializerRelatedIntermediate(suggestion)
+            return Response(serializer_resp.data, status=status.HTTP_202_ACCEPTED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -408,5 +430,7 @@ class StudentSuggestionCommentList(StudentBaseView):
         if serializer.is_valid():
             comment = serializer.create(validated_data=serializer.validated_data)
             suggestion.comment_set.add(comment)
-            return Response(serializer.validated_data, status=status.HTTP_201_CREATED)
+            # serializing response
+            serializer_resp = SuggestionThemeCommentSerializer(comment)
+            return Response(serializer_resp.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
