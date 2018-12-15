@@ -42,6 +42,7 @@ class ThemeSerializerRelatedID(serializers.ModelSerializer):
         if skills:
             for skill in skills:
                 theme.skills.add(Skill.objects.get(pk=skill.id))
+        theme.save()
         return theme
 
 
@@ -71,6 +72,7 @@ class ThemeSerializerRelatedIntermediate(serializers.ModelSerializer):
         if skills:
             for skill in skills:
                 theme.skills.add(Skill.objects.get(pk=skill.id))
+        theme.save()
         return theme
 
 
@@ -95,4 +97,5 @@ class ThemeSerializerNoSkills(serializers.ModelSerializer):
             theme.student = Student.objects.get(pk=student.id)
         if subject:
             theme.subject = Subject.objects.get(pk=subject.id)
+        theme.save()
         return theme
