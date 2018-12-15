@@ -14,7 +14,8 @@ from ..models.work import Work, WorkStep
 from ..serializers.student import StudentSerializerSkillsIntermediate, StudentSerializerNoSkills, StudentSerializerSkillsID
 from ..serializers.skill import SkillSerializer
 from ..serializers.work import WorkSerializerRelatedID, WorkSerializerRelatedIntermediate, \
-    WorkStepSerializer, WorkStepMaterialSerializer, WorkStepCommentSerializer
+    WorkStepSerializer, WorkStepSerializerRelatedID, \
+    WorkStepMaterialSerializer, WorkStepCommentSerializer
 from ..serializers.theme import ThemeSerializerRelatedID, ThemeSerializerRelatedIntermediate
 from ..serializers.suggestion import SuggestionThemeSerializerRelatedID, SuggestionThemeSerializerRelatedIntermediate, \
     SuggestionThemeCommentSerializer
@@ -192,7 +193,7 @@ class StudentWorkStepDetail(StudentBaseView):
     put:
     UPDATE - Student instance related work step details.
     """
-    serializer_class = WorkStepSerializer
+    serializer_class = WorkStepSerializerRelatedID
 
     @permission_classes((IsAuthenticated, IsMemberOfCuratorsGroup,))  # TODO Change behavior when student app will be developed
     def get(self, request, student_id, work_id, step_id):
@@ -202,7 +203,7 @@ class StudentWorkStepDetail(StudentBaseView):
 
     def put(self, request, student_id, work_id, step_id):
         step = self.get_related_step(student_id, work_id, step_id)
-        serializer = WorkStepSerializer(step, data=request.data)
+        serializer = WorkStepSerializerRelatedID(step, data=request.data)
         if serializer.is_valid():
             serializer.update(step, validated_data=serializer.validated_data)
             return Response(serializer.data, status=status.HTTP_202_ACCEPTED)

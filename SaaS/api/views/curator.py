@@ -13,7 +13,8 @@ from ..models.work import Work, WorkStep
 from ..serializers.curator import CuratorSerializerSkillsIntermediate, CuratorSerializerNoSkills, CuratorSerializerSkillsID
 from ..serializers.skill import SkillSerializer
 from ..serializers.work import WorkSerializerRelatedID, WorkSerializerRelatedIntermediate, \
-    WorkStepSerializer, WorkStepMaterialSerializer, WorkStepCommentSerializer
+    WorkStepSerializer, WorkStepSerializerRelatedID, \
+    WorkStepMaterialSerializer, WorkStepCommentSerializer
 from ..serializers.theme import ThemeSerializerRelatedID, ThemeSerializerRelatedIntermediate
 from ..serializers.suggestion import SuggestionThemeSerializerRelatedID, SuggestionThemeSerializerRelatedIntermediate, \
     SuggestionThemeCommentSerializer
@@ -197,7 +198,7 @@ class CuratorWorkStepDetail(CuratorBaseView):
     delete:
     DELETE - Curator instance related work step.
     """
-    serializer_class = WorkStepSerializer
+    serializer_class = WorkStepSerializerRelatedID
 
     def get(self, request, curator_id, work_id, step_id):
         step = self.get_related_step(curator_id, work_id, step_id)
@@ -206,7 +207,7 @@ class CuratorWorkStepDetail(CuratorBaseView):
 
     def put(self, request, curator_id, work_id, step_id):
         step = self.get_related_step(curator_id, work_id, step_id)
-        serializer = WorkStepSerializer(step, data=request.data)
+        serializer = WorkStepSerializerRelatedID(step, data=request.data)
         if serializer.is_valid():
             serializer.update(step, validated_data=serializer.validated_data)
             return Response(serializer.data, status=status.HTTP_202_ACCEPTED)

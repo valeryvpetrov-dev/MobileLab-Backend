@@ -36,6 +36,15 @@ class WorkStepSerializer(serializers.ModelSerializer):
                   'status')
 
 
+class WorkStepSerializerRelatedID(serializers.ModelSerializer):
+    status = serializers.PrimaryKeyRelatedField(read_only=False, queryset=WorkStepStatus.objects.all())
+
+    class Meta:
+        model = WorkStep
+        fields = ('id', 'title', 'description', 'date_start', 'date_finish',
+                  'status')
+
+
 class WorkStepCommentSerializer(serializers.ModelSerializer):
     step = serializers.PrimaryKeyRelatedField(read_only=True)
 
