@@ -13,7 +13,8 @@ from ..models.work import Work, WorkStep
 from ..serializers.curator import CuratorSerializerSkillsIntermediate, CuratorSerializerNoSkills, CuratorSerializerSkillsID
 from ..serializers.skill import SkillSerializer
 from ..serializers.work import WorkSerializerRelatedID, WorkSerializerRelatedIntermediate, \
-    WorkStepSerializer, WorkStepMaterialSerializer, WorkStepCommentSerializer
+    WorkStepSerializer, WorkStepSerializerRelatedID, \
+    WorkStepMaterialSerializer, WorkStepCommentSerializer
 from ..serializers.theme import ThemeSerializerRelatedID, ThemeSerializerRelatedIntermediate
 from ..serializers.suggestion import SuggestionThemeSerializerRelatedID, SuggestionThemeSerializerRelatedIntermediate, \
     SuggestionThemeCommentSerializer
@@ -77,7 +78,9 @@ class CuratorDetail(CuratorBaseView):
         serializer = CuratorSerializerSkillsID(curator, data=request.data)
         if serializer.is_valid():
             serializer.update(curator, validated_data=serializer.validated_data)
-            return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
+            # serializing response
+            serializer_resp = CuratorSerializerSkillsIntermediate(curator)
+            return Response(serializer_resp.data, status=status.HTTP_202_ACCEPTED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -119,7 +122,9 @@ class CuratorWorkList(CuratorBaseView):
         if serializer.is_valid():
             work = serializer.create(validated_data=serializer.validated_data)
             curator.theme_set.add(work.theme)
-            return Response(serializer.validated_data, status=status.HTTP_201_CREATED)
+            # serializing response
+            serializer_resp = WorkSerializerRelatedIntermediate(work)
+            return Response(serializer_resp.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -146,7 +151,9 @@ class CuratorWorkDetail(CuratorBaseView):
         serializer = WorkSerializerRelatedID(work, data=request.data)
         if serializer.is_valid():
             serializer.update(work, validated_data=serializer.validated_data)
-            return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
+            # serializing response
+            serializer_resp = WorkSerializerRelatedIntermediate(work)
+            return Response(serializer_resp.data, status=status.HTTP_202_ACCEPTED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, curator_id, work_id):
@@ -182,7 +189,9 @@ class CuratorWorkStepList(CuratorBaseView):
         if serializer.is_valid():
             step = serializer.create(validated_data=serializer.validated_data)
             work.step_set.add(step)
-            return Response(serializer.validated_data, status=status.HTTP_201_CREATED)
+            # serializing response
+            serializer_resp = WorkStepSerializer(step)
+            return Response(serializer_resp.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -197,7 +206,7 @@ class CuratorWorkStepDetail(CuratorBaseView):
     delete:
     DELETE - Curator instance related work step.
     """
-    serializer_class = WorkStepSerializer
+    serializer_class = WorkStepSerializerRelatedID
 
     def get(self, request, curator_id, work_id, step_id):
         step = self.get_related_step(curator_id, work_id, step_id)
@@ -206,10 +215,12 @@ class CuratorWorkStepDetail(CuratorBaseView):
 
     def put(self, request, curator_id, work_id, step_id):
         step = self.get_related_step(curator_id, work_id, step_id)
-        serializer = WorkStepSerializer(step, data=request.data)
+        serializer = WorkStepSerializerRelatedID(step, data=request.data)
         if serializer.is_valid():
             serializer.update(step, validated_data=serializer.validated_data)
-            return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
+            # serializing response
+            serializer_resp = WorkStepSerializer(step)
+            return Response(serializer_resp.data, status=status.HTTP_202_ACCEPTED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, curator_id, work_id, step_id):
@@ -245,7 +256,9 @@ class CuratorWorkStepMaterialList(CuratorBaseView):
         if serializer.is_valid():
             material = serializer.create(validated_data=serializer.validated_data)
             step.material_set.add(material)
-            return Response(serializer.validated_data, status=status.HTTP_201_CREATED)
+            # serializing response
+            serializer_resp = WorkStepMaterialSerializer(step)
+            return Response(serializer_resp.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -274,7 +287,9 @@ class CuratorWorkStepCommentList(CuratorBaseView):
         if serializer.is_valid():
             comment = serializer.create(validated_data=serializer.validated_data)
             step.comment_set.add(comment)
-            return Response(serializer.validated_data, status=status.HTTP_201_CREATED)
+            # serializing response
+            serializer_resp = WorkStepCommentSerializer(comment)
+            return Response(serializer_resp.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -300,7 +315,9 @@ class CuratorThemeList(CuratorBaseView):
         if serializer.is_valid():
             theme = serializer.create(validated_data=serializer.validated_data)
             curator.theme_set.add(theme)
-            return Response(serializer.validated_data, status=status.HTTP_201_CREATED)
+            # serializing response
+            serializer_resp = ThemeSerializerRelatedIntermediate(theme)
+            return Response(serializer_resp.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -327,7 +344,9 @@ class CuratorThemeDetail(CuratorBaseView):
         serializer = ThemeSerializerRelatedID(theme, data=request.data)
         if serializer.is_valid():
             serializer.update(theme, validated_data=serializer.validated_data)
-            return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
+            # serializing response
+            serializer_resp = ThemeSerializerRelatedIntermediate(theme)
+            return Response(serializer_resp.data, status=status.HTTP_202_ACCEPTED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, curator_id, theme_id):
@@ -360,7 +379,9 @@ class CuratorSuggestionList(CuratorBaseView):
         if serializer.is_valid():
             suggestion = serializer.create(validated_data=serializer.validated_data)
             curator.suggestiontheme_set.add(suggestion)
-            return Response(serializer.validated_data, status=status.HTTP_201_CREATED)
+            # serializing response
+            serializer_resp = SuggestionThemeSerializerRelatedIntermediate(suggestion)
+            return Response(serializer_resp.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -387,7 +408,9 @@ class CuratorSuggestionDetail(CuratorBaseView):
         serializer = SuggestionThemeSerializerRelatedID(suggestion, data=request.data)
         if serializer.is_valid():
             serializer.update(suggestion, validated_data=serializer.validated_data)
-            return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
+            # serializing response
+            serializer_resp = SuggestionThemeSerializerRelatedIntermediate(suggestion)
+            return Response(serializer_resp.data, status=status.HTTP_202_ACCEPTED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, curator_id, suggestion_id):
@@ -420,5 +443,7 @@ class CuratorSuggestionCommentList(CuratorBaseView):
         if serializer.is_valid():
             comment = serializer.create(validated_data=serializer.validated_data)
             suggestion.comment_set.add(comment)
-            return Response(serializer.validated_data, status=status.HTTP_201_CREATED)
+            # serializing response
+            serializer_resp = SuggestionThemeCommentSerializer(comment)
+            return Response(serializer_resp.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -23,7 +23,8 @@ class SuggestionThemeSerializerRelatedID(serializers.ModelSerializer):
     theme = serializers.PrimaryKeyRelatedField(queryset=Theme.objects.all(), allow_null=False, required=True)
     student = serializers.PrimaryKeyRelatedField(queryset=Student.objects.all(), allow_null=False, required=True)
     curator = serializers.PrimaryKeyRelatedField(queryset=Curator.objects.all(), allow_null=False, required=True)
-    status = serializers.PrimaryKeyRelatedField(queryset=SuggestionThemeStatus.objects.all(), allow_null=False, required=True)
+    status = serializers.PrimaryKeyRelatedField(queryset=SuggestionThemeStatus.objects.all(), allow_null=False,
+                                                default=SuggestionThemeStatus.objects.get(name__exact="Нет ответа"))
     progress = serializers.PrimaryKeyRelatedField(read_only=True, allow_null=False)
 
     class Meta:
