@@ -5,10 +5,11 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.generics import ListAPIView, get_object_or_404
 from rest_framework.authentication import TokenAuthentication
 
-from ..models.work import Work, WorkStep
+from ..models.work import Work, WorkStep, WorkStepStatus
 
 from ..serializers.work import WorkSerializerRelatedID, WorkSerializerRelatedIntermediate, \
-    WorkStepSerializer, WorkStepMaterialSerializer
+    WorkStepSerializer, WorkStepMaterialSerializer, \
+    WorkStepStatusSerializer
 
 from ..permissions.group_curators import IsMemberOfCuratorsGroup
 
@@ -85,4 +86,15 @@ class WorkStepMaterialList(WorkBaseView):
         work = self.get_work(work_id)
         step = self.get_related_step(work, step_id)
         serializer = WorkStepMaterialSerializer(step.material_set, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class WorkStepStatusList(WorkBaseView):
+    """"
+    get:
+    READ - List of work step statuses.
+    """
+    def get(self, request):
+        statuses = WorkStepStatus.objects.all()
+        serializer = WorkStepStatusSerializer(statuses, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)

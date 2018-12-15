@@ -56,6 +56,7 @@ urlpatterns = [
     # works branch
     path('works', WorkList.as_view()),
     path('works/<int:work_id>', WorkDetail.as_view()),
+    path('works/steps/statuses', WorkStepStatusList.as_view()),
     path('works/<int:work_id>/steps', WorkStepList.as_view()),
     path('works/<int:work_id>/steps/<int:step_id>', WorkStepDetail.as_view()),
     path('works/<int:work_id>/steps/<int:step_id>/materials', WorkStepMaterialList.as_view()),
