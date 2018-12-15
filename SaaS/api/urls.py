@@ -50,12 +50,14 @@ urlpatterns = [
     path('themes', ThemeList.as_view()),
     path('themes/<int:theme_id>', ThemeDetail.as_view()),
     path('themes/<int:theme_id>/skills', ThemeSkillList.as_view()),
+    path('themes/suggestions/statuses', ThemeSuggestionStatusList.as_view()),
     # theme subject branch
     path('subjects', SubjectList.as_view()),
     path('subjects/<int:subject_id>', SubjectDetail.as_view()),
     # works branch
     path('works', WorkList.as_view()),
     path('works/<int:work_id>', WorkDetail.as_view()),
+    path('works/steps/statuses', WorkStepStatusList.as_view()),
     path('works/<int:work_id>/steps', WorkStepList.as_view()),
     path('works/<int:work_id>/steps/<int:step_id>', WorkStepDetail.as_view()),
     path('works/<int:work_id>/steps/<int:step_id>/materials', WorkStepMaterialList.as_view()),
