@@ -17,15 +17,15 @@ class SubjectSerializer(serializers.ModelSerializer):
 
 
 class ThemeSerializerRelatedID(serializers.ModelSerializer):
-    curator = serializers.PrimaryKeyRelatedField(queryset=Curator.objects.all(), allow_null=True, required=False)
-    student = serializers.PrimaryKeyRelatedField(queryset=Student.objects.all(), allow_null=True, required=False)
-    subject = serializers.PrimaryKeyRelatedField(queryset=Subject.objects.all(), allow_null=True, required=False)
-    skills = serializers.PrimaryKeyRelatedField(many=True, queryset=Skill.objects.all(), allow_null=True, required=False)
+    curator_id = serializers.PrimaryKeyRelatedField(queryset=Curator.objects.all(), allow_null=True, required=False)
+    student_id = serializers.PrimaryKeyRelatedField(queryset=Student.objects.all(), allow_null=True, required=False)
+    subject_id = serializers.PrimaryKeyRelatedField(queryset=Subject.objects.all(), allow_null=True, required=False)
+    skills_id = serializers.PrimaryKeyRelatedField(many=True, queryset=Skill.objects.all(), allow_null=True, required=False)
 
     class Meta:
         model = Theme
         fields = ('id', 'title', 'description', 'date_creation', 'date_acceptance',
-                  'curator', 'student', 'subject', 'skills')
+                  'curator_id', 'student_id', 'subject_id', 'skills_id')
 
     def create(self, validated_data):
         curator = validated_data.pop("curator", None)

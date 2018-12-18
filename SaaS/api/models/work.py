@@ -64,8 +64,8 @@ class WorkStepComment(Comment):
 
 class WorkStepMaterial(models.Model):
     id = models.AutoField(primary_key=True)
-    step = models.ForeignKey(WorkStep, on_delete=models.CASCADE, db_column='step_id', related_name='material_set')
     content = models.CharField(max_length=200)
+    step = models.ForeignKey(WorkStep, on_delete=models.CASCADE, db_column='step_id', related_name='material_set')
 
     class Meta:
         db_table = "Work_step_material"

@@ -37,25 +37,36 @@ class WorkStepSerializer(serializers.ModelSerializer):
 
 
 class WorkStepSerializerRelatedID(serializers.ModelSerializer):
-    status = serializers.PrimaryKeyRelatedField(read_only=False, queryset=WorkStepStatus.objects.all())
+    status_id = serializers.PrimaryKeyRelatedField(read_only=False, queryset=WorkStepStatus.objects.all())
 
     class Meta:
         model = WorkStep
-        fields = ('id', 'title', 'description', 'date_start', 'date_finish',
-                  'status')
+        fields = ('id', 'title', 'description', 'date_start', 'date_finish', 'status_id')
 
 
 class WorkStepCommentSerializer(serializers.ModelSerializer):
-    step = serializers.PrimaryKeyRelatedField(read_only=True)
+    step_id = serializers.PrimaryKeyRelatedField(read_only=True)
 
     class Meta:
         model = WorkStepComment
-        fields = ('id', 'author_name', 'content', 'date_creation', 'step')
+        fields = ('id', 'author_name', 'content', 'date_creation', 'step_id')
+
+
+class WorkStepCommentSerializerNoRelated(serializers.ModelSerializer):
+    class Meta:
+        model = WorkStepComment
+        fields = ('id', 'author_name', 'content', 'date_creation')
 
 
 class WorkStepMaterialSerializer(serializers.ModelSerializer):
-    step = serializers.PrimaryKeyRelatedField(read_only=True)
+    step_id = serializers.PrimaryKeyRelatedField(read_only=True)
 
     class Meta:
         model = WorkStepMaterial
-        fields = ('id', 'content', 'step')
+        fields = ('id', 'content', 'step_id')
+
+
+class WorkStepMaterialSerializerNoRelated(serializers.ModelSerializer):
+    class Meta:
+        model = WorkStepMaterial
+        fields = ('id', 'content')
