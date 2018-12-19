@@ -33,6 +33,7 @@ urlpatterns = [
     path('curators/<int:curator_id>/suggestions/<int:suggestion_id>/comments', CuratorSuggestionCommentList.as_view()),
     # student branch
     path('students', StudentList.as_view()),
+    path('students/groups', StudentGroupList.as_view()),
     path('students/<int:student_id>', StudentDetail.as_view()),
     path('students/<int:student_id>/skills', StudentSkillList.as_view()),
     path('students/<int:student_id>/works', StudentWorkList.as_view()),

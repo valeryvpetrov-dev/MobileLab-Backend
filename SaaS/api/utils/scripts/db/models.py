@@ -10,6 +10,7 @@ from django.contrib.auth.models import Group, User
 from .csv import csv_entry_list_reader
 from ....models.curator import Curator
 from ....models.student import Student
+from ....models.student import Group as AcademicGroup
 from ....models.skill import Skill
 from ....models.theme import Subject, Theme
 from ....models.work import Work, WorkStep, WorkStepStatus, WorkStepMaterial, WorkStepComment
@@ -55,13 +56,19 @@ def migrate_to_db_user(manager_model: Manager,
         print("User: {0}. Model: {1}.".format(user, model))
 
 
-def migrate_to_db(manager: Manager, csv_file_path: str):
+def migrate_to_db(manager: Manager, csv_file_path: str, manager_related: Manager = None,
+                  related_field_name: str = None, related_model_field_name: str = None):
     path = os.path.abspath(csv_file_path)
     with open(path, encoding='utf8') as file:
         _list = csv_entry_list_reader(file)
 
     manager.all().delete()
     print("All models(Manager: {}) deleted.".format(manager))
+
+    related_list = None
+    if manager_related:
+        related_list = list(manager_related.all())
+
     for entry in _list:
         for date_field in date_field_name:
             if entry.get(date_field, None):
@@ -69,17 +76,26 @@ def migrate_to_db(manager: Manager, csv_file_path: str):
             else:
                 entry.pop(date_field, None)
 
+        if related_list and related_field_name and related_model_field_name:
+            entry[related_field_name] = getattr(random.choice(related_list), related_model_field_name)
+
         _object = manager.create(**entry)
         print(_object)
 
 
-def link_skills_to_man(list_skill: list, list_man: list):
-    for man in list_man:
+def link_related_to_man(men: list, skills: list, groups: list = None):
+    for man in men:
         count = random.randint(1, 10)
         for i in range(count):
-            skill = random.choice(list_skill)
+            skill = random.choice(skills)
             man.skills.add(skill)
             print("{} -> {}".format(str(skill), str(man)))
+
+            if groups:
+                group = random.choice(groups)
+                man.group = group
+                print("{} -> {}".format(str(group), str(man)))
+            man.save()
 
 
 def init_line_theme():
@@ -158,13 +174,15 @@ def do():
     migrate_to_db_user(Curator.objects, User.objects, Group.objects.get(name="curators"), path + '/curator.csv')
     migrate_to_db_user(Student.objects, User.objects, Group.objects.get(name="students"), path + '/student.csv')
 
-    migrate_to_db(Subject.objects, path + '/subject.csv')
-    migrate_to_db(Theme.objects, path + '/theme.csv')
+    migrate_to_db(AcademicGroup.objects, path + '/group.csv')
     migrate_to_db(WorkStepStatus.objects, path + '/work_step_status.csv')
     migrate_to_db(SuggestionThemeStatus.objects, path + '/suggestion_theme_status.csv')
+    migrate_to_db(Subject.objects, path + '/subject.csv')
+    migrate_to_db(Theme.objects, path + '/theme.csv', Subject.objects, "subject_id", "id")
 
     skills = list(Skill.objects.all())
-    link_skills_to_man(skills, list(Curator.objects.all()))
-    link_skills_to_man(skills, list(Student.objects.all()))
+    academic_groups = list(AcademicGroup.objects.all())
+    link_related_to_man(list(Curator.objects.all()), skills)
+    link_related_to_man(list(Student.objects.all()), skills, academic_groups)
     init_line_theme()
     init_line_theme_suggestion()
