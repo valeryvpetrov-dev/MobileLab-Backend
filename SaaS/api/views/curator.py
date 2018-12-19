@@ -14,10 +14,11 @@ from ..serializers.curator import CuratorSerializerSkillsIntermediate, CuratorSe
 from ..serializers.skill import SkillSerializer
 from ..serializers.work import WorkSerializerRelatedID, WorkSerializerRelatedIntermediate, \
     WorkStepSerializer, WorkStepSerializerRelatedID, \
-    WorkStepMaterialSerializer, WorkStepCommentSerializer
+    WorkStepMaterialSerializer, WorkStepMaterialSerializerNoRelated, \
+    WorkStepCommentSerializer, WorkStepCommentSerializerNoRelated
 from ..serializers.theme import ThemeSerializerRelatedID, ThemeSerializerRelatedIntermediate
 from ..serializers.suggestion import SuggestionThemeSerializerRelatedID, SuggestionThemeSerializerRelatedIntermediate, \
-    SuggestionThemeCommentSerializer
+    SuggestionThemeCommentSerializer, SuggestionThemeCommentSerializerNoRelated
 
 from ..permissions.group_curators import IsMemberOfCuratorsGroup
 
@@ -158,8 +159,8 @@ class CuratorWorkDetail(CuratorBaseView):
 
     def delete(self, request, curator_id, work_id):
         work = self.get_related_work(curator_id, work_id)
-        serializer = WorkSerializerRelatedIntermediate(work)
         if work.delete():
+            serializer = WorkSerializerRelatedIntermediate(work)
             return Response(serializer.data, status=status.HTTP_204_NO_CONTENT)
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
@@ -173,7 +174,7 @@ class CuratorWorkStepList(CuratorBaseView):
     post:
     CREATE - Curator instance related work step.
     """
-    serializer_class = WorkStepSerializer
+    serializer_class = WorkStepSerializerRelatedID
 
     def get(self, request, curator_id, work_id):
         work = self.get_related_work(curator_id, work_id)
@@ -185,8 +186,9 @@ class CuratorWorkStepList(CuratorBaseView):
 
     def post(self, request, curator_id, work_id):
         work = self.get_related_work(curator_id, work_id)
-        serializer = WorkStepSerializer(data=request.data)
+        serializer = WorkStepSerializerRelatedID(data=request.data)
         if serializer.is_valid():
+            serializer.validated_data["work_id"] = work_id
             step = serializer.create(validated_data=serializer.validated_data)
             work.step_set.add(step)
             # serializing response
@@ -225,8 +227,8 @@ class CuratorWorkStepDetail(CuratorBaseView):
 
     def delete(self, request, curator_id, work_id, step_id):
         step = self.get_related_step(curator_id, work_id, step_id)
-        serializer = WorkStepSerializer(step)
         if step.delete():
+            serializer = WorkStepSerializer(step)
             return Response(serializer.data, status=status.HTTP_204_NO_CONTENT)
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
@@ -240,7 +242,7 @@ class CuratorWorkStepMaterialList(CuratorBaseView):
     post:
     CREATE - Curator instance related work step material.
     """
-    serializer_class = WorkStepMaterialSerializer
+    serializer_class = WorkStepMaterialSerializerNoRelated
 
     def get(self, request, curator_id, work_id, step_id):
         step = self.get_related_step(curator_id, work_id, step_id)
@@ -252,12 +254,13 @@ class CuratorWorkStepMaterialList(CuratorBaseView):
 
     def post(self, request, curator_id, work_id, step_id):
         step = self.get_related_step(curator_id, work_id, step_id)
-        serializer = WorkStepMaterialSerializer(data=request.data)
+        serializer = WorkStepMaterialSerializerNoRelated(data=request.data)
         if serializer.is_valid():
+            serializer.validated_data["step_id"] = step_id
             material = serializer.create(validated_data=serializer.validated_data)
             step.material_set.add(material)
             # serializing response
-            serializer_resp = WorkStepMaterialSerializer(step)
+            serializer_resp = WorkStepMaterialSerializer(material)
             return Response(serializer_resp.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -271,7 +274,7 @@ class CuratorWorkStepCommentList(CuratorBaseView):
     post:
     CREATE - Curator instance related work step comment.
     """
-    serializer_class = WorkStepCommentSerializer
+    serializer_class = WorkStepCommentSerializerNoRelated
 
     def get(self, request, curator_id, work_id, step_id):
         step = self.get_related_step(curator_id, work_id, step_id)
@@ -283,8 +286,9 @@ class CuratorWorkStepCommentList(CuratorBaseView):
 
     def post(self, request, curator_id, work_id, step_id):
         step = self.get_related_step(curator_id, work_id, step_id)
-        serializer = WorkStepCommentSerializer(data=request.data)
+        serializer = WorkStepCommentSerializerNoRelated(data=request.data)
         if serializer.is_valid():
+            serializer.validated_data["step_id"] = step_id
             comment = serializer.create(validated_data=serializer.validated_data)
             step.comment_set.add(comment)
             # serializing response
@@ -351,8 +355,8 @@ class CuratorThemeDetail(CuratorBaseView):
 
     def delete(self, request, curator_id, theme_id):
         theme = self.get_related_theme(curator_id, theme_id)
-        serializer = ThemeSerializerRelatedIntermediate(theme)
         if theme.delete():
+            serializer = ThemeSerializerRelatedIntermediate(theme)
             return Response(serializer.data, status=status.HTTP_204_NO_CONTENT)
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
@@ -415,8 +419,8 @@ class CuratorSuggestionDetail(CuratorBaseView):
 
     def delete(self, request, curator_id, suggestion_id):
         suggestion = self.get_related_suggestion(curator_id, suggestion_id)
-        serializer = SuggestionThemeSerializerRelatedIntermediate(suggestion)
         if suggestion.delete():
+            serializer = SuggestionThemeSerializerRelatedIntermediate(suggestion)
             return Response(serializer.data, status=status.HTTP_204_NO_CONTENT)
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
@@ -430,7 +434,7 @@ class CuratorSuggestionCommentList(CuratorBaseView):
     post:
     CREATE - Curator instance related suggestion comment.
     """
-    serializer_class = SuggestionThemeCommentSerializer
+    serializer_class = SuggestionThemeCommentSerializerNoRelated
 
     def get(self, request, curator_id, suggestion_id):
         suggestion = self.get_related_suggestion(curator_id, suggestion_id)
@@ -439,7 +443,7 @@ class CuratorSuggestionCommentList(CuratorBaseView):
 
     def post(self, request, curator_id, suggestion_id):
         suggestion = self.get_related_suggestion(curator_id, suggestion_id)
-        serializer = SuggestionThemeCommentSerializer(data=request.data)
+        serializer = SuggestionThemeCommentSerializerNoRelated(data=request.data)
         if serializer.is_valid():
             comment = serializer.create(validated_data=serializer.validated_data)
             suggestion.comment_set.add(comment)
