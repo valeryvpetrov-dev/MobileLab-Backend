@@ -19,12 +19,12 @@ class GroupSerializerNameOnly(serializers.ModelSerializer):
 
 
 class StudentSerializerRelatedID(serializers.ModelSerializer):
-    skills_id = serializers.PrimaryKeyRelatedField(many=True, queryset=Skill.objects.all())
-    group = serializers.PrimaryKeyRelatedField(queryset=Group.objects.all(), allow_null=True, required=False)
+    skills_id = serializers.PrimaryKeyRelatedField(many=True, queryset=Skill.objects.all(), source="skills")
+    group_id = serializers.PrimaryKeyRelatedField(queryset=Group.objects.all(), allow_null=True, required=False, source="group")
 
     class Meta:
         model = Student
-        fields = ('id', 'name', 'last_name', 'patronymic', 'description', 'course_number', 'skills_id', 'group')
+        fields = ('id', 'name', 'last_name', 'patronymic', 'description', 'course_number', 'skills_id', 'group_id')
 
 
 class StudentSerializerRelatedIntermediate(serializers.ModelSerializer):

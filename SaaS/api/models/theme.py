@@ -20,7 +20,7 @@ class Theme(models.Model):
     id = models.AutoField(primary_key=True)
     curator = models.ForeignKey(Curator, on_delete=models.SET_NULL, db_column="curator_id", null=True)
     student = models.ForeignKey(Student, on_delete=models.SET_NULL, db_column="student_id", null=True)
-    subject = models.ForeignKey(Subject, on_delete=models.SET_NULL, db_column="subject_id")
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, db_column="subject_id")
     skills = models.ManyToManyField(Skill)
     title = models.CharField(max_length=100)
     description = models.CharField(max_length=250)
