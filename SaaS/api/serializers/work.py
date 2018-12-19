@@ -37,7 +37,7 @@ class WorkStepSerializer(serializers.ModelSerializer):
 
 
 class WorkStepSerializerRelatedID(serializers.ModelSerializer):
-    status_id = serializers.PrimaryKeyRelatedField(read_only=False, queryset=WorkStepStatus.objects.all())
+    status_id = serializers.PrimaryKeyRelatedField(read_only=False, queryset=WorkStepStatus.objects.all(), source="status")
 
     class Meta:
         model = WorkStep
@@ -45,7 +45,7 @@ class WorkStepSerializerRelatedID(serializers.ModelSerializer):
 
 
 class WorkStepCommentSerializer(serializers.ModelSerializer):
-    step_id = serializers.PrimaryKeyRelatedField(read_only=True)
+    step_id = serializers.PrimaryKeyRelatedField(read_only=False, queryset=WorkStep.objects.all(), source="step")
 
     class Meta:
         model = WorkStepComment
@@ -59,7 +59,7 @@ class WorkStepCommentSerializerNoRelated(serializers.ModelSerializer):
 
 
 class WorkStepMaterialSerializer(serializers.ModelSerializer):
-    step_id = serializers.PrimaryKeyRelatedField(read_only=True)
+    step_id = serializers.PrimaryKeyRelatedField(read_only=False, queryset=WorkStep.objects.all(), source="step")
 
     class Meta:
         model = WorkStepMaterial
