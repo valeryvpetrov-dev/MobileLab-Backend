@@ -7,7 +7,7 @@ from .skill import SkillSerializer
 
 
 class CuratorSerializerSkillsID(serializers.ModelSerializer):
-    skills_id = serializers.PrimaryKeyRelatedField(many=True, queryset=Skill.objects.all())
+    skills_id = serializers.PrimaryKeyRelatedField(many=True, queryset=Skill.objects.all(), source="skills")
 
     class Meta:
         model = Curator

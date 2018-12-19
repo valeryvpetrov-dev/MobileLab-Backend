@@ -166,7 +166,7 @@ def init_line_theme_suggestion():
 
 
 def do():
-    path = './api/mylog/db/test-data'
+    path = './SaaS/api/mylog/db/test-data'
     migrate_to_db(Skill.objects, path + '/skill.csv')
 
     User.objects.all().delete()
