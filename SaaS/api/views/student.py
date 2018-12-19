@@ -8,10 +8,11 @@ from rest_framework.authentication import TokenAuthentication
 
 from ..models.theme import Theme
 from ..models.suggestion import SuggestionTheme
-from ..models.student import Student
+from ..models.student import Student, Group
 from ..models.work import Work, WorkStep
 
-from ..serializers.student import StudentSerializerSkillsIntermediate, StudentSerializerNoSkills, StudentSerializerSkillsID
+from ..serializers.student import StudentSerializerRelatedIntermediate, StudentSerializerNoSkills, StudentSerializerRelatedID, \
+    GroupSerializer
 from ..serializers.skill import SkillSerializer
 from ..serializers.work import WorkSerializerRelatedID, WorkSerializerRelatedIntermediate, \
     WorkStepSerializer, WorkStepSerializerRelatedID, \
@@ -50,6 +51,16 @@ class StudentBaseView(StudentBaseViewAbstract, GenericAPIView):
     pass
 
 
+class StudentGroupList(StudentBaseViewAbstract, ListAPIView):
+    """
+    get:
+    READ - List of academic groups.
+    """
+    permission_classes = (IsAuthenticated, )
+    queryset = Group.objects.all()
+    serializer_class = GroupSerializer
+
+
 class StudentList(StudentBaseViewAbstract, ListAPIView):
     """
     get:
@@ -68,21 +79,21 @@ class StudentDetail(StudentBaseView):
     put:
     UPDATE - Student instance details.
     """
-    serializer_class = StudentSerializerSkillsID
+    serializer_class = StudentSerializerRelatedID
 
     @permission_classes((IsAuthenticated, IsMemberOfCuratorsGroup, ))   # TODO Change behavior when student app will be developed
     def get(self, request, student_id):
         student = self.get_student(student_id)
-        serializer = StudentSerializerSkillsIntermediate(student)
+        serializer = StudentSerializerRelatedIntermediate(student)
         return Response(serializer.data)
 
     def put(self, request, student_id):
         student = self.get_student(student_id)
-        serializer = StudentSerializerSkillsID(student, data=request.data)
+        serializer = StudentSerializerRelatedID(student, data=request.data)
         if serializer.is_valid():
             serializer.update(student, validated_data=serializer.validated_data)
             # serializing response
-            serializer_resp = StudentSerializerSkillsIntermediate(student)
+            serializer_resp = StudentSerializerRelatedIntermediate(student)
             return Response(serializer_resp.data, status=status.HTTP_202_ACCEPTED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

@@ -5,7 +5,7 @@ from rest_framework.parsers import JSONParser
 
 import io
 
-from ...serializers.student import StudentSerializerNoSkills, StudentSerializerSkillsID, StudentSerializerSkillsIntermediate
+from ...serializers.student import StudentSerializerNoSkills, StudentSerializerRelatedID, StudentSerializerRelatedIntermediate
 from ...models.student import Student
 from ...models.skill import Skill
 
@@ -34,7 +34,7 @@ class TestStudentSerializer(TestCase):
         student_bin = b'{"name":"V","last_name":"P","patronymic":"P","description":"D","skills":[1,2]}'
         stream = io.BytesIO(student_bin)
         data = JSONParser().parse(stream)  # returns dict
-        serializer = StudentSerializerSkillsID(data=data)
+        serializer = StudentSerializerRelatedID(data=data)
         if serializer.is_valid():
             student = serializer.save()
             self.assertIsNotNone(student.id)
@@ -43,19 +43,19 @@ class TestStudentSerializer(TestCase):
         student_bin = b'{"name":"V","last_name":"P","patronymic":"P","description":"D","skills":[]}'
         stream = io.BytesIO(student_bin)
         data = JSONParser().parse(stream)  # returns dict
-        serializer = StudentSerializerSkillsID(data=data)
+        serializer = StudentSerializerRelatedID(data=data)
         if serializer.is_valid():
             student = serializer.save()
             self.assertIsNotNone(student.id)
 
     def test_read_student_with_skills_id(self):  # output - json
-        serializer = StudentSerializerSkillsID(self.student)
+        serializer = StudentSerializerRelatedID(self.student)
         json = JSONRenderer().render(serializer.data)
         print(json)
         self.assertIsNotNone(json)
 
     def test_read_student_with_skills_intermediate(self):  # output - json
-        serializer = StudentSerializerSkillsIntermediate(self.student)
+        serializer = StudentSerializerRelatedIntermediate(self.student)
         json = JSONRenderer().render(serializer.data)
         print(json)
         self.assertIsNotNone(json)
@@ -72,7 +72,7 @@ class TestStudentSerializer(TestCase):
         student_json = b'{"name":"V","last_name":"P","patronymic":"P","description":"D","skills":[1,2,3]}'
         stream = io.BytesIO(student_json)
         data = JSONParser().parse(stream)
-        serializer = StudentSerializerSkillsID(data=data)
+        serializer = StudentSerializerRelatedID(data=data)
         if serializer.is_valid():
             student = Student.objects.get(pk=self.student_id)  # skill to update
             student = serializer.update(student, serializer.validated_data)
