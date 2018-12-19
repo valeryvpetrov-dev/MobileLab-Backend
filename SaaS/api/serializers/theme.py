@@ -17,6 +17,8 @@ class SubjectSerializer(serializers.ModelSerializer):
 
 
 class ThemeSerializerRelatedID(serializers.ModelSerializer):
+    date_acceptance = serializers.DateTimeField(allow_null=True, required=False)
+
     curator_id = serializers.PrimaryKeyRelatedField(queryset=Curator.objects.all(), allow_null=True, required=False)
     student_id = serializers.PrimaryKeyRelatedField(queryset=Student.objects.all(), allow_null=True, required=False)
     subject_id = serializers.PrimaryKeyRelatedField(queryset=Subject.objects.all(), allow_null=True, required=False)
@@ -47,6 +49,8 @@ class ThemeSerializerRelatedID(serializers.ModelSerializer):
 
 
 class ThemeSerializerRelatedIntermediate(serializers.ModelSerializer):
+    date_acceptance = serializers.DateTimeField(allow_null=True, required=False)
+
     curator = CuratorSerializerNoSkills(read_only=True, allow_null=True)
     student = StudentSerializerNoSkills(read_only=True, allow_null=True)
     subject = SubjectSerializer(read_only=True, allow_null=True)
@@ -77,6 +81,8 @@ class ThemeSerializerRelatedIntermediate(serializers.ModelSerializer):
 
 
 class ThemeSerializerNoSkills(serializers.ModelSerializer):
+    date_acceptance = serializers.DateTimeField(allow_null=True, required=False)
+
     curator = CuratorSerializerNoSkills(read_only=True, allow_null=True)
     student = StudentSerializerNoSkills(read_only=True, allow_null=True)
     subject = SubjectSerializer(read_only=True, allow_null=True)
