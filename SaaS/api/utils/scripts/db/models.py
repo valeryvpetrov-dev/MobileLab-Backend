@@ -55,19 +55,28 @@ def migrate_to_db_user(manager_model: Manager,
         print("User: {0}. Model: {1}.".format(user, model))
 
 
-def migrate_to_db(manager: Manager, csv_file_path: str):
+def migrate_to_db(manager: Manager, csv_file_path: str, manager_related: Manager = None,
+                  related_field_name: str = None, related_model_field_name: str = None):
     path = os.path.abspath(csv_file_path)
     with open(path, encoding='utf8') as file:
         _list = csv_entry_list_reader(file)
 
     manager.all().delete()
     print("All models(Manager: {}) deleted.".format(manager))
+
+    related_list = None
+    if manager_related:
+        related_list = list(manager_related.all())
+
     for entry in _list:
         for date_field in date_field_name:
             if entry.get(date_field, None):
                 entry[date_field] = str2dt(entry[date_field])
             else:
                 entry.pop(date_field, None)
+
+        if related_list and related_field_name and related_model_field_name:
+            entry[related_field_name] = getattr(random.choice(related_list), related_model_field_name)
 
         _object = manager.create(**entry)
         print(_object)
@@ -158,10 +167,10 @@ def do():
     migrate_to_db_user(Curator.objects, User.objects, Group.objects.get(name="curators"), path + '/curator.csv')
     migrate_to_db_user(Student.objects, User.objects, Group.objects.get(name="students"), path + '/student.csv')
 
-    migrate_to_db(Subject.objects, path + '/subject.csv')
-    migrate_to_db(Theme.objects, path + '/theme.csv')
     migrate_to_db(WorkStepStatus.objects, path + '/work_step_status.csv')
     migrate_to_db(SuggestionThemeStatus.objects, path + '/suggestion_theme_status.csv')
+    migrate_to_db(Subject.objects, path + '/subject.csv')
+    migrate_to_db(Theme.objects, path + '/theme.csv', Subject.objects, "subject_id", "id")
 
     skills = list(Skill.objects.all())
     link_skills_to_man(skills, list(Curator.objects.all()))
