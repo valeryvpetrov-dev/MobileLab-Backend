@@ -51,3 +51,9 @@ class SuggestionThemeCommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = SuggestionThemeComment
         fields = ('id', 'author_name', 'content', 'date_creation', 'suggestion_id')
+
+
+class SuggestionThemeCommentSerializerNoRelated(serializers.ModelSerializer):
+    class Meta:
+        model = SuggestionThemeComment
+        fields = ('id', 'author_name', 'content', 'date_creation')
