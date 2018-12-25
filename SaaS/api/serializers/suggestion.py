@@ -38,7 +38,7 @@ class SuggestionThemeSerializerRelatedIDNoProgress(serializers.ModelSerializer):
     theme_id = serializers.PrimaryKeyRelatedField(queryset=Theme.objects.all(), allow_null=False, required=True, source="theme")
     student_id = serializers.PrimaryKeyRelatedField(queryset=Student.objects.all(), allow_null=False, required=True, source="student")
     curator_id = serializers.PrimaryKeyRelatedField(queryset=Curator.objects.all(), allow_null=False, required=True, source="curator")
-    status_id = serializers.PrimaryKeyRelatedField(queryset=SuggestionThemeStatus.objects.all(), allow_null=False, required=True, source="status")
+    status_id = serializers.PrimaryKeyRelatedField(queryset=SuggestionThemeStatus.objects.all(), allow_null=False, required=False, source="status")
 
     class Meta:
         model = SuggestionTheme

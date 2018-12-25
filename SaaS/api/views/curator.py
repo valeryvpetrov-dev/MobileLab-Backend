@@ -6,7 +6,7 @@ from rest_framework.generics import ListAPIView
 from rest_framework.authentication import TokenAuthentication
 
 from ..models.theme import Theme
-from ..models.suggestion import SuggestionTheme
+from ..models.suggestion import SuggestionTheme, SuggestionThemeStatus
 from ..models.curator import Curator
 from ..models.work import Work, WorkStep
 
@@ -372,6 +372,7 @@ class CuratorSuggestionList(CuratorBaseView):
         curator = self.get_curator(curator_id)
         serializer = SuggestionThemeSerializerRelatedIDNoProgress(data=request.data)
         if serializer.is_valid():
+            serializer.validated_data["status_id"] = SuggestionThemeStatus.objects.get(name__exact="WAITING_STUDENT").id
             suggestion = serializer.create(validated_data=serializer.validated_data)
             curator.suggestiontheme_set.add(suggestion)
             # serializing response
