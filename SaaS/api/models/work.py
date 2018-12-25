@@ -1,10 +1,9 @@
 from django.db import models
 from django.forms import ValidationError
+from django.utils.timezone import now
 
 from .base import Comment
 from .theme import Theme
-
-from datetime import datetime, timezone
 
 
 class Work(models.Model):
@@ -20,7 +19,7 @@ class Work(models.Model):
         if self.date_finish:
             if self.date_start > self.date_finish:
                 raise ValidationError('Date start is greater than date finish.')
-            if self.date_start > datetime.now(timezone.utc):
+            if self.date_start > now():
                 raise ValidationError('Date start is in future.')
 
         super(Work, self).save(*args, **kwargs)
@@ -49,7 +48,7 @@ class WorkStep(models.Model):
     def save(self, *args, **kwargs):
         if self.date_start > self.date_finish:
             raise ValidationError('Date start is greater than date acceptance.')
-        if self.date_start > datetime.now(timezone.utc):
+        if self.date_start > now():
             raise ValidationError('Date start is in future.')
         super(WorkStep, self).save(*args, **kwargs)
 
