@@ -308,6 +308,8 @@ class CuratorThemeList(CuratorBaseView):
         curator = self.get_curator(curator_id)
         serializer = ThemeSerializerRelatedID(data=request.data)
         if serializer.is_valid():
+            if serializer.validated_data["student"]:
+                serializer.validated_data.pop("student")  # it must be suggested until that!
             theme = serializer.create(validated_data=serializer.validated_data)
             curator.theme_set.add(theme)
             # serializing response
