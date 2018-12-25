@@ -161,7 +161,7 @@ def init_line_theme_suggestion():
         theme.skills.add(skill)
 
     suggestion = SuggestionTheme.objects.create(theme=theme, student=student, curator=curator,
-                                                status=SuggestionThemeStatus.objects.get(name__exact="Нет ответа"),
+                                                status=SuggestionThemeStatus.objects.get(name__exact="WAITING_STUDENT"),
                                                 date_creation=theme.date_creation)
 
 
