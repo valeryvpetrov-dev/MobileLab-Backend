@@ -25,6 +25,9 @@ class Comment(models.Model):
         abstract = True
 
     def save(self, *args, **kwargs):
+        if not self.date_creation:
+            self.date_creation = datetime.now(timezone.utc)
+
         if self.date_creation > datetime.now(timezone.utc):
             raise ValidationError('Date creation is in future.')
         super(Comment, self).save(*args, **kwargs)
