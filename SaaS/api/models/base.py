@@ -1,8 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.forms import ValidationError
-
-from datetime import datetime, timezone
+from django.utils.timezone import now
 
 
 class Man(models.Model):
@@ -25,6 +24,9 @@ class Comment(models.Model):
         abstract = True
 
     def save(self, *args, **kwargs):
-        if self.date_creation > datetime.now(timezone.utc):
+        if not self.date_creation:
+            self.date_creation = now()
+
+        if self.date_creation > now():
             raise ValidationError('Date creation is in future.')
         super(Comment, self).save(*args, **kwargs)

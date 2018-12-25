@@ -1,11 +1,10 @@
 from django.db import models
 from django.forms import ValidationError
+from django.utils.timezone import now
 
 from .curator import Curator
 from .student import Student
 from .skill import Skill
-
-from datetime import datetime, timezone
 
 
 class Subject(models.Model):
@@ -35,7 +34,10 @@ class Theme(models.Model):
             if self.date_creation > self.date_acceptance:
                 raise ValidationError('Date creation is greater than date acceptance.')
 
-        if self.date_creation > datetime.now(timezone.utc):
+        if not self.date_creation:
+            self.date_creation = now()
+
+        if self.date_creation > now():
             raise ValidationError('Date creation is in future.')
 
         super(Theme, self).save(*args, **kwargs)

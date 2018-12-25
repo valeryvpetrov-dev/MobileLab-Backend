@@ -10,15 +10,15 @@ from .student import StudentSerializerNoSkills
 from .skill import SkillSerializer
 
 
+# GET
 class SubjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Subject
         fields = ('id', 'name')
 
 
+# POST, PUT
 class ThemeSerializerRelatedID(serializers.ModelSerializer):
-    date_acceptance = serializers.DateTimeField(allow_null=True, required=False)
-
     curator_id = serializers.PrimaryKeyRelatedField(queryset=Curator.objects.all(), allow_null=True, required=False, source="curator")
     student_id = serializers.PrimaryKeyRelatedField(queryset=Student.objects.all(), allow_null=True, required=False, source="student")
     subject_id = serializers.PrimaryKeyRelatedField(queryset=Subject.objects.all(), allow_null=True, required=False, source="subject")
@@ -26,10 +26,10 @@ class ThemeSerializerRelatedID(serializers.ModelSerializer):
 
     class Meta:
         model = Theme
-        fields = ('id', 'title', 'description', 'date_creation', 'date_acceptance',
-                  'curator_id', 'student_id', 'subject_id', 'skills_id')
+        fields = ('id', 'title', 'description', 'curator_id', 'student_id', 'subject_id', 'skills_id')
 
 
+# GET
 class ThemeSerializerRelatedIntermediate(serializers.ModelSerializer):
     date_acceptance = serializers.DateTimeField(allow_null=True, required=False)
 
@@ -44,6 +44,7 @@ class ThemeSerializerRelatedIntermediate(serializers.ModelSerializer):
                   'curator', 'student', 'subject', 'skills')
 
 
+# GET
 class ThemeSerializerNoSkills(serializers.ModelSerializer):
     date_acceptance = serializers.DateTimeField(allow_null=True, required=False)
 

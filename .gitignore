@@ -96,7 +96,6 @@ celerybeat-schedule
 
 # my log
 SaaS/api/mylog/db/migrations/*
-SaaS/api/mylog/db/sql/*
 
 # virtual environments
 virtualenv/*
