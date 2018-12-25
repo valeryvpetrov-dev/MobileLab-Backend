@@ -1,6 +1,10 @@
 name
-Принятно студентом
-Принятно куратором
-Отклонено куратором
-Отклонено студентом
-Нет ответа
+WAITING_CURATOR
+WAITING_STUDENT
+IN_PROGRESS_CURATOR
+IN_PROGRESS_STUDENT
+CHANGED_CURATOR
+CHANGED_STUDENT
+REJECTED_CURATOR
+REJECTED_STUDENT
+ACCEPTED_BOTH

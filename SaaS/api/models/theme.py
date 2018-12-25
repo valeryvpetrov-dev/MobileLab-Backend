@@ -5,7 +5,7 @@ from .curator import Curator
 from .student import Student
 from .skill import Skill
 
-from datetime import datetime
+from datetime import datetime, timezone
 
 
 class Subject(models.Model):
@@ -36,9 +36,9 @@ class Theme(models.Model):
                 raise ValidationError('Date creation is greater than date acceptance.')
 
         if not self.date_creation:
-            self.date_creation = datetime.now()
+            self.date_creation = datetime.now(timezone.utc)
 
-        if self.date_creation > datetime.now():
+        if self.date_creation > datetime.now(timezone.utc):
             raise ValidationError('Date creation is in future.')
 
         super(Theme, self).save(*args, **kwargs)
