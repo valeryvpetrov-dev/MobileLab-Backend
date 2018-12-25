@@ -19,7 +19,8 @@ from ..serializers.work import WorkSerializerRelatedID, WorkSerializerRelatedInt
     WorkStepMaterialSerializer, WorkStepMaterialSerializerNoRelated, \
     WorkStepCommentSerializer, WorkStepCommentSerializerNoRelated
 from ..serializers.theme import ThemeSerializerRelatedID, ThemeSerializerRelatedIntermediate
-from ..serializers.suggestion import SuggestionThemeSerializerRelatedID, SuggestionThemeSerializerRelatedIntermediate, \
+from ..serializers.suggestion import SuggestionThemeSerializerRelatedID, SuggestionThemeSerializerRelatedIDNoProgress, \
+    SuggestionThemeSerializerRelatedIntermediate, \
     SuggestionThemeCommentSerializer, SuggestionThemeCommentSerializerNoRelated
 
 from ..permissions.group_curators import IsMemberOfCuratorsGroup
@@ -133,17 +134,6 @@ class StudentWorkList(StudentBaseView):
                 related_works.append(work)
         serializer = WorkSerializerRelatedIntermediate(related_works, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
-
-    def post(self, request, student_id):
-        student = self.get_student(student_id)
-        serializer = WorkSerializerRelatedID(data=request.data)
-        if serializer.is_valid():
-            work = serializer.create(validated_data=serializer.validated_data)
-            student.theme_set.add(work.theme)
-            # serializing response
-            serializer_resp = WorkSerializerRelatedIntermediate(work)
-            return Response(serializer_resp.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class StudentWorkDetail(StudentBaseView):
@@ -367,7 +357,7 @@ class StudentSuggestionList(StudentBaseView):
     post:
     CREATE - Student instance related suggestion.
     """
-    serializer_class = SuggestionThemeSerializerRelatedID
+    serializer_class = SuggestionThemeSerializerRelatedIDNoProgress
 
     @permission_classes(
         (IsAuthenticated, IsMemberOfCuratorsGroup,))  # TODO Change behavior when student app will be developed
@@ -378,7 +368,7 @@ class StudentSuggestionList(StudentBaseView):
 
     def post(self, request, student_id):
         student = self.get_student(student_id)
-        serializer = SuggestionThemeSerializerRelatedID(data=request.data)
+        serializer = SuggestionThemeSerializerRelatedIDNoProgress(data=request.data)
         if serializer.is_valid():
             suggestion = serializer.create(validated_data=serializer.validated_data)
             student.suggestiontheme_set.add(suggestion)
@@ -396,7 +386,7 @@ class StudentSuggestionDetail(StudentBaseView):
     put:
     UPDATE - Student instance related suggestion details.
     """
-    serializer_class = SuggestionThemeSerializerRelatedID
+    serializer_class = SuggestionThemeSerializerRelatedIDNoProgress
 
     @permission_classes(
         (IsAuthenticated, IsMemberOfCuratorsGroup,))  # TODO Change behavior when student app will be developed
@@ -409,7 +399,7 @@ class StudentSuggestionDetail(StudentBaseView):
 
     def put(self, request, student_id, suggestion_id):
         suggestion = self.get_related_suggestion(student_id, suggestion_id)
-        serializer = SuggestionThemeSerializerRelatedID(suggestion, data=request.data)
+        serializer = SuggestionThemeSerializerRelatedIDNoProgress(suggestion, data=request.data)
         if serializer.is_valid():
             serializer.update(suggestion, validated_data=serializer.validated_data)
             # serializing response

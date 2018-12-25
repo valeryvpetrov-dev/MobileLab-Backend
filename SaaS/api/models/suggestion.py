@@ -17,6 +17,7 @@ class SuggestionThemeStatus(models.Model):
         db_table = "Suggestion_theme_status"
 
 
+# TODO date_update
 class SuggestionThemeProgress(models.Model):
     id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=75)
@@ -28,7 +29,7 @@ class SuggestionThemeProgress(models.Model):
 
     def save(self, *args, **kwargs):
         if self.date_update:
-            if self.date_update > datetime.today():
+            if self.date_update > datetime.now(timezone.utc):
                 raise ValidationError('Date update is in future.')
 
         super(SuggestionThemeProgress, self).save(*args, **kwargs)
@@ -47,6 +48,9 @@ class SuggestionTheme(models.Model):
         db_table = "Suggestion_theme"
 
     def save(self, *args, **kwargs):
+        if not self.date_creation:
+            self.date_creation = datetime.now(timezone.utc)
+
         if self.date_creation > datetime.now(timezone.utc):
             raise ValidationError('Date creation is in future.')
         super(SuggestionTheme, self).save(*args, **kwargs)

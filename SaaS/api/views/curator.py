@@ -18,6 +18,7 @@ from ..serializers.work import WorkSerializerRelatedID, WorkSerializerRelatedInt
     WorkStepCommentSerializer, WorkStepCommentSerializerNoRelated
 from ..serializers.theme import ThemeSerializerRelatedID, ThemeSerializerRelatedIntermediate
 from ..serializers.suggestion import SuggestionThemeSerializerRelatedID, SuggestionThemeSerializerRelatedIntermediate, \
+    SuggestionThemeSerializerRelatedIDNoProgress, \
     SuggestionThemeCommentSerializer, SuggestionThemeCommentSerializerNoRelated
 
 from ..permissions.group_curators import IsMemberOfCuratorsGroup
@@ -117,17 +118,6 @@ class CuratorWorkList(CuratorBaseView):
         serializer = WorkSerializerRelatedIntermediate(related_works, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def post(self, request, curator_id):
-        curator = self.get_curator(curator_id)
-        serializer = WorkSerializerRelatedID(data=request.data)
-        if serializer.is_valid():
-            work = serializer.create(validated_data=serializer.validated_data)
-            curator.theme_set.add(work.theme)
-            # serializing response
-            serializer_resp = WorkSerializerRelatedIntermediate(work)
-            return Response(serializer_resp.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
 class CuratorWorkDetail(CuratorBaseView):
     """
@@ -160,6 +150,7 @@ class CuratorWorkDetail(CuratorBaseView):
     def delete(self, request, curator_id, work_id):
         work = self.get_related_work(curator_id, work_id)
         if work.delete():
+            # serializing response
             serializer = WorkSerializerRelatedIntermediate(work)
             return Response(serializer.data, status=status.HTTP_204_NO_CONTENT)
         return Response(status=status.HTTP_400_BAD_REQUEST)
@@ -370,7 +361,7 @@ class CuratorSuggestionList(CuratorBaseView):
     post:
     CREATE - Curator instance related suggestion.
     """
-    serializer_class = SuggestionThemeSerializerRelatedID
+    serializer_class = SuggestionThemeSerializerRelatedIDNoProgress
 
     def get(self, request, curator_id):
         curator = self.get_curator(curator_id)
@@ -379,7 +370,7 @@ class CuratorSuggestionList(CuratorBaseView):
 
     def post(self, request, curator_id):
         curator = self.get_curator(curator_id)
-        serializer = SuggestionThemeSerializerRelatedID(data=request.data)
+        serializer = SuggestionThemeSerializerRelatedIDNoProgress(data=request.data)
         if serializer.is_valid():
             suggestion = serializer.create(validated_data=serializer.validated_data)
             curator.suggestiontheme_set.add(suggestion)
@@ -400,7 +391,7 @@ class CuratorSuggestionDetail(CuratorBaseView):
     delete:
     DELETE - Curator instance related suggestion.
     """
-    serializer_class = SuggestionThemeSerializerRelatedID
+    serializer_class = SuggestionThemeSerializerRelatedIDNoProgress
 
     def get(self, request, curator_id, suggestion_id):
         suggestion = self.get_related_suggestion(curator_id, suggestion_id)
@@ -409,7 +400,7 @@ class CuratorSuggestionDetail(CuratorBaseView):
 
     def put(self, request, curator_id, suggestion_id):
         suggestion = self.get_related_suggestion(curator_id, suggestion_id)
-        serializer = SuggestionThemeSerializerRelatedID(suggestion, data=request.data)
+        serializer = SuggestionThemeSerializerRelatedIDNoProgress(suggestion, data=request.data)
         if serializer.is_valid():
             serializer.update(suggestion, validated_data=serializer.validated_data)
             # serializing response
