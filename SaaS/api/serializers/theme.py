@@ -17,7 +17,8 @@ class SubjectSerializer(serializers.ModelSerializer):
 
 
 class ThemeSerializerRelatedID(serializers.ModelSerializer):
-    date_acceptance = serializers.DateTimeField(allow_null=True, required=False)
+    date_creation = serializers.DateTimeField(allow_null=False, read_only=True)
+    date_acceptance = serializers.DateTimeField(allow_null=True, read_only=True)
 
     curator_id = serializers.PrimaryKeyRelatedField(queryset=Curator.objects.all(), allow_null=True, required=False, source="curator")
     student_id = serializers.PrimaryKeyRelatedField(queryset=Student.objects.all(), allow_null=True, required=False, source="student")
