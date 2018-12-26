@@ -1,6 +1,6 @@
 from django.db import models
 from django.forms import ValidationError
-from django.utils.timezone import now
+from django.utils.timezone import localtime
 
 from .curator import Curator
 from .student import Student
@@ -30,14 +30,19 @@ class Theme(models.Model):
         db_table = "Theme"
 
     def save(self, *args, **kwargs):
+        if self.date_creation:
+            self.date_creation = localtime(self.date_creation)
+        if self.date_acceptance:
+            self.date_acceptance = localtime(self.date_acceptance)
+
         if self.date_acceptance:
             if self.date_creation > self.date_acceptance:
                 raise ValidationError('Date creation is greater than date acceptance.')
 
         if not self.date_creation:
-            self.date_creation = now()
+            self.date_creation = localtime()
 
-        if self.date_creation > now():
+        if self.date_creation > localtime():
             raise ValidationError('Date creation is in future.')
 
-        super(Theme, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)

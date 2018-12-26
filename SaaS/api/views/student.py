@@ -15,7 +15,7 @@ from ..serializers.student import StudentSerializerRelatedIntermediate, StudentS
     GroupSerializer
 from ..serializers.skill import SkillSerializer
 from ..serializers.work import WorkSerializerRelatedID, WorkSerializerRelatedIntermediate, \
-    WorkStepSerializer, WorkStepSerializerRelatedID, \
+    WorkStepSerializer, WorkStepSerializerRelatedID, WorkStepSerializerRelatedIDNoStatus, \
     WorkStepMaterialSerializer, WorkStepMaterialSerializerNoRelated, \
     WorkStepCommentSerializer, WorkStepCommentSerializerNoRelated
 from ..serializers.theme import ThemeSerializerRelatedID, ThemeSerializerRelatedIntermediate
