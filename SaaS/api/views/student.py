@@ -7,7 +7,7 @@ from rest_framework.generics import ListAPIView, get_object_or_404
 from rest_framework.authentication import TokenAuthentication
 
 from ..models.theme import Theme
-from ..models.suggestion import SuggestionTheme
+from ..models.suggestion import SuggestionTheme, SuggestionThemeStatus, SuggestionThemeProgress
 from ..models.student import Student, Group
 from ..models.work import Work, WorkStep
 
@@ -19,8 +19,10 @@ from ..serializers.work import WorkSerializerRelatedID, WorkSerializerRelatedInt
     WorkStepMaterialSerializer, WorkStepMaterialSerializerNoRelated, \
     WorkStepCommentSerializer, WorkStepCommentSerializerNoRelated
 from ..serializers.theme import ThemeSerializerRelatedID, ThemeSerializerRelatedIntermediate
-from ..serializers.suggestion import SuggestionThemeSerializerRelatedID, SuggestionThemeSerializerRelatedIDNoProgress, \
+from ..serializers.suggestion import \
+    SuggestionThemeSerializerRelatedID, SuggestionThemeSerializerRelatedChangeable, SuggestionThemeSerializerRelatedIDNoProgress, \
     SuggestionThemeSerializerRelatedIntermediate, \
+    SuggestionThemeProgressSerializer, \
     SuggestionThemeCommentSerializer, SuggestionThemeCommentSerializerNoRelated
 
 from ..permissions.group_curators import IsMemberOfCuratorsGroup
@@ -47,6 +49,10 @@ class StudentBaseViewAbstract:
 
     def get_related_suggestion(self, student_id: int, suggestion_id: int) -> SuggestionTheme:
         return get_object_or_404(SuggestionTheme, student__id=student_id, pk=suggestion_id)
+
+    def get_related_suggestion_progress(self, student_id: int, suggestion_id: int) -> SuggestionThemeProgress:
+        suggestion = self.get_related_suggestion(student_id, suggestion_id)
+        return get_object_or_404(SuggestionThemeProgress, suggestion=suggestion)
 
 
 class StudentBaseView(StudentBaseViewAbstract, GenericAPIView):
@@ -326,7 +332,7 @@ class StudentThemeDetail(StudentBaseView):
     put:
     UPDATE - Student instance related theme details.
     """
-    serializer_class = ThemeSerializerRelatedID
+    serializer_class = SuggestionThemeSerializerRelatedChangeable
 
     @permission_classes(
         (IsAuthenticated, IsMemberOfCuratorsGroup,))  # TODO Change behavior when student app will be developed
@@ -339,7 +345,7 @@ class StudentThemeDetail(StudentBaseView):
 
     def put(self, request, student_id, theme_id):
         theme = self.get_related_theme(student_id, theme_id)
-        serializer = ThemeSerializerRelatedID(theme, data=request.data)
+        serializer = SuggestionThemeSerializerRelatedChangeable(theme, data=request.data)
         if serializer.is_valid():
             serializer.update(theme, validated_data=serializer.validated_data)
             # serializing response
@@ -404,6 +410,34 @@ class StudentSuggestionDetail(StudentBaseView):
             serializer.update(suggestion, validated_data=serializer.validated_data)
             # serializing response
             serializer_resp = SuggestionThemeSerializerRelatedIntermediate(suggestion)
+            return Response(serializer_resp.data, status=status.HTTP_202_ACCEPTED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class StudentSuggestionProgressDetail(StudentBaseView):
+    """
+    get:
+    READ - Student instance related suggestion progress details.
+
+    put:
+    UPDATE - Student instance related suggestion progress details.
+    """
+    serializer_class = SuggestionThemeProgressSerializer
+
+    @permission_classes(
+        (IsAuthenticated, IsMemberOfCuratorsGroup,))  # TODO Change behavior when student app will be developed
+    def get(self, request, student_id, suggestion_id):
+        progress = self.get_related_suggestion_progress(student_id, suggestion_id)
+        serializer = SuggestionThemeProgressSerializer(progress)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def put(self, request, student_id, suggestion_id):
+        progress = self.get_related_suggestion_progress(student_id, suggestion_id)
+        serializer = SuggestionThemeProgressSerializer(progress, data=request.data)
+        if serializer.is_valid():
+            serializer.update(progress, validated_data=serializer.validated_data)
+            # serializing response
+            serializer_resp = SuggestionThemeProgressSerializer(progress)
             return Response(serializer_resp.data, status=status.HTTP_202_ACCEPTED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

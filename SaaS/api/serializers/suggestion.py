@@ -14,8 +14,12 @@ class SuggestionThemeStatusSerializer(serializers.ModelSerializer):
         fields = ('id', 'name')
 
 
-# TODO date_update
+# GET, PUT
 class SuggestionThemeProgressSerializer(serializers.ModelSerializer):
+    title = serializers.CharField(required=False)
+    description = serializers.CharField(required=False)
+    date_update = serializers.DateTimeField(read_only=True)
+
     class Meta:
         model = SuggestionThemeProgress
         fields = ('id', 'title', 'description', 'date_update')
@@ -33,7 +37,7 @@ class SuggestionThemeSerializerRelatedID(serializers.ModelSerializer):
         fields = ('id', 'theme_id', 'student_id', 'curator_id', 'status_id', 'progress_id')
 
 
-# PUT, POST
+# POST
 class SuggestionThemeSerializerRelatedIDNoProgress(serializers.ModelSerializer):
     theme_id = serializers.PrimaryKeyRelatedField(queryset=Theme.objects.all(), allow_null=False, required=True, source="theme")
     student_id = serializers.PrimaryKeyRelatedField(queryset=Student.objects.all(), allow_null=False, required=True, source="student")
@@ -43,6 +47,50 @@ class SuggestionThemeSerializerRelatedIDNoProgress(serializers.ModelSerializer):
     class Meta:
         model = SuggestionTheme
         fields = ('id', 'theme_id', 'student_id', 'curator_id', 'status_id')
+
+
+# PUT
+class SuggestionThemeSerializerRelatedChangeable(serializers.ModelSerializer):
+    status_id = serializers.PrimaryKeyRelatedField(queryset=SuggestionThemeStatus.objects.all(), allow_null=False, required=True, source="status")
+
+    class Meta:
+        model = SuggestionTheme
+        fields = ('id', 'status_id')
+
+    def update(self, instance: SuggestionTheme, validated_data):
+        status_name = validated_data["status"].name
+        if status_name == "WAITING_STUDENT" or status_name == "WAITING_CURATOR":
+            pass
+        elif status_name == "IN_PROGRESS_STUDENT" or status_name == "IN_PROGRESS_CURATOR":
+            # create SuggestionThemeProgress if it does not exist
+            if not instance.progress:
+                instance.progress = SuggestionThemeProgress.objects.create(
+                    title=instance.theme.title,
+                    description=instance.theme.description,
+                    date_update=localtime())
+                instance.save()
+        elif status_name == "REJECTED_STUDENT" or status_name == "REJECTED_CURATOR":
+            pass
+        elif status_name == "ACCEPTED_BOTH":
+            # merge updated data with related theme (through UPDATE)
+            if instance.progress:
+                instance.theme.title = instance.progress.title
+                instance.theme.description = instance.progress.description
+                instance.theme.curator = instance.curator
+                instance.theme.student = instance.student
+                instance.theme.save()   # it calls sql UPDATE. it is IMPORTANT for database trigger
+            # reject rest of suggestions
+            SuggestionTheme.objects \
+                .exclude(student=instance.student) \
+                .filter(curator=instance.curator, theme=instance.theme) \
+                .update(status=SuggestionThemeStatus.objects.get(name__exact="REJECTED_CURATOR"))
+
+        # change date_update field
+        if instance.progress:
+            instance.progress.date_update = localtime()
+            instance.progress.save()
+
+        super().update(instance, validated_data)
 
 
 # GET
