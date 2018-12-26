@@ -53,9 +53,11 @@ class WorkStepSerializerRelatedIDNoStatus(serializers.ModelSerializer):
 
 # PUT
 class WorkStepSerializerRelatedID(serializers.ModelSerializer):
+    title = serializers.CharField(allow_null=True, required=False)
+    description = serializers.CharField(allow_null=True, required=False)
     date_start = serializers.DateTimeField(allow_null=True, required=False)
     date_finish = serializers.DateTimeField(allow_null=True, required=False)
-    status_id = serializers.PrimaryKeyRelatedField(read_only=False, queryset=WorkStepStatus.objects.all(), source="status")
+    status_id = serializers.PrimaryKeyRelatedField(allow_null=True, required=False, queryset=WorkStepStatus.objects.all(), source="status")
 
     class Meta:
         model = WorkStep
