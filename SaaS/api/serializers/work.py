@@ -41,14 +41,25 @@ class WorkStepSerializer(serializers.ModelSerializer):
                   'status')
 
 
-# POST, PUT
+# POST
+class WorkStepSerializerRelatedIDNoStatus(serializers.ModelSerializer):
+    status_id = serializers.PrimaryKeyRelatedField(allow_null=True, required=False, queryset=WorkStepStatus.objects.all(), source="status",
+                                                   default=WorkStepStatus.objects.get(name__exact="В процессе"))
+
+    class Meta:
+        model = WorkStep
+        fields = ('id', 'title', 'description', 'date_start', 'date_finish', 'status_id')
+
+
+# PUT
 class WorkStepSerializerRelatedID(serializers.ModelSerializer):
+    date_start = serializers.DateTimeField(allow_null=True, required=False)
     date_finish = serializers.DateTimeField(allow_null=True, required=False)
     status_id = serializers.PrimaryKeyRelatedField(read_only=False, queryset=WorkStepStatus.objects.all(), source="status")
 
     class Meta:
         model = WorkStep
-        fields = ('id', 'title', 'description', 'date_finish', 'status_id')
+        fields = ('id', 'title', 'description', 'date_start', 'date_finish', 'status_id')
 
 
 # GET
