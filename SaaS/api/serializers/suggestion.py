@@ -16,6 +16,8 @@ class SuggestionThemeStatusSerializer(serializers.ModelSerializer):
 
 # GET, PUT
 class SuggestionThemeProgressSerializer(serializers.ModelSerializer):
+    title = serializers.CharField(required=False)
+    description = serializers.CharField(required=False)
     date_update = serializers.DateTimeField(read_only=True)
 
     class Meta:
@@ -57,7 +59,6 @@ class SuggestionThemeSerializerRelatedChangeable(serializers.ModelSerializer):
 
     def update(self, instance: SuggestionTheme, validated_data):
         status_name = validated_data["status"].name
-        # TODO implement cases
         if status_name == "WAITING_STUDENT" or status_name == "WAITING_CURATOR":
             pass
         elif status_name == "IN_PROGRESS_STUDENT" or status_name == "IN_PROGRESS_CURATOR":
@@ -68,7 +69,7 @@ class SuggestionThemeSerializerRelatedChangeable(serializers.ModelSerializer):
                     description=instance.theme.description,
                     date_update=localtime())
                 instance.save()
-        elif status_name == "REJECTED_STUDENT" or "REJECTED_CURATOR":
+        elif status_name == "REJECTED_STUDENT" or status_name == "REJECTED_CURATOR":
             pass
         elif status_name == "ACCEPTED_BOTH":
             # merge updated data with related theme (through UPDATE)
@@ -77,7 +78,7 @@ class SuggestionThemeSerializerRelatedChangeable(serializers.ModelSerializer):
                 instance.theme.description = instance.progress.description
                 instance.theme.curator = instance.curator
                 instance.theme.student = instance.student
-                instance.theme.save()   # does it call update?
+                instance.theme.save()   # it calls sql UPDATE. it is IMPORTANT for database trigger
             # reject rest of suggestions
             SuggestionTheme.objects \
                 .exclude(student=instance.student) \

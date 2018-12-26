@@ -7,7 +7,7 @@ from rest_framework.generics import ListAPIView, get_object_or_404
 from rest_framework.authentication import TokenAuthentication
 
 from ..models.theme import Theme
-from ..models.suggestion import SuggestionTheme
+from ..models.suggestion import SuggestionTheme, SuggestionThemeStatus, SuggestionThemeProgress
 from ..models.student import Student, Group
 from ..models.work import Work, WorkStep
 
@@ -49,6 +49,10 @@ class StudentBaseViewAbstract:
 
     def get_related_suggestion(self, student_id: int, suggestion_id: int) -> SuggestionTheme:
         return get_object_or_404(SuggestionTheme, student__id=student_id, pk=suggestion_id)
+
+    def get_related_suggestion_progress(self, student_id: int, suggestion_id: int) -> SuggestionThemeProgress:
+        suggestion = self.get_related_suggestion(student_id, suggestion_id)
+        return get_object_or_404(SuggestionThemeProgress, suggestion=suggestion)
 
 
 class StudentBaseView(StudentBaseViewAbstract, GenericAPIView):
@@ -423,12 +427,12 @@ class StudentSuggestionProgressDetail(StudentBaseView):
     @permission_classes(
         (IsAuthenticated, IsMemberOfCuratorsGroup,))  # TODO Change behavior when student app will be developed
     def get(self, request, student_id, suggestion_id):
-        progress = self.get_related_suggestion(student_id, suggestion_id).progress
+        progress = self.get_related_suggestion_progress(student_id, suggestion_id)
         serializer = SuggestionThemeProgressSerializer(progress)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def put(self, request, student_id, suggestion_id):
-        progress = self.get_related_suggestion(student_id, suggestion_id).progress
+        progress = self.get_related_suggestion_progress(student_id, suggestion_id)
         serializer = SuggestionThemeProgressSerializer(progress, data=request.data)
         if serializer.is_valid():
             serializer.update(progress, validated_data=serializer.validated_data)

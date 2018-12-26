@@ -26,12 +26,7 @@ class SuggestionThemeProgress(models.Model):
         db_table = "Suggestion_theme_progress"
 
     def save(self, *args, **kwargs):
-        if self.date_update:
-            self.date_update = localtime(self.date_update)
-
-        if self.date_update:
-            if self.date_update > localtime():
-                raise ValidationError('Date update is in future.')
+        self.date_update = localtime()
 
         super().save(*args, **kwargs)
 
@@ -42,7 +37,7 @@ class SuggestionTheme(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE, db_column='student_id', null=True)
     curator = models.ForeignKey(Curator, on_delete=models.CASCADE, db_column='curator_id', null=True)
     status = models.ForeignKey(SuggestionThemeStatus, on_delete=models.DO_NOTHING, db_column='status_id')
-    progress = models.ForeignKey(SuggestionThemeProgress, on_delete=models.SET_NULL, db_column='progress_id', null=True)
+    progress = models.ForeignKey(SuggestionThemeProgress, on_delete=models.SET_NULL, db_column='progress_id', null=True, related_name="suggestion")
     date_creation = models.DateTimeField()
 
     class Meta:

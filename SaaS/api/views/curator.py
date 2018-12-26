@@ -6,7 +6,7 @@ from rest_framework.generics import ListAPIView
 from rest_framework.authentication import TokenAuthentication
 
 from ..models.theme import Theme
-from ..models.suggestion import SuggestionTheme, SuggestionThemeStatus
+from ..models.suggestion import SuggestionTheme, SuggestionThemeStatus, SuggestionThemeProgress
 from ..models.curator import Curator
 from ..models.work import Work, WorkStep
 
@@ -47,6 +47,10 @@ class CuratorBaseViewAbstract:
 
     def get_related_suggestion(self, curator_id: int, suggestion_id: int) -> SuggestionTheme:
         return get_object_or_404(SuggestionTheme, curator__id=curator_id, pk=suggestion_id)
+
+    def get_related_suggestion_progress(self, curator_id: int, suggestion_id: int) -> SuggestionThemeProgress:
+        suggestion = self.get_related_suggestion(curator_id, suggestion_id)
+        return get_object_or_404(SuggestionThemeProgress, suggestion=suggestion)
 
 
 class CuratorBaseView(CuratorBaseViewAbstract, GenericAPIView):
@@ -432,12 +436,12 @@ class CuratorSuggestionProgressDetail(CuratorBaseView):
     serializer_class = SuggestionThemeProgressSerializer
 
     def get(self, request, curator_id, suggestion_id):
-        progress = self.get_related_suggestion(curator_id, suggestion_id).progress
+        progress = self.get_related_suggestion_progress(curator_id, suggestion_id)
         serializer = SuggestionThemeProgressSerializer(progress)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def put(self, request, curator_id, suggestion_id):
-        progress = self.get_related_suggestion(curator_id, suggestion_id).progress
+        progress = self.get_related_suggestion_progress(curator_id, suggestion_id)
         serializer = SuggestionThemeProgressSerializer(progress, data=request.data)
         if serializer.is_valid():
             serializer.update(progress, validated_data=serializer.validated_data)
