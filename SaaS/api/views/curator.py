@@ -13,7 +13,7 @@ from ..models.work import Work, WorkStep
 from ..serializers.curator import CuratorSerializerSkillsIntermediate, CuratorSerializerNoSkills, CuratorSerializerSkillsID
 from ..serializers.skill import SkillSerializer
 from ..serializers.work import WorkSerializerRelatedID, WorkSerializerRelatedIntermediate, \
-    WorkStepSerializer, WorkStepSerializerRelatedID, \
+    WorkStepSerializer, WorkStepSerializerRelatedID, WorkStepSerializerRelatedIDNoStatus, \
     WorkStepMaterialSerializer, WorkStepMaterialSerializerNoRelated, \
     WorkStepCommentSerializer, WorkStepCommentSerializerNoRelated
 from ..serializers.theme import ThemeSerializerRelatedID, ThemeSerializerRelatedIntermediate
@@ -165,7 +165,7 @@ class CuratorWorkStepList(CuratorBaseView):
     post:
     CREATE - Curator instance related work step.
     """
-    serializer_class = WorkStepSerializerRelatedID
+    serializer_class = WorkStepSerializerRelatedIDNoStatus
 
     def get(self, request, curator_id, work_id):
         work = self.get_related_work(curator_id, work_id)
@@ -177,7 +177,7 @@ class CuratorWorkStepList(CuratorBaseView):
 
     def post(self, request, curator_id, work_id):
         work = self.get_related_work(curator_id, work_id)
-        serializer = WorkStepSerializerRelatedID(data=request.data)
+        serializer = WorkStepSerializerRelatedIDNoStatus(data=request.data)
         if serializer.is_valid():
             serializer.validated_data["work_id"] = work_id
             step = serializer.create(validated_data=serializer.validated_data)

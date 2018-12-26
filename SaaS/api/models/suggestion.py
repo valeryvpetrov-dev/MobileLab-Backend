@@ -1,6 +1,6 @@
 from django.db import models
 from django.forms import ValidationError
-from django.utils.timezone import now
+from django.utils.timezone import localtime
 
 from .base import Comment
 from .theme import Theme
@@ -28,7 +28,10 @@ class SuggestionThemeProgress(models.Model):
 
     def save(self, *args, **kwargs):
         if self.date_update:
-            if self.date_update > now():
+            self.date_update = localtime(self.date_update)
+
+        if self.date_update:
+            if self.date_update > localtime():
                 raise ValidationError('Date update is in future.')
 
         super(SuggestionThemeProgress, self).save(*args, **kwargs)
@@ -47,10 +50,13 @@ class SuggestionTheme(models.Model):
         db_table = "Suggestion_theme"
 
     def save(self, *args, **kwargs):
-        if not self.date_creation:
-            self.date_creation = now()
+        if self.date_creation:
+            self.date_creation = localtime(self.date_creation)
 
-        if self.date_creation > now():
+        if not self.date_creation:
+            self.date_creation = localtime()
+
+        if self.date_creation > localtime():
             raise ValidationError('Date creation is in future.')
         super(SuggestionTheme, self).save(*args, **kwargs)
 
