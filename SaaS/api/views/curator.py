@@ -20,7 +20,7 @@ from ..serializers.theme import ThemeSerializerRelatedID, ThemeSerializerRelated
 from ..serializers.suggestion import \
     SuggestionThemeSerializerRelatedID, SuggestionThemeSerializerRelatedChangeable, SuggestionThemeSerializerRelatedIntermediate, \
     SuggestionThemeSerializerRelatedIDNoProgress, \
-    SuggestionThemeProgressSerializer, SuggestionThemeProgressSerializerChangeable, \
+    SuggestionThemeProgressSerializer, \
     SuggestionThemeCommentSerializer, SuggestionThemeCommentSerializerNoRelated
 
 from ..permissions.group_curators import IsMemberOfCuratorsGroup
@@ -429,7 +429,7 @@ class CuratorSuggestionProgressDetail(CuratorBaseView):
     put:
     UPDATE - Curator instance related suggestion progress details.
     """
-    serializer_class = SuggestionThemeProgressSerializerChangeable
+    serializer_class = SuggestionThemeProgressSerializer
 
     def get(self, request, curator_id, suggestion_id):
         progress = self.get_related_suggestion(curator_id, suggestion_id).progress
@@ -438,7 +438,7 @@ class CuratorSuggestionProgressDetail(CuratorBaseView):
 
     def put(self, request, curator_id, suggestion_id):
         progress = self.get_related_suggestion(curator_id, suggestion_id).progress
-        serializer = SuggestionThemeProgressSerializerChangeable(progress, data=request.data)
+        serializer = SuggestionThemeProgressSerializer(progress, data=request.data)
         if serializer.is_valid():
             serializer.update(progress, validated_data=serializer.validated_data)
             # serializing response

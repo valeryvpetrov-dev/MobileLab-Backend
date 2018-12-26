@@ -22,7 +22,7 @@ from ..serializers.theme import ThemeSerializerRelatedID, ThemeSerializerRelated
 from ..serializers.suggestion import \
     SuggestionThemeSerializerRelatedID, SuggestionThemeSerializerRelatedChangeable, SuggestionThemeSerializerRelatedIDNoProgress, \
     SuggestionThemeSerializerRelatedIntermediate, \
-    SuggestionThemeProgressSerializer, SuggestionThemeProgressSerializerChangeable, \
+    SuggestionThemeProgressSerializer, \
     SuggestionThemeCommentSerializer, SuggestionThemeCommentSerializerNoRelated
 
 from ..permissions.group_curators import IsMemberOfCuratorsGroup
@@ -418,7 +418,7 @@ class StudentSuggestionProgressDetail(StudentBaseView):
     put:
     UPDATE - Student instance related suggestion progress details.
     """
-    serializer_class = SuggestionThemeProgressSerializerChangeable
+    serializer_class = SuggestionThemeProgressSerializer
 
     @permission_classes(
         (IsAuthenticated, IsMemberOfCuratorsGroup,))  # TODO Change behavior when student app will be developed
@@ -429,7 +429,7 @@ class StudentSuggestionProgressDetail(StudentBaseView):
 
     def put(self, request, student_id, suggestion_id):
         progress = self.get_related_suggestion(student_id, suggestion_id).progress
-        serializer = SuggestionThemeProgressSerializerChangeable(progress, data=request.data)
+        serializer = SuggestionThemeProgressSerializer(progress, data=request.data)
         if serializer.is_valid():
             serializer.update(progress, validated_data=serializer.validated_data)
             # serializing response
