@@ -6,7 +6,7 @@ from rest_framework.generics import ListAPIView
 from rest_framework.authentication import TokenAuthentication
 
 from ..models.theme import Theme
-from ..models.suggestion import SuggestionTheme, SuggestionThemeStatus
+from ..models.suggestion import SuggestionTheme, SuggestionThemeStatus, SuggestionThemeProgress
 from ..models.curator import Curator
 from ..models.work import Work, WorkStep
 
@@ -17,8 +17,10 @@ from ..serializers.work import WorkSerializerRelatedID, WorkSerializerRelatedInt
     WorkStepMaterialSerializer, WorkStepMaterialSerializerNoRelated, \
     WorkStepCommentSerializer, WorkStepCommentSerializerNoRelated
 from ..serializers.theme import ThemeSerializerRelatedID, ThemeSerializerRelatedIntermediate
-from ..serializers.suggestion import SuggestionThemeSerializerRelatedID, SuggestionThemeSerializerRelatedIntermediate, \
+from ..serializers.suggestion import \
+    SuggestionThemeSerializerRelatedID, SuggestionThemeSerializerRelatedChangeable, SuggestionThemeSerializerRelatedIntermediate, \
     SuggestionThemeSerializerRelatedIDNoProgress, \
+    SuggestionThemeProgressSerializer, \
     SuggestionThemeCommentSerializer, SuggestionThemeCommentSerializerNoRelated
 
 from ..permissions.group_curators import IsMemberOfCuratorsGroup
@@ -45,6 +47,10 @@ class CuratorBaseViewAbstract:
 
     def get_related_suggestion(self, curator_id: int, suggestion_id: int) -> SuggestionTheme:
         return get_object_or_404(SuggestionTheme, curator__id=curator_id, pk=suggestion_id)
+
+    def get_related_suggestion_progress(self, curator_id: int, suggestion_id: int) -> SuggestionThemeProgress:
+        suggestion = self.get_related_suggestion(curator_id, suggestion_id)
+        return get_object_or_404(SuggestionThemeProgress, suggestion=suggestion)
 
 
 class CuratorBaseView(CuratorBaseViewAbstract, GenericAPIView):
@@ -394,7 +400,7 @@ class CuratorSuggestionDetail(CuratorBaseView):
     delete:
     DELETE - Curator instance related suggestion.
     """
-    serializer_class = SuggestionThemeSerializerRelatedIDNoProgress
+    serializer_class = SuggestionThemeSerializerRelatedChangeable
 
     def get(self, request, curator_id, suggestion_id):
         suggestion = self.get_related_suggestion(curator_id, suggestion_id)
@@ -403,7 +409,7 @@ class CuratorSuggestionDetail(CuratorBaseView):
 
     def put(self, request, curator_id, suggestion_id):
         suggestion = self.get_related_suggestion(curator_id, suggestion_id)
-        serializer = SuggestionThemeSerializerRelatedIDNoProgress(suggestion, data=request.data)
+        serializer = SuggestionThemeSerializerRelatedChangeable(suggestion, data=request.data)
         if serializer.is_valid():
             serializer.update(suggestion, validated_data=serializer.validated_data)
             # serializing response
@@ -417,6 +423,32 @@ class CuratorSuggestionDetail(CuratorBaseView):
             serializer = SuggestionThemeSerializerRelatedIntermediate(suggestion)
             return Response(serializer.data, status=status.HTTP_204_NO_CONTENT)
         return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+class CuratorSuggestionProgressDetail(CuratorBaseView):
+    """
+    get:
+    READ - Curator instance related suggestion progress details.
+
+    put:
+    UPDATE - Curator instance related suggestion progress details.
+    """
+    serializer_class = SuggestionThemeProgressSerializer
+
+    def get(self, request, curator_id, suggestion_id):
+        progress = self.get_related_suggestion_progress(curator_id, suggestion_id)
+        serializer = SuggestionThemeProgressSerializer(progress)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def put(self, request, curator_id, suggestion_id):
+        progress = self.get_related_suggestion_progress(curator_id, suggestion_id)
+        serializer = SuggestionThemeProgressSerializer(progress, data=request.data)
+        if serializer.is_valid():
+            serializer.update(progress, validated_data=serializer.validated_data)
+            # serializing response
+            serializer_resp = SuggestionThemeProgressSerializer(progress)
+            return Response(serializer_resp.data, status=status.HTTP_202_ACCEPTED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 # related suggestion-comments

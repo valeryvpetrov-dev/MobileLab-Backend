@@ -30,6 +30,7 @@ urlpatterns = [
     path('curators/<int:curator_id>/themes/<int:theme_id>', CuratorThemeDetail.as_view()),
     path('curators/<int:curator_id>/suggestions', CuratorSuggestionList.as_view()),
     path('curators/<int:curator_id>/suggestions/<int:suggestion_id>', CuratorSuggestionDetail.as_view()),
+    path('curators/<int:curator_id>/suggestions/<int:suggestion_id>/progress', CuratorSuggestionProgressDetail.as_view()),
     path('curators/<int:curator_id>/suggestions/<int:suggestion_id>/comments', CuratorSuggestionCommentList.as_view()),
     # student branch
     path('students', StudentList.as_view()),
@@ -46,6 +47,7 @@ urlpatterns = [
     path('students/<int:student_id>/themes/<int:theme_id>', StudentThemeDetail.as_view()),
     path('students/<int:student_id>/suggestions', StudentSuggestionList.as_view()),
     path('students/<int:student_id>/suggestions/<int:suggestion_id>', StudentSuggestionDetail.as_view()),
+    path('students/<int:student_id>/suggestions/<int:suggestion_id>/progress', StudentSuggestionProgressDetail.as_view()),
     path('students/<int:student_id>/suggestions/<int:suggestion_id>/comments', StudentSuggestionCommentList.as_view()),
     # themes branch
     path('themes', ThemeList.as_view()),

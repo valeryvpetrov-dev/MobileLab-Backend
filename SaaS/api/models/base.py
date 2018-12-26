@@ -32,4 +32,4 @@ class Comment(models.Model):
 
         if self.date_creation > localtime():
             raise ValidationError('Date creation is in future.')
-        super(Comment, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
