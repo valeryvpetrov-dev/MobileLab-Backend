@@ -471,6 +471,7 @@ class CuratorSuggestionCommentList(CuratorBaseView):
         suggestion = self.get_related_suggestion(curator_id, suggestion_id)
         serializer = SuggestionThemeCommentSerializerNoRelated(data=request.data)
         if serializer.is_valid():
+            serializer.validated_data["suggestion_id"] = suggestion_id
             comment = serializer.create(validated_data=serializer.validated_data)
             suggestion.comment_set.add(comment)
             # serializing response
