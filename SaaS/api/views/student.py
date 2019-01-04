@@ -286,6 +286,7 @@ class StudentWorkStepCommentList(StudentBaseView):
         step = self.get_related_step(student_id, work_id, step_id)
         serializer = WorkStepCommentSerializerNoRelated(data=request.data)
         if serializer.is_valid():
+            serializer.validated_data["step_id"] = step_id
             comment = serializer.create(validated_data=serializer.validated_data)
             step.comment_set.add(comment)
             # serializing response
@@ -464,6 +465,7 @@ class StudentSuggestionCommentList(StudentBaseView):
         suggestion = self.get_related_suggestion(student_id, suggestion_id)
         serializer = SuggestionThemeCommentSerializerNoRelated(data=request.data)
         if serializer.is_valid():
+            serializer.validated_data["suggestion_id"] = suggestion_id
             comment = serializer.create(validated_data=serializer.validated_data)
             suggestion.comment_set.add(comment)
             # serializing response
