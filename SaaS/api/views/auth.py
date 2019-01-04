@@ -14,7 +14,7 @@ class Login(GenericAPIView):
     post:
     LOGIN - 'username', 'password' credentials. Returns token, user_id.
     """
-    permission_classes = (AllowAny,)
+    permission_classes = (AllowAny, )
     serializer_class = UserSerializer
 
     def post(self, request):
