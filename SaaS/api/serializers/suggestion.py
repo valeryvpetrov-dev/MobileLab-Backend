@@ -76,9 +76,11 @@ class SuggestionThemeSerializerRelatedChangeable(serializers.ModelSerializer):
             if instance.progress:
                 instance.theme.title = instance.progress.title
                 instance.theme.description = instance.progress.description
-                instance.theme.curator = instance.curator
-                instance.theme.student = instance.student
-                instance.theme.save()   # it calls sql UPDATE. it is IMPORTANT for database trigger
+
+            instance.theme.curator = instance.curator
+            instance.theme.student = instance.student
+            instance.theme.save()   # it calls sql UPDATE. it is IMPORTANT for database trigger
+
             # reject rest of suggestions
             SuggestionTheme.objects \
                 .exclude(student=instance.student) \
