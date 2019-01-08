@@ -44,4 +44,8 @@ class Logout(GenericAPIView):
 
     def post(self, request):
         logout(request)
-        return Response(status=status.HTTP_200_OK)
+        if request.META["HTTP_AUTHORIZATION"]:
+            token = request.META["HTTP_AUTHORIZATION"].replace("Token", "").strip()
+            if Token.objects.get(key__exact=token).delete():
+                return Response(status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_400_BAD_REQUEST)

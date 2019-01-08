@@ -12,7 +12,7 @@ from ..models.student import Student, Group
 from ..models.work import Work, WorkStep
 
 from ..serializers.student import StudentSerializerRelatedIntermediate, StudentSerializerNoSkills, StudentSerializerRelatedID, \
-    GroupSerializer
+    StudentSerializerSkillIDGroupIntermediate, GroupSerializer
 from ..serializers.skill import SkillSerializer
 from ..serializers.work import WorkSerializerRelatedID, WorkSerializerRelatedIntermediate, \
     WorkStepSerializer, WorkStepSerializerRelatedID, WorkStepSerializerRelatedIDNoStatus, \
@@ -76,7 +76,7 @@ class StudentList(StudentBaseViewAbstract, ListAPIView):
     """
     permission_classes = (IsAuthenticated, IsMemberOfCuratorsGroup, )   # TODO Change behavior when student app will be developed
     queryset = Student.objects.all()
-    serializer_class = StudentSerializerNoSkills
+    serializer_class = StudentSerializerSkillIDGroupIntermediate
 
 
 class StudentDetail(StudentBaseView):
